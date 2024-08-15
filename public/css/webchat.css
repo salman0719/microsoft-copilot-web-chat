@@ -67,3 +67,16 @@
 #chatwindow .webchat__stacked-layout__content {
   max-width: 75%;
 }
+
+#chatwindow .webchat__bubble {
+  border-radius: 28px;
+}
+
+#chatwindow .webchat__bubble>.webchat__bubble__content {
+  border: 0;
+}
+
+#chatwindow .webchat__bubble--from-user>.webchat__bubble__content {
+  background: #F2F2F2;
+  padding: 0px 12px;
+}
