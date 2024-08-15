@@ -31,7 +31,7 @@ async function fetchJSON(url, options = {}) {
       const sendBoxElem = document.querySelector('#webchat .webchat__send-box')
       const disclosureText = document.createElement('div')
       disclosureText.innerHTML = 'Scout can make mistakes, verify important information.'
-      disclosureText.className = 'webchat__send-box-info'
+      disclosureText.className = 'webchat__send-box__info'
       sendBoxElem.appendChild(disclosureText)
 
       document.querySelector('#webchat .webchat__send-box-text-box__input').placeholder = 'Message Scout'
@@ -63,6 +63,10 @@ async function fetchJSON(url, options = {}) {
     {
       directLine: WebChat.createDirectLine({ token }),
       store,
+      styleOptions: {
+        primaryFont: ['Roboto', 'Calibri', 'Helvetica Neue', 'Arial', 'sans-serif']
+          .map(font => `'${font}'`).join(', '),
+      },
     },
     document.getElementById('webchat')
   );

@@ -14,18 +14,19 @@
     rel="stylesheet">
   <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
-  <!-- This legacy styling is for Web Chat demonstration purposes -->
-  <link rel="stylesheet" href="css/legacy.css">
+  <link rel="stylesheet" href="css/root.css">
   <link rel="stylesheet" href="css/webchat.css">
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="chatwindow">
-    <div id="heading">
-      Scout
+  <div id="chat-window">
+    <div class="chat-window__body">
+      <div class="chat-window__navbar">
+        <span>Scout</span>
+      </div>
+      <div id="webchat"></div>
     </div>
-    <div id="webchat"></div>
     <div id="webchat-bot"></div>
   </div>
   <div id="root"></div>

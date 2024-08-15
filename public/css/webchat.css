@@ -1,4 +1,4 @@
-#chatwindow {
+#chat-window {
   z-index: 9999;
   background: transparent;
   position: fixed;
@@ -6,24 +6,18 @@
   bottom: 115px;
   border-radius: 28px;
   border: 1px solid #ccc;
-  ----webchat__font--primary: 'Roboto', Calibri, "Helvetica Neue", Arial, "sans-serif";
 }
 
-#chatwindow>#heading {
+#chat-window>.chat-window__body>.chat-window__navbar {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
   position: relative;
-  padding: 0px 10px;
-  font-size: 1.7em;
-}
-
-#chatwindow,
-#chatwindow * {
+  padding: 15px 22px;
+  font-size: 32px;
   box-sizing: border-box;
+  line-height: 37.5px;
 }
 
-#chatwindow>#webchat {
+#chat-window>.chat-window__body>#webchat {
   background: white;
   position: relative;
   width: 500px;
@@ -33,7 +27,7 @@
   overflow: auto;
 }
 
-#chatwindow>#webchat-bot {
+#chat-window>#webchat-bot {
   width: 64px;
   height: 64px;
   border-radius: 64px;
@@ -43,41 +37,50 @@
   background-image: url("../images/bot.png");
 }
 
-#chatwindow .webchat__send-box {
+#chat-window .webchat__send-box {
   background-color: #F2F2F2B2;
   border-radius: 0px 0px 29px 29px;
 }
 
-#chatwindow .webchat__send-box__main {
+#chat-window .webchat__send-box__main {
   border-radius: 29px;
   background-color: #fff;
   margin: 8px 12px;
+  border: 1px solid #ccc;
 }
 
-#chatwindow .webchat__send-box-info {
+#chat-window .webchat__send-box__info {
   text-align: center;
   margin: 0px 8px 8px;
 }
 
-#chatwindow .webchat__css-custom-properties>div:first-child {
+#chat-window .webchat__css-custom-properties>div:first-child {
   background: transparent;
   overflow: auto;
   max-height: 60vh
 }
 
-#chatwindow .webchat__stacked-layout__content {
+#chat-window .webchat__stacked-layout__content {
   max-width: 75%;
 }
 
-#chatwindow .webchat__bubble {
+#chat-window .webchat__bubble {
   border-radius: 28px;
 }
 
-#chatwindow .webchat__bubble>.webchat__bubble__content {
+#chat-window .webchat__bubble>.webchat__bubble__content {
   border: 0;
 }
 
-#chatwindow .webchat__bubble--from-user>.webchat__bubble__content {
+#chat-window .webchat__bubble--from-user>.webchat__bubble__content {
   background: #F2F2F2;
   padding: 0px 12px;
+}
+
+#chat-window .webchat__activity-status {
+  padding: 0px 10px;
+}
+
+#chat-window .webchat__basic-transcript:focus {
+  border-radius: 16px;
 }
