@@ -48,9 +48,6 @@ async function fetchJSON(url, options = {}) {
     {
       directLine: WebChat.createDirectLine({ token }),
       store,
-      styleOptions: {
-        backgroundColor: 'rgba(255, 255, 255, .8)',
-      },
     },
     document.getElementById('webchat')
   );
