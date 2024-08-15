@@ -21,22 +21,36 @@ async function fetchJSON(url, options = {}) {
   // This is for obtaining Direct Line token from the bot.
   const { token } = await fetchJSON('/api/directline/token');
 
+  const construct = () => {
+    if (initialized) { return }
+    initialized = true
+
+    const container = document.querySelector('#chat-window')
+
+    const sendBoxElem = document.querySelector('#webchat .webchat__send-box')
+    const disclosureText = document.createElement('div')
+    disclosureText.innerHTML = 'Scout can make mistakes, verify important information.'
+    disclosureText.className = 'webchat__send-box__info'
+    sendBoxElem.appendChild(disclosureText)
+
+    document.querySelector('#webchat .webchat__send-box-text-box__input').placeholder = 'Message Scout'
+
+    const expandIcon = document.querySelector('#chat-window .chat-window__navbar__expand-icon')
+    expandIcon.addEventListener('click', () => {
+      container.classList.add('chat-window--expanded')
+    })
+
+    window.addEventListener('keydown', (e) => {
+      e.key === 'Escape' && container.classList.contains('chat-window--expanded') &&
+        container.classList.remove('chat-window--expanded')
+    })
+  }
+
   // Triggers bot with initial message, in order to have greeting message render on load.
   const store = WebChat.createStore({}, ({ dispatch }) => next => action => {
     const { type } = action;
 
-    if (!initialized) {
-      initialized = true
-
-      const sendBoxElem = document.querySelector('#webchat .webchat__send-box')
-      const disclosureText = document.createElement('div')
-      disclosureText.innerHTML = 'Scout can make mistakes, verify important information.'
-      disclosureText.className = 'webchat__send-box__info'
-      sendBoxElem.appendChild(disclosureText)
-
-      document.querySelector('#webchat .webchat__send-box-text-box__input').placeholder = 'Message Scout'
-    }
-
+    !initialized && construct()
 
     if (type === 'DIRECT_LINE/CONNECT_FULFILLED') {
       const text = 'I need help with submitting my assessment.'

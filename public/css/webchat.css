@@ -15,9 +15,24 @@
   font-size: 32px;
   box-sizing: border-box;
   line-height: 37.5px;
+  display: flex;
 }
 
-#chat-window>.chat-window__body>#webchat {
+#chat-window .chat-window__navbar__expand-icon {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  margin: 4px 0px 0px auto;
+  background-image: url("../images/expand-webchat.png");
+  transition: transform .1s linear;
+  transform-origin: center;
+}
+
+#chat-window .chat-window__navbar__expand-icon:hover {
+  transform: scale(1.1);
+}
+
+#chat-window #webchat {
   background: white;
   position: relative;
   width: 500px;
@@ -57,7 +72,7 @@
 #chat-window .webchat__css-custom-properties>div:first-child {
   background: transparent;
   overflow: auto;
-  max-height: 60vh
+  max-height: 60vh;
 }
 
 #chat-window .webchat__stacked-layout__content {
@@ -83,4 +98,29 @@
 
 #chat-window .webchat__basic-transcript:focus {
   border-radius: 16px;
+}
+
+#chat-window.chat-window--expanded {
+  width: 100vw;
+  right: 0px;
+  bottom: 0px;
+  height: 100vh;
+  border: 0;
+  border-radius: 0;
+}
+
+#chat-window.chat-window--expanded .chat-window__navbar__expand-icon {
+  display: none;
+}
+
+#chat-window.chat-window--expanded #webchat {
+  margin: auto;
+  height: calc(100vh - 67.5px);
+  max-width: 70vw;
+  width: auto;
+  max-height: unset;
+}
+
+#chat-window.chat-window--expanded .webchat__css-custom-properties>div:first-child {
+  max-height: unset;
 }
