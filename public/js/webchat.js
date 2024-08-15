@@ -23,7 +23,7 @@ async function fetchJSON(url, options = {}) {
   const store = WebChat.createStore({}, ({ dispatch }) => next => action => {
     const { type } = action;
 
-    if (type === 'DIRECT_LINE/CONNECT') {
+    if (type === 'DIRECT_LINE/CONNECT_FULFILLED') {
       const text = 'I need help with submitting my assessment.'
 
       dispatch({
