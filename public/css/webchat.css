@@ -47,7 +47,12 @@
 #chatwindow .webchat__send-box__main {
   border-radius: 29px;
   background-color: #fff;
-  margin: 0px 12px 12px;
+  margin: 0px 6px 6px;
+}
+
+#chatwindow .webchat__send-box-info {
+  text-align: center;
+  margin: 0px 6px 6px;
 }
 
 #chatwindow .webchat__css-custom-properties>div:first-child {
