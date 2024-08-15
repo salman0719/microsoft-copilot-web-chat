@@ -1,0 +1,49 @@
+h1 {
+  font-size: 14px;
+  font-family: Segoe UI;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #F3F2F1;
+  letter-spacing: 0.005em;
+  display: table-cell;
+  vertical-align: middle;
+  padding: 13px 0px 0px 20px;
+}
+
+#chatwindow>#heading {
+  background-image: url(/images/cloud-background.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  height: 50px;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  display: none;
+}
+
+#chatwindow {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+}
+
+#chatwindow>#webchat {
+  z-index: 9999;
+  background: transparent;
+  overflow: hidden;
+  position: fixed;
+  right: 140px;
+  bottom: 40px;
+  height: 500px;
+  width: 500px;
+}
+
+/* // TEMP */
+/* #chatwindow > #heading {
+  display: none;
+} */

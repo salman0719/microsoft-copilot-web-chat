@@ -12,8 +12,6 @@ if (PROXY_BOT_URL) {
   console.log(`Will redirect /api/messages to ${new URL('api/messages', PROXY_BOT_URL).href}`);
 
   module.exports = (req, res, next) => {
-    // TEMP
-    console.log('next', next)
     proxy.web(req, res, { target: PROXY_BOT_URL });
   };
 } else {

@@ -2,7 +2,7 @@ require('dotenv').config();
 
 // Setting default environment variables.
 process.env = {
-  PORT: '5001',
+  PORT: '5000',
   STATIC_FILES: 'public',
   ...process.env
 };
