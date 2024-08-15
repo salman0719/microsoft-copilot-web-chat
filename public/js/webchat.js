@@ -33,6 +33,8 @@ async function fetchJSON(url, options = {}) {
       disclosureText.innerHTML = 'Scout can make mistakes, verify important information.'
       disclosureText.className = 'webchat__send-box-info'
       sendBoxElem.appendChild(disclosureText)
+
+      document.querySelector('#webchat .webchat__send-box-text-box__input').placeholder = 'Message Scout'
     }
 
 
