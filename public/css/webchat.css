@@ -26,7 +26,10 @@
   background: white;
   position: relative;
   width: 500px;
-  border-radius: 28px;
+  border-radius: 0px 0px 28px 28px;
+  max-width: 50vw;
+  max-height: 60vh;
+  overflow: auto;
 }
 
 #chatwindow>#webchat-bot {
@@ -47,15 +50,20 @@
 #chatwindow .webchat__send-box__main {
   border-radius: 29px;
   background-color: #fff;
-  margin: 0px 6px 6px;
+  margin: 8px 12px;
 }
 
 #chatwindow .webchat__send-box-info {
   text-align: center;
-  margin: 0px 6px 6px;
+  margin: 0px 8px 8px;
 }
 
 #chatwindow .webchat__css-custom-properties>div:first-child {
   background: transparent;
-  overflow: hidden;
+  overflow: auto;
+  max-height: 60vh
+}
+
+#chatwindow .webchat__stacked-layout__content {
+  max-width: 75%;
 }
