@@ -129,8 +129,13 @@ async function fetchJSON(url, options = {}) {
         localStorage.setItem(CONVERSATION_ID_KEY, conversationId)
         localStorage.removeItem(LAST_MESSAGE_TIMESTAMP_KEY)
       }
-
-      !localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY) && initiateChatPrompt()
+    } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
+      if (payload.connectionStatus === 2) {
+        setTimeout(() => {
+          !isClosed && toggleChatWindow(true)
+          !localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY) && initiateChatPrompt()
+        }, 500)
+      }
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
       const { activity } = payload
 
@@ -176,7 +181,4 @@ async function fetchJSON(url, options = {}) {
     },
     document.getElementById('webchat')
   );
-
-  !isClosed && toggleChatWindow(true)
-
 })().catch(err => console.error(err));
