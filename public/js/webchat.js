@@ -54,30 +54,13 @@ async function fetchJSON(url, options = {}) {
   }
 
   const store = WebChat.createStore({}, ({ dispatch }) => next => action => {
-    const { type } = action;
-
     !initialized && construct()
 
-    if (type === 'DIRECT_LINE/CONNECT_FULFILLED') {
-      const text = 'I need help with submitting my assessment.'
-
-      dispatch({
-        type: 'WEB_CHAT/SET_SUGGESTED_ACTIONS',
-        payload: {
-          suggestedActions: [
-            {
-              type: 'messageBack',
-              title: 'Need help with submitting your assessment?',
-              displayText: text,
-              text,
-              value: text
-            },
-          ]
-        }
-      });
-    }
     return next(action);
   });
+
+  // TEMP
+  window.store = store
 
   WebChat.renderWebChat(
     {

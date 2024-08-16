@@ -62,12 +62,13 @@
 #chat-window .webchat__send-box {
   background-color: #F2F2F2B2;
   border-radius: 0px 0px 29px 29px;
+  padding-top: 8px;
 }
 
 #chat-window .webchat__send-box__main {
   border-radius: 29px;
   background-color: #fff;
-  margin: 8px 12px;
+  margin: 0px 12px 8px;
   border: 1px solid #ccc;
 }
 
@@ -101,6 +102,21 @@
 
 #chat-window .webchat__activity-status {
   padding: 0px 10px;
+}
+
+#chat-window .webchat__suggested-actions__carousel {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: -8px
+}
+
+#chat-window .webchat__suggested-actions__button {
+  border: 0;
+  background-color: transparent;
+}
+
+#chat-window .webchat__suggested-actions__item-box {
+  padding: 0px;
 }
 
 #chat-window .webchat__basic-transcript:focus {
