@@ -89,6 +89,10 @@ async function fetchJSON(url, options = {}) {
     botElem.addEventListener('click', () => {
       toggleChatWindow()
     })
+    const collapseIcon = document.querySelector('#chat-window .chat-window__navbar__collapse-icon')
+    collapseIcon.addEventListener('click', () => {
+      toggleChatWindow(false)
+    })
 
     // Un-condense the webchat window
     const uncondense = () => {

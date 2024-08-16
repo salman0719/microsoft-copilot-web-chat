@@ -16,32 +16,55 @@
   border: 1px solid #ccc;
 }
 
-#chat-window>.chat-window__body>.chat-window__navbar {
+#chat-window .chat-window__navbar {
   width: 100%;
   position: relative;
-  padding: 15px 22px;
-  font-size: 32px;
+  padding: 0px 22px;
   box-sizing: border-box;
-  line-height: 37.5px;
   display: flex;
 }
 
-#chat-window .chat-window__initial-prompt {
-  padding: 15px 22px;
+#chat-window .chat-window__navbar__title {
+  padding: 15px 0px;
+  font-size: 32px;
+  line-height: 37.5px;
+  display: inline-block;
 }
 
-#chat-window .chat-window__navbar__expand-icon {
+#chat-window .chat-window__initial-prompt {
+  padding: 0px 22px 15px;
+}
+
+#chat-window .chat-window__navbar__expand-icon,
+#chat-window .chat-window__navbar__collapse-icon {
   cursor: pointer;
-  width: 30px;
-  height: 30px;
-  margin: 4px 0px 0px auto;
-  background-image: url("../images/expand-webchat.png");
   transition: transform .1s linear;
   transform-origin: center;
 }
 
+#chat-window .chat-window__navbar__expand-icon {
+  margin: 18px 0px 8px auto;
+  width: 30px;
+  height: 30px;
+  background-image: url("../images/expand-webchat.png");
+}
+
+#chat-window .chat-window__navbar__collapse-icon {
+  display: none;
+  margin: 8px 0px 8px auto;
+  width: 20px;
+  height: 20px;
+  background-image: url("../images/collapse-webchat.png");
+  border: 2px solid #000;
+  border-radius: 28px;
+}
+
 #chat-window .chat-window__navbar__expand-icon:hover {
   transform: scale(1.1);
+}
+
+#chat-window .chat-window__navbar__collapse-icon:hover {
+  background-color: #F2F2F2B2;
 }
 
 #chat-window #webchat {
@@ -191,7 +214,11 @@
   width: 240px;
 }
 
-#chat-window.chat-window--condensed .chat-window__navbar,
+#chat-window.chat-window--condensed .chat-window__navbar__collapse-icon {
+  display: block;
+}
+
+#chat-window.chat-window--condensed .chat-window__navbar> :not(.chat-window__navbar__collapse-icon),
 #chat-window.chat-window--condensed .webchat__send-box__button,
 #chat-window.chat-window--condensed .webchat__send-box__info {
   display: none;
