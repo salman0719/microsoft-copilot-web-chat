@@ -4,6 +4,12 @@
   position: fixed;
   right: 160px;
   bottom: 115px;
+}
+
+#chat-window>.chat-window__body {
+  transform: scale(1);
+  transform-origin: bottom right;
+  transition: transform .3s cubic-bezier(0, 1.2, 1, 1);
   border-radius: 28px;
   border: 1px solid #ccc;
 }
@@ -50,6 +56,7 @@
   bottom: -75px;
   right: -25px;
   background-image: url("../images/bot.png");
+  cursor: pointer;
 }
 
 #chat-window .webchat__send-box {
@@ -105,6 +112,9 @@
   right: 0px;
   bottom: 0px;
   height: 100vh;
+}
+
+#chat-window.chat-window--expanded>.chat-window__body {
   border: 0;
   border-radius: 0;
 }
@@ -123,4 +133,8 @@
 
 #chat-window.chat-window--expanded .webchat__css-custom-properties>div:first-child {
   max-height: unset;
+}
+
+#chat-window.chat-window--closed>.chat-window__body {
+  transform: scale(0);
 }

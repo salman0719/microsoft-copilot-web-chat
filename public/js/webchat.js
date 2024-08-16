@@ -27,26 +27,32 @@ async function fetchJSON(url, options = {}) {
 
     const container = document.querySelector('#chat-window')
 
+    // Insert disclosure text
     const sendBoxElem = document.querySelector('#webchat .webchat__send-box')
     const disclosureText = document.createElement('div')
     disclosureText.innerHTML = 'Scout can make mistakes, verify important information.'
     disclosureText.className = 'webchat__send-box__info'
     sendBoxElem.appendChild(disclosureText)
 
+    // Update input placeholder
     document.querySelector('#webchat .webchat__send-box-text-box__input').placeholder = 'Message Scout'
 
+    // Expand to fullscreen and return
     const expandIcon = document.querySelector('#chat-window .chat-window__navbar__expand-icon')
     expandIcon.addEventListener('click', () => {
       container.classList.add('chat-window--expanded')
     })
-
     window.addEventListener('keydown', (e) => {
       e.key === 'Escape' && container.classList.contains('chat-window--expanded') &&
         container.classList.remove('chat-window--expanded')
     })
+
+    const botElem = document.querySelector('#chat-window #webchat-bot')
+    botElem.addEventListener('click', () => {
+      container.classList.toggle('chat-window--closed')
+    })
   }
 
-  // Triggers bot with initial message, in order to have greeting message render on load.
   const store = WebChat.createStore({}, ({ dispatch }) => next => action => {
     const { type } = action;
 
