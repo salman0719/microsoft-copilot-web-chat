@@ -19,9 +19,14 @@ async function fetchJSON(url, options = {}) {
   const INITIAL_CHAT_PROMPT_MESSAGE = 'Need help with submitting your assessment?'
   const CONVERSATION_ID_KEY = 'webchat-conversation-id'
   const LAST_MESSAGE_TIMESTAMP_KEY = 'webchat-last-message-timestamp'
+  const WEBCHAT_WINDOW_CLOSED_KEY = 'webchat-window-closed'
 
+  const container = document.querySelector('#chat-window')
+
+  let isClosed = localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1'
   let initialized = false
   let chatPromptInitialized = false
+  let isCondensed = false
 
   // This is for obtaining Direct Line token from the bot.
   const { token } = await fetchJSON('/api/directline/token');
@@ -39,13 +44,25 @@ async function fetchJSON(url, options = {}) {
       '#chat-window .webchat__basic-transcript__scrollable'
     )
     transcriptContainer.insertBefore(elem, transcriptContainer.firstElementChild)
+
+    enableCondensedMode()
+  }
+
+  const toggleChatWindow = (show) => {
+    isClosed = typeof show === 'boolean' ? !show : !isClosed
+    container.classList[isClosed ? 'add' : 'remove']('chat-window--closed')
+    isClosed ? localStorage.setItem(WEBCHAT_WINDOW_CLOSED_KEY, '1') :
+      localStorage.removeItem(WEBCHAT_WINDOW_CLOSED_KEY)
+  }
+
+  const enableCondensedMode = () => {
+    isCondensed = true
+    container.classList.add('chat-window--condensed')
   }
 
   const construct = () => {
     if (initialized) { return }
     initialized = true
-
-    const container = document.querySelector('#chat-window')
 
     // Insert disclosure text
     const sendBoxElem = document.querySelector('#webchat .webchat__send-box')
@@ -67,10 +84,23 @@ async function fetchJSON(url, options = {}) {
         container.classList.remove('chat-window--expanded')
     })
 
+    // Close/open the webchat window
     const botElem = document.querySelector('#chat-window #webchat-bot')
     botElem.addEventListener('click', () => {
-      container.classList.toggle('chat-window--closed')
+      toggleChatWindow()
     })
+
+    // Un-condense the webchat window
+    const uncondense = () => {
+      if (isCondensed) {
+        isCondensed = false
+        container.classList.remove('chat-window--condensed')
+        document.querySelector('#chat-window .webchat__send-box-text-box__input')?.focus()
+      }
+    }
+    const webchatElem = document.querySelector('#chat-window #webchat')
+    webchatElem.addEventListener('click', uncondense)
+    webchatElem.addEventListener('keydown', uncondense)
   }
 
   const store = WebChat.createStore({}, () => next => action => {
@@ -112,5 +142,7 @@ async function fetchJSON(url, options = {}) {
     },
     document.getElementById('webchat')
   );
+
+  !isClosed && toggleChatWindow(true)
 
 })().catch(err => console.error(err));

@@ -95,6 +95,10 @@
   overflow: hidden;
 }
 
+#chat-window .webchat__send-box-text-box__input {
+  width: 100%;
+}
+
 #chat-window .webchat__icon-button__shade {
   border-radius: 28px;
   inset: 0px;
@@ -183,6 +187,21 @@
   transform: scale(0);
 }
 
+#chat-window.chat-window--condensed {
+  width: 240px;
+}
+
+#chat-window.chat-window--condensed .chat-window__navbar,
+#chat-window.chat-window--condensed .webchat__send-box__button,
+#chat-window.chat-window--condensed .webchat__send-box__info {
+  display: none;
+}
+
+#chat-window.chat-window--condensed #webchat {
+  border-radius: 28px;
+}
+
+
 @media (max-width: 769px) {
   #chat-window {
     right: 40px;
@@ -190,9 +209,5 @@
 
   #chat-window #webchat {
     max-width: calc(100vw - 80px);
-  }
-
-  #chat-window .webchat__send-box-text-box__input {
-    width: 100%;
   }
 }
