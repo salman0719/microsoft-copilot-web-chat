@@ -24,6 +24,10 @@
   display: flex;
 }
 
+#chat-window>.chat-window__body>.chat-window__initial-prompt {
+  padding: 15px 22px;
+}
+
 #chat-window .chat-window__navbar__expand-icon {
   cursor: pointer;
   width: 30px;
@@ -78,7 +82,7 @@
 }
 
 #chat-window .webchat__send-icon {
-  background-image: url("../images/arrow-up-icon.svg");
+  background-image: url("../images/send-chat-icon.svg");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;

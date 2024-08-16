@@ -16,10 +16,28 @@ async function fetchJSON(url, options = {}) {
 }
 
 (async function main() {
+  const INITIAL_CHAT_PROMPT_MESSAGE = 'Need help with submitting your assessment?'
+  const CONVERSATION_ID_KEY = 'webchat-conversation-id'
+  const LAST_MESSAGE_TIMESTAMP_KEY = 'webchat-last-message-timestamp'
+
   let initialized = false
+  let chatPromptInitialized = false
 
   // This is for obtaining Direct Line token from the bot.
   const { token } = await fetchJSON('/api/directline/token');
+
+  const initiateChatPrompt = () => {
+    if (chatPromptInitialized) { return }
+    chatPromptInitialized = true
+
+    if (store.getState().activities.length) { return }
+
+    const elem = document.createElement('div')
+    elem.className = 'chat-window__initial-prompt'
+    elem.innerHTML = INITIAL_CHAT_PROMPT_MESSAGE
+    const chatWindowBody = document.querySelector('#chat-window>.chat-window__body')
+    chatWindowBody.insertBefore(elem, chatWindowBody.lastElementChild)
+  }
 
   const construct = () => {
     if (initialized) { return }
@@ -53,8 +71,30 @@ async function fetchJSON(url, options = {}) {
     })
   }
 
-  const store = WebChat.createStore({}, ({ dispatch }) => next => action => {
+  const store = WebChat.createStore({}, () => next => action => {
+    const { type, payload } = action
+
     !initialized && construct()
+
+    if (type === 'DIRECT_LINE/CONNECT_FULFILLED') {
+      const conversationId = payload.directLine.conversationId
+      if (localStorage.getItem(CONVERSATION_ID_KEY) !== conversationId) {
+        localStorage.setItem(CONVERSATION_ID_KEY, conversationId)
+        localStorage.removeItem(LAST_MESSAGE_TIMESTAMP_KEY)
+      }
+
+      !localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY) && initiateChatPrompt()
+    } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
+      const { activity } = payload
+
+      if (activity.type === 'message') {
+        const { timestamp } = activity
+        const prevTimestamp = localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY)
+        if (!prevTimestamp || timestamp > prevTimestamp) {
+          localStorage.setItem(LAST_MESSAGE_TIMESTAMP_KEY, timestamp)
+        }
+      }
+    }
 
     return next(action);
   });
