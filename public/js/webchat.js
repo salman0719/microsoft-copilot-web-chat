@@ -35,8 +35,10 @@ async function fetchJSON(url, options = {}) {
     const elem = document.createElement('div')
     elem.className = 'chat-window__initial-prompt'
     elem.innerHTML = INITIAL_CHAT_PROMPT_MESSAGE
-    const chatWindowBody = document.querySelector('#chat-window>.chat-window__body')
-    chatWindowBody.insertBefore(elem, chatWindowBody.lastElementChild)
+    const transcriptContainer = document.querySelector(
+      '#chat-window .webchat__basic-transcript__scrollable'
+    )
+    transcriptContainer.insertBefore(elem, transcriptContainer.firstElementChild)
   }
 
   const construct = () => {
