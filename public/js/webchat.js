@@ -59,9 +59,6 @@ async function fetchJSON(url, options = {}) {
     return next(action);
   });
 
-  // TEMP
-  window.store = store
-
   WebChat.renderWebChat(
     {
       directLine: WebChat.createDirectLine({ token }),

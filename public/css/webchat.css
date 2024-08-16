@@ -77,6 +77,28 @@
   margin: 0px 8px 8px;
 }
 
+#chat-window .webchat__send-icon {
+  background-image: url("../images/arrow-up-icon.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+
+  width: 28px;
+  height: 28px;
+
+  display: inline-block;
+  overflow: hidden;
+}
+
+#chat-window .webchat__icon-button__shade {
+  border-radius: 28px;
+  inset: 0px;
+}
+
+#chat-window .webchat__send-icon * {
+  display: none;
+}
+
 #chat-window .webchat__css-custom-properties>div:first-child {
   background: transparent;
   overflow: auto;
