@@ -180,3 +180,17 @@
 #chat-window.chat-window--closed>.chat-window__body {
   transform: scale(0);
 }
+
+@media (max-width: 769px) {
+  #chat-window {
+    right: 40px;
+  }
+
+  #chat-window #webchat {
+    max-width: calc(100vw - 80px);
+  }
+
+  #chat-window .webchat__send-box-text-box__input {
+    width: 100%;
+  }
+}
