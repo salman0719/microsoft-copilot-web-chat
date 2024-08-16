@@ -20,8 +20,14 @@ async function fetchJSON(url, options = {}) {
   const CONVERSATION_ID_KEY = 'webchat-conversation-id'
   const LAST_MESSAGE_TIMESTAMP_KEY = 'webchat-last-message-timestamp'
   const WEBCHAT_WINDOW_CLOSED_KEY = 'webchat-window-closed'
+  const INPUT_CHAR_LIMIT = 500
 
   const container = document.querySelector('#chat-window')
+  const inputCounter = document.createElement('span')
+  inputCounter.className = 'webchat__send-box-text-box-counter';
+  const sendBoxErrorInfoElem = document.createElement('div')
+  sendBoxErrorInfoElem.className = 'webchat__send-box__error-info';
+  sendBoxErrorInfoElem.innerHTML = 'Maximum limit of ' + INPUT_CHAR_LIMIT + ' characters reached.'
 
   let isClosed = localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1'
   let initialized = false
@@ -72,7 +78,8 @@ async function fetchJSON(url, options = {}) {
     sendBoxElem.appendChild(disclosureText)
 
     // Update input placeholder
-    document.querySelector('#webchat .webchat__send-box-text-box__input').placeholder = 'Message Scout'
+    document.querySelector('#webchat .webchat__send-box-text-box__input')
+      .placeholder = 'Message Scout'
 
     // Expand to fullscreen and return
     const expandIcon = document.querySelector('#chat-window .chat-window__navbar__expand-icon')
@@ -105,6 +112,10 @@ async function fetchJSON(url, options = {}) {
     const webchatElem = document.querySelector('#chat-window #webchat')
     webchatElem.addEventListener('click', uncondense)
     webchatElem.addEventListener('keydown', uncondense)
+
+    // Insert text character counter
+    const inputContainer = document.querySelector('#chat-window .webchat__send-box-text-box')
+    inputContainer.insertAdjacentElement('afterend', inputCounter)
   }
 
   const store = WebChat.createStore({}, () => next => action => {
@@ -129,6 +140,25 @@ async function fetchJSON(url, options = {}) {
         if (!prevTimestamp || timestamp > prevTimestamp) {
           localStorage.setItem(LAST_MESSAGE_TIMESTAMP_KEY, timestamp)
         }
+      }
+    } else if (type === 'WEB_CHAT/SET_SEND_BOX') {
+      const { text } = payload
+      const { length } = text
+      inputCounter.innerHTML = length + '/' + INPUT_CHAR_LIMIT
+
+      // TODO
+      // State based implementation required
+      if (length > INPUT_CHAR_LIMIT) {
+        inputCounter.classList.add('webchat__send-box-text-box-counter--error')
+        !sendBoxErrorInfoElem.isConnected && document.querySelector(
+          '#chat-window .webchat__send-box'
+        ).insertAdjacentElement('beforebegin', sendBoxErrorInfoElem)
+        sendBoxErrorInfoElem.classList.remove('webchat__send-box__error-info--hidden')
+        inputCounter.nextElementSibling.disabled = true
+      } else {
+        inputCounter.classList.remove('webchat__send-box-text-box-counter--error')
+        sendBoxErrorInfoElem.classList.add('webchat__send-box__error-info--hidden')
+        inputCounter.nextElementSibling.disabled = false
       }
     }
 

@@ -122,6 +122,10 @@
   width: 100%;
 }
 
+#chat-window .webchat__upload-button {
+  display: none;
+}
+
 #chat-window .webchat__icon-button__shade {
   border-radius: 28px;
   inset: 0px;
@@ -184,6 +188,31 @@
 
 #chat-window .webchat__render-markdown a {
   color: #000000B2;
+}
+
+#chat-window .webchat__send-box-text-box-counter {
+  display: flex;
+  align-items: center;
+  padding-right: 4px;
+  font-size: .9em;
+  color: #767676;
+}
+
+#chat-window .webchat__send-box-text-box-counter--error {
+  color: rgb(197, 15, 31);
+}
+
+#chat-window .webchat__send-box__error-info {
+  align-items: center;
+  color: rgb(197, 15, 31);
+  display: flex;
+  font-size: 75%;
+  font-weight: bold;
+  margin: 8px 14px;
+}
+
+#chat-window .webchat__send-box__error-info--hidden {
+  display: none;
 }
 
 #chat-window.chat-window--expanded {
