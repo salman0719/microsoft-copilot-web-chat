@@ -137,6 +137,11 @@
   max-height: 60vh;
 }
 
+#chat-window:not(.chat-window--condensed) .webchat__css-custom-properties>div:first-child {
+  min-height: 40vh;
+}
+
+
 #chat-window .webchat__stacked-layout__content {
   max-width: 75%;
 }
