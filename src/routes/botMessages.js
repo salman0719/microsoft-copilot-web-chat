@@ -17,7 +17,7 @@ if (PROXY_BOT_URL) {
 } else {
   let warningShown;
 
-  module.exports = (_, res) => {
+  module.exports = (req, res, next) => {
     if (!warningShown) {
       warningShown = true;
       console.warn('PROXY_BOT_URL is not set, we are not reverse-proxying /api/messages.');
