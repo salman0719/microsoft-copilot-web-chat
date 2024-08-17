@@ -8,6 +8,7 @@ import {
 import { getElement, setData } from "./utils/store.js";
 import "./utils/configureElements.js";
 import {
+  handleUsername,
   initiateChatPrompt,
   insertCharacterCounter,
   insertDisclosureText,
@@ -15,7 +16,9 @@ import {
   setupExpandIcon,
   setupModeToggle,
   setupWindowToggle,
-  updateInputPlaceholder
+  updateConversationId,
+  updateInputPlaceholder,
+  updateTimestamp
 } from "./utils/helper.js";
 
 // This is a helper function for fetching JSON resources.
@@ -43,18 +46,8 @@ async function fetchJSON(url, options = {}) {
     const { type, payload } = action
 
     if (type === 'DIRECT_LINE/CONNECT_FULFILLED') {
-      const { conversationId } = payload.directLine
-      const { username } = action.meta
-      if (localStorage.getItem(CONVERSATION_ID_KEY) !== conversationId) {
-        localStorage.setItem(CONVERSATION_ID_KEY, conversationId)
-        localStorage.removeItem(LAST_MESSAGE_TIMESTAMP_KEY)
-      }
-
-      // Set username
-      if (username) {
-        document.querySelector('#chat-window .chat-window__navbar__mode-username')
-          .innerHTML = username
-      }
+      updateConversationId(payload.directLine.conversationId)
+      setData('username', action.meta.username)
     } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
       if (payload.connectionStatus === 2) {
         setTimeout(() => {
@@ -64,15 +57,7 @@ async function fetchJSON(url, options = {}) {
         }, 500)
       }
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
-      const { activity } = payload
-
-      if (activity.type === 'message') {
-        const { timestamp } = activity
-        const prevTimestamp = localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY)
-        if (!prevTimestamp || timestamp > prevTimestamp) {
-          localStorage.setItem(LAST_MESSAGE_TIMESTAMP_KEY, timestamp)
-        }
-      }
+      updateTimestamp(payload.activity)
     } else if (type === 'WEB_CHAT/SET_SEND_BOX') {
       const { text } = payload
       const { length } = text
@@ -115,6 +100,7 @@ async function fetchJSON(url, options = {}) {
 
   setData('webChatStore', store)
   setData('chatPromptInitialized', false)
+  handleUsername()
   insertDisclosureText()
   updateInputPlaceholder()
   setupExpandIcon()

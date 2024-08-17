@@ -1,5 +1,5 @@
 import { toggleChatWindow, toggleDarkMode } from "./actions.js";
-import { BOT_NAME, DISCLOSURE_TEXT, INITIAL_CHAT_PROMPT_MESSAGE, LAST_MESSAGE_TIMESTAMP_KEY, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
+import { BOT_NAME, CONVERSATION_ID_KEY, DISCLOSURE_TEXT, INITIAL_CHAT_PROMPT_MESSAGE, LAST_MESSAGE_TIMESTAMP_KEY, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
 import { getData, getElement, setData, subscribe } from "./store.js";
 
 export const insertDisclosureText = () => {
@@ -103,4 +103,28 @@ export const initiateChatPrompt = () => {
   transcriptContainer.insertBefore(elem, transcriptContainer.firstElementChild)
 
   setData('isCondensed', true)
+}
+
+export const handleUsername = () => {
+  return subscribe(['username'], () => {
+    document.querySelector('#chat-window .chat-window__navbar__mode-username')
+      .innerHTML = getData('username')
+  })
+}
+
+export const updateConversationId = (conversationId) => {
+  if (localStorage.getItem(CONVERSATION_ID_KEY) !== conversationId) {
+    localStorage.setItem(CONVERSATION_ID_KEY, conversationId)
+    localStorage.removeItem(LAST_MESSAGE_TIMESTAMP_KEY)
+  }
+}
+
+export const updateTimestamp = (activity) => {
+  const { type, timestamp } = activity
+  if (type !== 'message') { return }
+
+  const prevTimestamp = localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY)
+  if (!prevTimestamp || timestamp > prevTimestamp) {
+    localStorage.setItem(LAST_MESSAGE_TIMESTAMP_KEY, timestamp)
+  }
 }
