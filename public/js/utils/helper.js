@@ -51,9 +51,9 @@ export const setupCondensation = () => {
   const uncondense = () => {
     getData('isCondensed') && setData('isCondensed', false)
   }
-  const webchatElem = document.querySelector('#chat-window #webchat')
-  webchatElem.addEventListener('click', uncondense)
-  webchatElem.addEventListener('keydown', uncondense)
+  const webchatBody = document.querySelector('#chat-window .chat-window__body')
+  webchatBody.addEventListener('click', uncondense)
+  webchatBody.addEventListener('keydown', uncondense)
 
   return subscribe(['isCondensed'], () => {
     const isCondensed = getData('isCondensed')
