@@ -1,5 +1,5 @@
 import { toggleChatWindow, toggleDarkMode } from "./actions.js";
-import { BOT_NAME, DISCLOSURE_TEXT, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
+import { BOT_NAME, DISCLOSURE_TEXT, INITIAL_CHAT_PROMPT_MESSAGE, LAST_MESSAGE_TIMESTAMP_KEY, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
 import { getData, getElement, setData, subscribe } from "./store.js";
 
 export const insertDisclosureText = () => {
@@ -84,4 +84,23 @@ export const setupModeToggle = () => {
     isDarkMode ? localStorage.setItem(WEBCHAT_MODE_KEY, '1') :
       localStorage.removeItem(WEBCHAT_MODE_KEY)
   })
+}
+
+export const initiateChatPrompt = () => {
+  if (getData('chatPromptInitialized')) { return }
+  setData('chatPromptInitialized', true)
+
+  if (localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY)) { return }
+
+  if (getData('webChatStore').getState().activities.length) { return }
+
+  const elem = document.createElement('div')
+  elem.className = 'chat-window__initial-prompt'
+  elem.innerHTML = INITIAL_CHAT_PROMPT_MESSAGE
+  const transcriptContainer = document.querySelector(
+    '#chat-window .webchat__basic-transcript__scrollable'
+  )
+  transcriptContainer.insertBefore(elem, transcriptContainer.firstElementChild)
+
+  setData('isCondensed', true)
 }

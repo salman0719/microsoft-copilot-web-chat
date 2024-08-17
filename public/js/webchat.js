@@ -1,14 +1,14 @@
 import {
-  INITIAL_CHAT_PROMPT_MESSAGE,
   CONVERSATION_ID_KEY,
   LAST_MESSAGE_TIMESTAMP_KEY,
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
   INPUT_CHAR_LIMIT
 } from "./utils/constants.js";
-import { getData, getElement, setData } from "./utils/store.js";
+import { getElement, setData } from "./utils/store.js";
 import "./utils/configureElements.js";
 import {
+  initiateChatPrompt,
   insertCharacterCounter,
   insertDisclosureText,
   setupCondensation,
@@ -36,27 +36,8 @@ async function fetchJSON(url, options = {}) {
 }
 
 (async function main() {
-  setData('chatPromptInitialized', false)
-
   // This is for obtaining Direct Line token from the bot.
   const { token } = await fetchJSON('/api/directline/token');
-
-  const initiateChatPrompt = () => {
-    if (getData('chatPromptInitialized')) { return }
-    setData('chatPromptInitialized', true)
-
-    if (store.getState().activities.length) { return }
-
-    const elem = document.createElement('div')
-    elem.className = 'chat-window__initial-prompt'
-    elem.innerHTML = INITIAL_CHAT_PROMPT_MESSAGE
-    const transcriptContainer = document.querySelector(
-      '#chat-window .webchat__basic-transcript__scrollable'
-    )
-    transcriptContainer.insertBefore(elem, transcriptContainer.firstElementChild)
-
-    setData('isCondensed', true)
-  }
 
   const store = WebChat.createStore({}, () => next => action => {
     const { type, payload } = action
@@ -78,7 +59,7 @@ async function fetchJSON(url, options = {}) {
       if (payload.connectionStatus === 2) {
         setTimeout(() => {
           setData('isDarkMode', localStorage.getItem(WEBCHAT_MODE_KEY) === '1')
-          !localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY) && initiateChatPrompt()
+          initiateChatPrompt()
           setData('isClosed', localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1')
         }, 500)
       }
@@ -132,6 +113,8 @@ async function fetchJSON(url, options = {}) {
     document.getElementById('webchat')
   );
 
+  setData('webChatStore', store)
+  setData('chatPromptInitialized', false)
   insertDisclosureText()
   updateInputPlaceholder()
   setupExpandIcon()
