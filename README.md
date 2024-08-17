@@ -19,7 +19,7 @@ To host this demo, you will need to clone the code and run locally.
 1. Create one empty file for environment variables `.env`
 
 
-## Setup Direct Line
+## Configure Direct Line
 1. Create Copilot Bot/App through the Microsoft Copilot Studio
 2. Enter Settings->Security->Web channel security
 3. Collect a secret and enter it in the `.env` file (Don't expose it elsewhere)
@@ -30,7 +30,7 @@ To host this demo, you will need to clone the code and run locally.
 
 1. Run the following
    1. `npm install`
-   1. `npm start`
+   1. `npm start` (Use Node: version 20.10.0 & NPM: version 10.2.3 if older versions create issues)
 1. Browse to http://localhost:5000/ to start the demo
 
 ## Build
@@ -63,3 +63,7 @@ To ease the setup of this sample, here is the template of `.env` files.
 ```
 COPILOT_APP_SECRET=EACsadPXlqrd.5hq2asd4UAiFasdvasqwmXrz4R-fzJdwad0M
 ```
+
+### Version
+- Node: 20.10.0
+- NPM: 10.2.3
