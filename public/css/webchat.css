@@ -257,7 +257,7 @@
 }
 
 #chat-window.chat-window--condensed .chat-window__navbar> :not(.chat-window__navbar__collapse-icon),
-#chat-window.chat-window--condensed .webchat__send-box__button,
+#chat-window.chat-window--condensed .webchat__upload-button,
 #chat-window.chat-window--condensed .webchat__send-box__info {
   display: none;
 }
