@@ -200,6 +200,8 @@ async function fetchJSON(url, options = {}) {
       styleOptions: {
         primaryFont: ['Roboto', 'Calibri', 'Helvetica Neue', 'Arial', 'sans-serif']
           .map(font => `'${font}'`).join(', '),
+        botAvatarImage: '../images/bot.png',
+        botAvatarInitials: 'S',
       },
     },
     document.getElementById('webchat')

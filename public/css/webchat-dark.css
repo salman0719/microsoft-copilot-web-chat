@@ -11,8 +11,8 @@
   background: transparent;
 }
 
-#chat-window.chat-window--dark .webchat__bubble--from-user>.webchat__bubble__content {
-  background: #2D2D2D;
+#chat-window.chat-window--dark .webchat__bubble--from-user .webchat__text-content {
+  background-color: #2D2D2D;
 }
 
 #chat-window.chat-window--dark .webchat__send-box {

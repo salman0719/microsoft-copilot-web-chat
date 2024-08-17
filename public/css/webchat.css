@@ -182,8 +182,12 @@
   min-height: 40vh;
 }
 
-#chat-window .webchat__stacked-layout__content {
+#chat-window .webchat__stacked-layout__main {
   max-width: 75%;
+}
+
+#chat-window .webchat__stacked-layout--from-user>.webchat__stacked-layout__main {
+  margin-left: auto;
 }
 
 #chat-window .webchat__stacked-layout__message {
@@ -198,9 +202,10 @@
   border: 0;
 }
 
-#chat-window .webchat__bubble--from-user>.webchat__bubble__content {
-  background: #F2F2F2;
-  padding: 0px 12px;
+#chat-window .webchat__bubble--from-user .webchat__text-content {
+  padding: 10px 22px;
+  background: #f2f2f2;
+  border-radius: 28px;
 }
 
 #chat-window .webchat__activity-status {
