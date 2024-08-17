@@ -1,5 +1,3 @@
-import { WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
-
 const subscribers = {
   // key: [[Symbol1, callback1], [Symbol2, callback2]]
   // 'isClosed': [[Symbol(), () => {}], [Symbol(), () => {}]]
@@ -12,16 +10,21 @@ const elements = {
 let callbacksPending = []
 
 const processCallbacks = () => {
-  const processedMap = new Map()
+  const callbackMap = new Map()
 
-  callbacksPending.forEach((callback) => {
-    if (!processedMap.has(callback)) {
+  const toBeCalled = callbacksPending.filter((callback) => {
+    if (!callbackMap.has(callback)) {
+      callbackMap.set(callback, 1)
       callback()
-      processedMap.set(callback, 1)
+      return callback
     }
+
+    return false
   })
 
-  callbacksPending = []
+  callbacksPending = callbacksPending.filter((callback) =>
+    !(toBeCalled.includes(callback))
+  )
 }
 
 const data = {

@@ -1,5 +1,5 @@
 import { toggleChatWindow, toggleDarkMode } from "./actions.js";
-import { BOT_NAME, CONVERSATION_ID_KEY, DISCLOSURE_TEXT, INITIAL_CHAT_PROMPT_MESSAGE, LAST_MESSAGE_TIMESTAMP_KEY, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
+import { BOT_NAME, CONVERSATION_ID_KEY, DEFAULT_SEND_BOX_ERROR_MESSAGE, DISCLOSURE_TEXT, INITIAL_CHAT_PROMPT_MESSAGE, INPUT_CHAR_LIMIT, LAST_MESSAGE_TIMESTAMP_KEY, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
 import { getData, getElement, setData, subscribe } from "./store.js";
 
 export const insertDisclosureText = () => {
@@ -49,7 +49,7 @@ export const setupWindowToggle = () => {
 
 export const setupCondensation = () => {
   const uncondense = () => {
-    setData('isCondensed', false)
+    getData('isCondensed') && setData('isCondensed', false)
   }
   const webchatElem = document.querySelector('#chat-window #webchat')
   webchatElem.addEventListener('click', uncondense)
@@ -67,9 +67,11 @@ export const setupCondensation = () => {
   })
 }
 
-export const insertCharacterCounter = () => {
+export const insertInputCounter = () => {
+  const inputCounter = getElement('inputCounter')
+  inputCounter.className = 'webchat__send-box-text-box-counter';
   const inputContainer = document.querySelector('#chat-window .webchat__send-box-text-box')
-  inputContainer.insertAdjacentElement('afterend', getElement('inputCounter'))
+  inputContainer.insertAdjacentElement('afterend', inputCounter)
 }
 
 export const setupModeToggle = () => {
@@ -127,4 +129,43 @@ export const updateTimestamp = (activity) => {
   if (!prevTimestamp || timestamp > prevTimestamp) {
     localStorage.setItem(LAST_MESSAGE_TIMESTAMP_KEY, timestamp)
   }
+}
+
+export const getSendBoxErrorInfo = () => {
+  return 'Maximum limit of ' + INPUT_CHAR_LIMIT + ' characters reached.'
+}
+
+export const handleInput = () => {
+  const store = getData('webChatStore')
+
+  store.subscribe(() => {
+    setData('sendBoxValue', store.getState().sendBoxValue)
+  })
+
+  const inputCounter = getElement('inputCounter')
+  const sendBoxErrorInfoElem = getElement('sendBoxErrorInfoElem')
+  sendBoxErrorInfoElem.className = 'webchat__send-box__error-info';
+  sendBoxErrorInfoElem.innerHTML = DEFAULT_SEND_BOX_ERROR_MESSAGE
+  document.querySelector('#chat-window .webchat__send-box')
+    .insertAdjacentElement('beforebegin', sendBoxErrorInfoElem)
+
+  return [
+    subscribe(['sendBoxValue'], () => {
+      const sendBoxValue = getData('sendBoxValue')
+      const { length } = sendBoxValue
+      setData('charLimitExceeded', length > INPUT_CHAR_LIMIT)
+      inputCounter.innerHTML = length + '/' + INPUT_CHAR_LIMIT
+    }),
+    subscribe(['charLimitExceeded'], () => {
+      if (getData('charLimitExceeded')) {
+        inputCounter.classList.add('webchat__send-box-text-box-counter--error')
+        sendBoxErrorInfoElem.classList.remove('webchat__send-box__error-info--hidden')
+        inputCounter.nextElementSibling.disabled = true
+      } else {
+        inputCounter.classList.remove('webchat__send-box-text-box-counter--error')
+        sendBoxErrorInfoElem.classList.add('webchat__send-box__error-info--hidden')
+        inputCounter.nextElementSibling.disabled = false
+      }
+    })
+  ]
 }

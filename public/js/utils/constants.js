@@ -6,3 +6,4 @@ export const WEBCHAT_MODE_KEY = 'webchat-mode'
 export const INPUT_CHAR_LIMIT = 500
 export const DISCLOSURE_TEXT = 'Scout can make mistakes, verify important information.'
 export const BOT_NAME = 'Scout'
+export const DEFAULT_SEND_BOX_ERROR_MESSAGE = 'Maximum limit of ' + INPUT_CHAR_LIMIT + ' characters reached.'

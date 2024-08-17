@@ -1,17 +1,15 @@
 import {
-  CONVERSATION_ID_KEY,
-  LAST_MESSAGE_TIMESTAMP_KEY,
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
-  INPUT_CHAR_LIMIT
 } from "./utils/constants.js";
-import { getElement, setData } from "./utils/store.js";
+import { setData } from "./utils/store.js";
 import "./utils/configureElements.js";
 import {
+  handleInput,
   handleUsername,
   initiateChatPrompt,
-  insertCharacterCounter,
   insertDisclosureText,
+  insertInputCounter,
   setupCondensation,
   setupExpandIcon,
   setupModeToggle,
@@ -58,27 +56,6 @@ async function fetchJSON(url, options = {}) {
       }
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
       updateTimestamp(payload.activity)
-    } else if (type === 'WEB_CHAT/SET_SEND_BOX') {
-      const { text } = payload
-      const { length } = text
-      const inputCounter = getElement('inputCounter')
-      inputCounter.innerHTML = length + '/' + INPUT_CHAR_LIMIT
-
-      // TODO
-      // State based implementation required
-      const sendBoxErrorInfoElem = getElement('sendBoxErrorInfoElem')
-      if (length > INPUT_CHAR_LIMIT) {
-        inputCounter.classList.add('webchat__send-box-text-box-counter--error')
-        !sendBoxErrorInfoElem.isConnected && document.querySelector(
-          '#chat-window .webchat__send-box'
-        ).insertAdjacentElement('beforebegin', sendBoxErrorInfoElem)
-        sendBoxErrorInfoElem.classList.remove('webchat__send-box__error-info--hidden')
-        inputCounter.nextElementSibling.disabled = true
-      } else {
-        inputCounter.classList.remove('webchat__send-box-text-box-counter--error')
-        sendBoxErrorInfoElem.classList.add('webchat__send-box__error-info--hidden')
-        inputCounter.nextElementSibling.disabled = false
-      }
     }
 
     return next(action);
@@ -101,11 +78,12 @@ async function fetchJSON(url, options = {}) {
   setData('webChatStore', store)
   setData('chatPromptInitialized', false)
   handleUsername()
+  handleInput()
   insertDisclosureText()
   updateInputPlaceholder()
   setupExpandIcon()
   setupWindowToggle()
   setupCondensation()
-  insertCharacterCounter()
+  insertInputCounter()
   setupModeToggle()
 })().catch(err => console.error(err));
