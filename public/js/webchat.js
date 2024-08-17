@@ -5,7 +5,9 @@ import {
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
   INPUT_CHAR_LIMIT
-} from "./constants.js";
+} from "./utils/constants.js";
+import { getElement, setElement } from "./utils/store.js";
+import "./utils/configureElements.js";
 
 // This is a helper function for fetching JSON resources.
 async function fetchJSON(url, options = {}) {
@@ -25,14 +27,6 @@ async function fetchJSON(url, options = {}) {
 }
 
 (async function main() {
-  const container = document.querySelector('#chat-window')
-  const inputCounter = document.createElement('span')
-  inputCounter.className = 'webchat__send-box-text-box-counter';
-  const sendBoxErrorInfoElem = document.createElement('div')
-  sendBoxErrorInfoElem.className = 'webchat__send-box__error-info';
-  sendBoxErrorInfoElem.innerHTML = 'Maximum limit of ' + INPUT_CHAR_LIMIT + ' characters reached.'
-  const modeButton = document.querySelector('#chat-window .chat-window__navbar__mode-button')
-
   let isClosed = localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1'
   let isDarkMode = localStorage.getItem(WEBCHAT_MODE_KEY) === '1'
   let initialized = false
@@ -61,21 +55,22 @@ async function fetchJSON(url, options = {}) {
 
   const toggleChatWindow = (show) => {
     isClosed = typeof show === 'boolean' ? !show : !isClosed
-    container.classList[isClosed ? 'add' : 'remove']('chat-window--closed')
+
+    getElement('container').classList[isClosed ? 'add' : 'remove']('chat-window--closed')
     isClosed ? localStorage.setItem(WEBCHAT_WINDOW_CLOSED_KEY, '1') :
       localStorage.removeItem(WEBCHAT_WINDOW_CLOSED_KEY)
   }
 
   const toggleDarkMode = (forceMode) => {
     isDarkMode = typeof forceMode === 'boolean' ? forceMode : !isDarkMode
-    container.classList[isDarkMode ? 'add' : 'remove']('chat-window--dark')
+    getElement('container').classList[isDarkMode ? 'add' : 'remove']('chat-window--dark')
     isDarkMode ? localStorage.setItem(WEBCHAT_MODE_KEY, '1') :
       localStorage.removeItem(WEBCHAT_MODE_KEY)
   }
 
   const enableCondensedMode = () => {
     isCondensed = true
-    container.classList.add('chat-window--condensed')
+    getElement('container').classList.add('chat-window--condensed')
   }
 
   const construct = () => {
@@ -96,9 +91,10 @@ async function fetchJSON(url, options = {}) {
     // Expand to fullscreen and return
     const expandIcon = document.querySelector('#chat-window .chat-window__navbar__expand-icon')
     expandIcon.addEventListener('click', () => {
-      container.classList.add('chat-window--expanded')
+      getElement('container').classList.add('chat-window--expanded')
     })
     window.addEventListener('keydown', (e) => {
+      const container = getElement('container')
       e.key === 'Escape' && container.classList.contains('chat-window--expanded') &&
         container.classList.remove('chat-window--expanded')
     })
@@ -109,7 +105,8 @@ async function fetchJSON(url, options = {}) {
       toggleChatWindow()
     })
     const collapseIcon = document.querySelector('#chat-window .chat-window__navbar__collapse-icon')
-    collapseIcon.addEventListener('click', () => {
+    collapseIcon.addEventListener('click', (e) => {
+      e.stopPropagation()
       toggleChatWindow(false)
     })
 
@@ -117,7 +114,7 @@ async function fetchJSON(url, options = {}) {
     const uncondense = () => {
       if (isCondensed) {
         isCondensed = false
-        container.classList.remove('chat-window--condensed')
+        getElement('container').classList.remove('chat-window--condensed')
         document.querySelector('#chat-window .webchat__send-box-text-box__input')?.focus()
       }
     }
@@ -127,10 +124,10 @@ async function fetchJSON(url, options = {}) {
 
     // Insert text character counter
     const inputContainer = document.querySelector('#chat-window .webchat__send-box-text-box')
-    inputContainer.insertAdjacentElement('afterend', inputCounter)
+    inputContainer.insertAdjacentElement('afterend', getElement('inputCounter'))
 
     // Handle dark mode
-    modeButton.addEventListener('click', () => {
+    getElement('modeButton').addEventListener('click', () => {
       toggleDarkMode()
     })
   }
@@ -174,10 +171,12 @@ async function fetchJSON(url, options = {}) {
     } else if (type === 'WEB_CHAT/SET_SEND_BOX') {
       const { text } = payload
       const { length } = text
+      const inputCounter = getElement('inputCounter')
       inputCounter.innerHTML = length + '/' + INPUT_CHAR_LIMIT
 
       // TODO
       // State based implementation required
+      const sendBoxErrorInfoElem = getElement('sendBoxErrorInfoElem')
       if (length > INPUT_CHAR_LIMIT) {
         inputCounter.classList.add('webchat__send-box-text-box-counter--error')
         !sendBoxErrorInfoElem.isConnected && document.querySelector(
