@@ -26,7 +26,6 @@ server.use(restify.plugins.queryParser());
 
 // Registering routes.
 server.get('/api/directline/token', require('./routes/directLine/token'));
-server.post('/api/messages', require('./routes/botMessages'));
 
 // We will use the REST API server to serve static web content to simplify deployment for demonstration purposes.
 STATIC_FILES &&
