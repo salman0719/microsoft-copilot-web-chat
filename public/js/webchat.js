@@ -6,8 +6,17 @@ import {
   WEBCHAT_WINDOW_CLOSED_KEY,
   INPUT_CHAR_LIMIT
 } from "./utils/constants.js";
-import { getElement, setElement } from "./utils/store.js";
+import { getData, getElement, setData } from "./utils/store.js";
 import "./utils/configureElements.js";
+import {
+  insertCharacterCounter,
+  insertDisclosureText,
+  setupCondensation,
+  setupExpandIcon,
+  setupModeToggle,
+  setupWindowToggle,
+  updateInputPlaceholder
+} from "./utils/helper.js";
 
 // This is a helper function for fetching JSON resources.
 async function fetchJSON(url, options = {}) {
@@ -27,18 +36,14 @@ async function fetchJSON(url, options = {}) {
 }
 
 (async function main() {
-  let isClosed = localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1'
-  let isDarkMode = localStorage.getItem(WEBCHAT_MODE_KEY) === '1'
-  let initialized = false
-  let chatPromptInitialized = false
-  let isCondensed = false
+  setData('chatPromptInitialized', false)
 
   // This is for obtaining Direct Line token from the bot.
   const { token } = await fetchJSON('/api/directline/token');
 
   const initiateChatPrompt = () => {
-    if (chatPromptInitialized) { return }
-    chatPromptInitialized = true
+    if (getData('chatPromptInitialized')) { return }
+    setData('chatPromptInitialized', true)
 
     if (store.getState().activities.length) { return }
 
@@ -50,92 +55,11 @@ async function fetchJSON(url, options = {}) {
     )
     transcriptContainer.insertBefore(elem, transcriptContainer.firstElementChild)
 
-    enableCondensedMode()
-  }
-
-  const toggleChatWindow = (show) => {
-    isClosed = typeof show === 'boolean' ? !show : !isClosed
-
-    getElement('container').classList[isClosed ? 'add' : 'remove']('chat-window--closed')
-    isClosed ? localStorage.setItem(WEBCHAT_WINDOW_CLOSED_KEY, '1') :
-      localStorage.removeItem(WEBCHAT_WINDOW_CLOSED_KEY)
-  }
-
-  const toggleDarkMode = (forceMode) => {
-    isDarkMode = typeof forceMode === 'boolean' ? forceMode : !isDarkMode
-    getElement('container').classList[isDarkMode ? 'add' : 'remove']('chat-window--dark')
-    isDarkMode ? localStorage.setItem(WEBCHAT_MODE_KEY, '1') :
-      localStorage.removeItem(WEBCHAT_MODE_KEY)
-  }
-
-  const enableCondensedMode = () => {
-    isCondensed = true
-    getElement('container').classList.add('chat-window--condensed')
-  }
-
-  const construct = () => {
-    if (initialized) { return }
-    initialized = true
-
-    // Insert disclosure text
-    const sendBoxElem = document.querySelector('#webchat .webchat__send-box')
-    const disclosureText = document.createElement('div')
-    disclosureText.innerHTML = 'Scout can make mistakes, verify important information.'
-    disclosureText.className = 'webchat__send-box__info'
-    sendBoxElem.appendChild(disclosureText)
-
-    // Update input placeholder
-    document.querySelector('#webchat .webchat__send-box-text-box__input')
-      .placeholder = 'Message Scout'
-
-    // Expand to fullscreen and return
-    const expandIcon = document.querySelector('#chat-window .chat-window__navbar__expand-icon')
-    expandIcon.addEventListener('click', () => {
-      getElement('container').classList.add('chat-window--expanded')
-    })
-    window.addEventListener('keydown', (e) => {
-      const container = getElement('container')
-      e.key === 'Escape' && container.classList.contains('chat-window--expanded') &&
-        container.classList.remove('chat-window--expanded')
-    })
-
-    // Close/open the webchat window
-    const botElem = document.querySelector('#chat-window #webchat-bot')
-    botElem.addEventListener('click', () => {
-      toggleChatWindow()
-    })
-    const collapseIcon = document.querySelector('#chat-window .chat-window__navbar__collapse-icon')
-    collapseIcon.addEventListener('click', (e) => {
-      e.stopPropagation()
-      toggleChatWindow(false)
-    })
-
-    // Un-condense the webchat window
-    const uncondense = () => {
-      if (isCondensed) {
-        isCondensed = false
-        getElement('container').classList.remove('chat-window--condensed')
-        document.querySelector('#chat-window .webchat__send-box-text-box__input')?.focus()
-      }
-    }
-    const webchatElem = document.querySelector('#chat-window #webchat')
-    webchatElem.addEventListener('click', uncondense)
-    webchatElem.addEventListener('keydown', uncondense)
-
-    // Insert text character counter
-    const inputContainer = document.querySelector('#chat-window .webchat__send-box-text-box')
-    inputContainer.insertAdjacentElement('afterend', getElement('inputCounter'))
-
-    // Handle dark mode
-    getElement('modeButton').addEventListener('click', () => {
-      toggleDarkMode()
-    })
+    setData('isCondensed', true)
   }
 
   const store = WebChat.createStore({}, () => next => action => {
     const { type, payload } = action
-
-    !initialized && construct()
 
     if (type === 'DIRECT_LINE/CONNECT_FULFILLED') {
       const { conversationId } = payload.directLine
@@ -153,9 +77,9 @@ async function fetchJSON(url, options = {}) {
     } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
       if (payload.connectionStatus === 2) {
         setTimeout(() => {
-          isDarkMode && toggleDarkMode(isDarkMode)
-          !isClosed && toggleChatWindow(true)
+          setData('isDarkMode', localStorage.getItem(WEBCHAT_MODE_KEY) === '1')
           !localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY) && initiateChatPrompt()
+          setData('isClosed', localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1')
         }, 500)
       }
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
@@ -207,4 +131,12 @@ async function fetchJSON(url, options = {}) {
     },
     document.getElementById('webchat')
   );
+
+  insertDisclosureText()
+  updateInputPlaceholder()
+  setupExpandIcon()
+  setupWindowToggle()
+  setupCondensation()
+  insertCharacterCounter()
+  setupModeToggle()
 })().catch(err => console.error(err));

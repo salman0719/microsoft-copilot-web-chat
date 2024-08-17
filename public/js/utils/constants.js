@@ -4,3 +4,5 @@ export const LAST_MESSAGE_TIMESTAMP_KEY = 'webchat-last-message-timestamp'
 export const WEBCHAT_WINDOW_CLOSED_KEY = 'webchat-window-closed'
 export const WEBCHAT_MODE_KEY = 'webchat-mode'
 export const INPUT_CHAR_LIMIT = 500
+export const DISCLOSURE_TEXT = 'Scout can make mistakes, verify important information.'
+export const BOT_NAME = 'Scout'
