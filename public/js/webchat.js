@@ -20,6 +20,7 @@ async function fetchJSON(url, options = {}) {
   const CONVERSATION_ID_KEY = 'webchat-conversation-id'
   const LAST_MESSAGE_TIMESTAMP_KEY = 'webchat-last-message-timestamp'
   const WEBCHAT_WINDOW_CLOSED_KEY = 'webchat-window-closed'
+  const WEBCHAT_MODE_KEY = 'webchat-mode'
   const INPUT_CHAR_LIMIT = 500
 
   const container = document.querySelector('#chat-window')
@@ -28,8 +29,10 @@ async function fetchJSON(url, options = {}) {
   const sendBoxErrorInfoElem = document.createElement('div')
   sendBoxErrorInfoElem.className = 'webchat__send-box__error-info';
   sendBoxErrorInfoElem.innerHTML = 'Maximum limit of ' + INPUT_CHAR_LIMIT + ' characters reached.'
+  const modeButton = document.querySelector('#chat-window .chat-window__navbar__mode-button')
 
   let isClosed = localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1'
+  let isDarkMode = localStorage.getItem(WEBCHAT_MODE_KEY) === '1'
   let initialized = false
   let chatPromptInitialized = false
   let isCondensed = false
@@ -59,6 +62,13 @@ async function fetchJSON(url, options = {}) {
     container.classList[isClosed ? 'add' : 'remove']('chat-window--closed')
     isClosed ? localStorage.setItem(WEBCHAT_WINDOW_CLOSED_KEY, '1') :
       localStorage.removeItem(WEBCHAT_WINDOW_CLOSED_KEY)
+  }
+
+  const toggleDarkMode = (forceMode) => {
+    isDarkMode = typeof forceMode === 'boolean' ? forceMode : !isDarkMode
+    container.classList[isDarkMode ? 'add' : 'remove']('chat-window--dark')
+    isDarkMode ? localStorage.setItem(WEBCHAT_MODE_KEY, '1') :
+      localStorage.removeItem(WEBCHAT_MODE_KEY)
   }
 
   const enableCondensedMode = () => {
@@ -116,6 +126,11 @@ async function fetchJSON(url, options = {}) {
     // Insert text character counter
     const inputContainer = document.querySelector('#chat-window .webchat__send-box-text-box')
     inputContainer.insertAdjacentElement('afterend', inputCounter)
+
+    // Handle dark mode
+    modeButton.addEventListener('click', () => {
+      toggleDarkMode()
+    })
   }
 
   const store = WebChat.createStore({}, () => next => action => {
@@ -132,6 +147,7 @@ async function fetchJSON(url, options = {}) {
     } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
       if (payload.connectionStatus === 2) {
         setTimeout(() => {
+          isDarkMode && toggleDarkMode(isDarkMode)
           !isClosed && toggleChatWindow(true)
           !localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY) && initiateChatPrompt()
         }, 500)

@@ -58,3 +58,18 @@
 #chat-window.chat-window--dark .chat-window__navbar__collapse-icon {
   border: 2px solid #fff;
 }
+
+#chat-window.chat-window--dark .chat-window__navbar__mode-button {
+  border: 1px solid #fff;
+  background-color: #F5F5F5;
+  color: #1E1E1E;
+  background-image: url("../images/light-mode-icon.svg");
+}
+
+#chat-window.chat-window--dark .chat-window__navbar__mode-button:hover {
+  background-color: #dedede;
+}
+
+#chat-window.chat-window--dark .chat-window__navbar__mode-button::after {
+  content: 'Light mode';
+}
