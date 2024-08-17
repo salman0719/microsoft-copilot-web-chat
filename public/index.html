@@ -14,37 +14,42 @@
     rel="stylesheet">
   <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
-  <link rel="stylesheet" href="css/root.css">
+  <style>
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      font-family: "Roboto", sans-serif;
+    }
+
+    body {
+      margin: 0;
+    }
+  </style>
   <link rel="stylesheet" href="css/webchat.css">
   <link rel="stylesheet" href="css/webchat-dark.css">
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="chat-window" class="chat-window--closed">
-    <div class="chat-window__body">
-      <div class="chat-window__navbar">
-        <div class="chat-window__navbar__title">Scout</div>
-        <div class="chat-window__navbar__filler"></div>
-        <div class="chat-window__navbar__mode-button"></div>
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"
-          class="chat-window__navbar__expand-icon">
-          <path
-            d="M18.75 3.75H26.25M26.25 3.75V11.25M26.25 3.75L17.5 12.5M11.25 26.25H3.75M3.75 26.25V18.75M3.75 26.25L12.5 17.5"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
-          class="chat-window__navbar__collapse-icon">
-          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" />
-        </svg>
-        <div class="chat-window__navbar__mode-username"></div>
-      </div>
-      <div id="webchat"></div>
-    </div>
-    <div id="webchat-bot"></div>
-  </div>
-  <div id="root"></div>
+  <script>
+    // This is a helper function for fetching JSON resources.
+    async function fetchToken(options = {}) {
+      const res = await fetch('/api/directline/token', {
+        ...options,
+        headers: {
+          ...options.headers,
+          accept: 'application/json'
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to fetch JSON due to ${res.status}`);
+      }
+
+      return await res.json();
+    }
+  </script>
   <script type="module" src="js/webchat.js"></script>
 </body>
 

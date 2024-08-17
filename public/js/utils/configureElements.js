@@ -1,3 +1,4 @@
+import "./createContainer.js";
 import { setElement } from "./store.js";
 
 const container = document.querySelector('#chat-window')
