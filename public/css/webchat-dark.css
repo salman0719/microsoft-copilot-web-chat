@@ -59,6 +59,10 @@
   border: 2px solid #fff;
 }
 
+#chat-window.chat-window--dark .chat-window__navbar__mode-username {
+  color: #fff;
+}
+
 #chat-window.chat-window--dark .chat-window__navbar__mode-button {
   border: 1px solid #fff;
   background-color: #F5F5F5;

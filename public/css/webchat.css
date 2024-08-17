@@ -22,6 +22,7 @@
   padding: 0px 22px;
   box-sizing: border-box;
   display: flex;
+  gap: 15px;
 }
 
 #chat-window .chat-window__navbar__title {
@@ -92,6 +93,11 @@
 
 #chat-window .chat-window__navbar__collapse-icon:hover {
   background-color: #F2F2F2B2;
+}
+
+#chat-window .chat-window__navbar__mode-username {
+  display: none;
+  color: #000;
 }
 
 #chat-window #webchat {
@@ -265,6 +271,11 @@
 
 #chat-window.chat-window--expanded .chat-window__navbar__expand-icon {
   display: none;
+}
+
+#chat-window.chat-window--expanded .chat-window__navbar__mode-username {
+  display: inline-flex;
+  align-items: center;
 }
 
 #chat-window.chat-window--expanded #webchat {

@@ -139,10 +139,17 @@ async function fetchJSON(url, options = {}) {
     !initialized && construct()
 
     if (type === 'DIRECT_LINE/CONNECT_FULFILLED') {
-      const conversationId = payload.directLine.conversationId
+      const { conversationId } = payload.directLine
+      const { username } = action.meta
       if (localStorage.getItem(CONVERSATION_ID_KEY) !== conversationId) {
         localStorage.setItem(CONVERSATION_ID_KEY, conversationId)
         localStorage.removeItem(LAST_MESSAGE_TIMESTAMP_KEY)
+      }
+
+      // Set username
+      if (username) {
+        document.querySelector('#chat-window .chat-window__navbar__mode-username')
+          .innerHTML = username
       }
     } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
       if (payload.connectionStatus === 2) {
