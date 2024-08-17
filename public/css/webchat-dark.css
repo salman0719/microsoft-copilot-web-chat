@@ -26,6 +26,10 @@
   color: #fff;
 }
 
+#chat-window.chat-window--dark:not(.chat-window--condensed) .chat-window__initial-prompt {
+  border: 2px solid #FFFFFF4D;
+}
+
 #chat-window.chat-window--dark .webchat__send-box__main {
   background-color: #2D2D2D;
 }
@@ -48,6 +52,10 @@
 
 #chat-window.chat-window--dark .webchat__icon-button:not(:disabled):hover .webchat__icon-button__shade {
   background-color: #565656;
+}
+
+#chat-window.chat-window--dark .chat-window__navbar {
+  background-color: #000;
 }
 
 #chat-window.chat-window--dark .chat-window__navbar__collapse-icon,
