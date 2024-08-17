@@ -1,3 +1,12 @@
+import {
+  INITIAL_CHAT_PROMPT_MESSAGE,
+  CONVERSATION_ID_KEY,
+  LAST_MESSAGE_TIMESTAMP_KEY,
+  WEBCHAT_MODE_KEY,
+  WEBCHAT_WINDOW_CLOSED_KEY,
+  INPUT_CHAR_LIMIT
+} from "./constants.js";
+
 // This is a helper function for fetching JSON resources.
 async function fetchJSON(url, options = {}) {
   const res = await fetch(url, {
@@ -16,13 +25,6 @@ async function fetchJSON(url, options = {}) {
 }
 
 (async function main() {
-  const INITIAL_CHAT_PROMPT_MESSAGE = 'Need help with submitting your assessment?'
-  const CONVERSATION_ID_KEY = 'webchat-conversation-id'
-  const LAST_MESSAGE_TIMESTAMP_KEY = 'webchat-last-message-timestamp'
-  const WEBCHAT_WINDOW_CLOSED_KEY = 'webchat-window-closed'
-  const WEBCHAT_MODE_KEY = 'webchat-mode'
-  const INPUT_CHAR_LIMIT = 500
-
   const container = document.querySelector('#chat-window')
   const inputCounter = document.createElement('span')
   inputCounter.className = 'webchat__send-box-text-box-counter';
