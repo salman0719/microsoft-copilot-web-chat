@@ -20,7 +20,7 @@ export const setupExpandIcon = () => {
   expandIcon.addEventListener('click', () => {
     getElement('container').classList.add('chat-window--expanded')
   })
-  window.addEventListener('keydown', (e) => {
+  document.body.addEventListener('keydown', (e) => {
     const container = getElement('container')
     e.key === 'Escape' && container.classList.contains('chat-window--expanded') &&
       container.classList.remove('chat-window--expanded')

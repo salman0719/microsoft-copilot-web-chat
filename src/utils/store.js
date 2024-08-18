@@ -12,18 +12,15 @@ let callbacksPending = []
 const processCallbacks = () => {
   const callbackMap = new Map()
 
-  const toBeCalled = callbacksPending.filter((callback) => {
+  callbacksPending.forEach((callback) => {
     if (!callbackMap.has(callback)) {
       callbackMap.set(callback, 1)
       callback()
-      return callback
     }
-
-    return false
   })
 
   callbacksPending = callbacksPending.filter((callback) =>
-    !(toBeCalled.includes(callback))
+    !(callbackMap.has(callback))
   )
 }
 
