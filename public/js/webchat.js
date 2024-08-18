@@ -36,6 +36,9 @@ import {
       if (payload.connectionStatus === DIRECT_LINE_STATUS_CONNECTED_CODE) {
         setTimeout(() => {
           setData('isDarkMode', localStorage.getItem(WEBCHAT_MODE_KEY) === '1')
+          // TODO
+          // Remove the following function or adjust the `INITIAL_CHAT_PROMPT_MESSAGE` 
+          // constant to update the initial prompt message 
           initiateChatPrompt()
           setData('isClosed', localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1')
         }, 200)
@@ -59,6 +62,10 @@ import {
         botAvatarImage: '../images/bot.png',
         botAvatarInitials: 'S',
       },
+      // TODO
+      // Provide your userId and username
+      userID: '1234',
+      username: 'Jenny Smith'
     },
     document.getElementById('webchat')
   );

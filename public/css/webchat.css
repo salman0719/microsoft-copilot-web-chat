@@ -22,7 +22,7 @@
 #chat-window .chat-window__navbar {
   width: 100%;
   position: relative;
-  padding: 15px 22px;
+  padding: 15px 6%;
   box-sizing: border-box;
   display: flex;
   gap: 15px;
@@ -100,6 +100,7 @@
 #chat-window .chat-window__navbar__mode-username {
   display: none;
   color: #000;
+  padding-left: 30px;
 }
 
 #chat-window #webchat {
