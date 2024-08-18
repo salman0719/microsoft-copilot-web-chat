@@ -1,4 +1,5 @@
 import {
+  BOT_NAME,
   DIRECT_LINE_STATUS_CONNECTED_CODE,
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
@@ -19,6 +20,7 @@ import {
   updateInputPlaceholder,
   updateTimestamp
 } from "./utils/helper.js";
+import botAvatarImageSrc from "./images/bot.png";
 
 (async function main() {
   // TODO
@@ -59,8 +61,10 @@ import {
         // Add your custom font
         primaryFont: ['Roboto', 'Calibri', 'Helvetica Neue', 'Arial', 'sans-serif']
           .map(font => `'${font}'`).join(', '),
-        botAvatarImage: '../images/bot.png',
-        botAvatarInitials: 'S',
+        // TODO
+        // Add your bot image
+        botAvatarImage: botAvatarImageSrc,
+        botAvatarInitials: BOT_NAME[0].toUpperCase(),
       },
       // TODO
       // Provide your userId and username
