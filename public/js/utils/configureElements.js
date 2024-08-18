@@ -1,5 +1,5 @@
 import "./createContainer.js";
-import { setElement } from "./store.js";
+import { setData, setElement } from "./store.js";
 
 const container = document.querySelector('#chat-window')
 const inputCounter = document.createElement('span')
@@ -10,3 +10,5 @@ setElement('container', container)
 setElement('inputCounter', inputCounter)
 setElement('sendBoxErrorInfoElem', sendBoxErrorInfoElem)
 setElement('modeButton', modeButton)
+
+setData('isClosed', container.classList.contains('chat-window--closed'))

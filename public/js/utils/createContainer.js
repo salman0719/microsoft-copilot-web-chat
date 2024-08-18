@@ -1,8 +1,10 @@
+import { BOT_NAME } from "./constants.js";
+
 const html = `
 <div id="chat-window" class="chat-window--closed">
   <div class="chat-window__body">
     <div class="chat-window__navbar">
-      <div class="chat-window__navbar__title">Scout</div>
+      <div class="chat-window__navbar__title">${BOT_NAME}</div>
       <div class="chat-window__navbar__filler"></div>
       <div class="chat-window__navbar__mode-button"></div>
       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"

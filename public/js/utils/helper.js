@@ -27,7 +27,7 @@ export const setupExpandIcon = () => {
   })
 }
 
-export const setupWindowToggle = () => {
+export const handleWindowToggle = () => {
   const botElem = document.querySelector('#chat-window #webchat-bot')
   botElem.addEventListener('click', () => {
     toggleChatWindow()
@@ -47,7 +47,7 @@ export const setupWindowToggle = () => {
   })
 }
 
-export const setupCondensation = () => {
+export const handleCondensation = () => {
   const uncondense = () => {
     getData('isCondensed') && setData('isCondensed', false)
   }
@@ -74,7 +74,7 @@ export const insertInputCounter = () => {
   inputContainer.insertAdjacentElement('afterend', inputCounter)
 }
 
-export const setupModeToggle = () => {
+export const handleModeToggle = () => {
   getElement('modeButton').addEventListener('click', () => {
     toggleDarkMode()
   })
@@ -93,8 +93,10 @@ export const initiateChatPrompt = () => {
   setData('chatPromptInitialized', true)
 
   if (localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY)) { return }
-
   if (getData('webChatStore').getState().activities.length) { return }
+  if (!getData('isClosed')) { return }
+
+  setData('isCondensed', true)
 
   const elem = document.createElement('div')
   elem.className = 'chat-window__initial-prompt'
@@ -103,8 +105,6 @@ export const initiateChatPrompt = () => {
     '#chat-window .webchat__basic-transcript__scrollable'
   )
   transcriptContainer.insertBefore(elem, transcriptContainer.firstElementChild)
-
-  setData('isCondensed', true)
 }
 
 export const handleUsername = () => {

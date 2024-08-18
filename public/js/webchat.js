@@ -1,19 +1,20 @@
 import {
+  DIRECT_LINE_STATUS_CONNECTED_CODE,
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
 } from "./utils/constants.js";
 import { setData } from "./utils/store.js";
 import "./utils/configureElements.js";
 import {
+  handleCondensation,
   handleInput,
+  handleModeToggle,
   handleUsername,
+  handleWindowToggle,
   initiateChatPrompt,
   insertDisclosureText,
   insertInputCounter,
-  setupCondensation,
   setupExpandIcon,
-  setupModeToggle,
-  setupWindowToggle,
   updateConversationId,
   updateInputPlaceholder,
   updateTimestamp
@@ -32,12 +33,12 @@ import {
       updateConversationId(payload.directLine.conversationId)
       setData('username', action.meta.username)
     } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
-      if (payload.connectionStatus === 2) {
+      if (payload.connectionStatus === DIRECT_LINE_STATUS_CONNECTED_CODE) {
         setTimeout(() => {
           setData('isDarkMode', localStorage.getItem(WEBCHAT_MODE_KEY) === '1')
           initiateChatPrompt()
           setData('isClosed', localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1')
-        }, 500)
+        }, 200)
       }
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
       updateTimestamp(payload.activity)
@@ -51,6 +52,8 @@ import {
       directLine: WebChat.createDirectLine({ token }),
       store,
       styleOptions: {
+        // TODO
+        // Add your custom font
         primaryFont: ['Roboto', 'Calibri', 'Helvetica Neue', 'Arial', 'sans-serif']
           .map(font => `'${font}'`).join(', '),
         botAvatarImage: '../images/bot.png',
@@ -67,8 +70,8 @@ import {
   insertDisclosureText()
   updateInputPlaceholder()
   setupExpandIcon()
-  setupWindowToggle()
-  setupCondensation()
+  handleWindowToggle()
+  handleCondensation()
   insertInputCounter()
-  setupModeToggle()
+  handleModeToggle()
 })().catch(err => console.error(err))
