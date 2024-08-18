@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc && vite build",
     "preview": "npm start",
-    "start": "concurrently \"vite preview\" \"node-dev server/index.js --no-notify --respawn .\""
+    "start": "concurrently \"tsc && vite build && vite preview\" \"node-dev server/index.js --no-notify --respawn .\""
   },
   "author": "Salman Hossain",
   "license": "MIT",
