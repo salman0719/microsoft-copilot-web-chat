@@ -1,10 +1,11 @@
 import {
   BOT_NAME,
   DIRECT_LINE_STATUS_CONNECTED_CODE,
+  INPUT_CHAR_LIMIT,
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
 } from "./utils/constants.js";
-import { setData } from "./utils/store.js";
+import { getData, setData } from "./utils/store.js";
 import "./utils/configureElements.js";
 import {
   handleCondensation,
@@ -47,10 +48,14 @@ import botAvatarImageSrc from "./images/bot.png";
       }
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
       updateTimestamp(payload.activity)
+    } else if (type === 'WEB_CHAT/SUBMIT_SEND_BOX') {
+      if (getData('sendBoxValue').length > INPUT_CHAR_LIMIT) {
+        return
+      }
     }
 
     return next(action);
-  });
+  })
 
   WebChat.renderWebChat(
     {
@@ -72,7 +77,7 @@ import botAvatarImageSrc from "./images/bot.png";
       username: 'Jenny Smith'
     },
     document.getElementById('webchat')
-  );
+  )
 
   setData('webChatStore', store)
   setData('chatPromptInitialized', false)
