@@ -30,13 +30,16 @@ To host this demo, you will need to clone the code and run locally.
 
 1. Run the following
    1. `npm install`
-   1. `npm start` (Use Node: version 20.10.0 & NPM: version 10.2.3 if older versions create issues)
-1. Browse to http://localhost:5000/ to start the demo
+   1. `npm run dev` (Use Node: version 20.10.0 & NPM: version 10.2.3 if older versions create issues)
+1. Browse to http://localhost:4000/ to start the demo
+1. Start editing the `/src/main.js` and see the changes reflected in the browser
 
 ## Build
 
-1. `npm run build` (Whole process is still in progress)
-   - This will bundle and minify css & js files. However, for a production grade bundling, even sophisticated method could be undertaken.
+1. `npm run build` 
+   1. You will get all the js, css bundled along with the images used.
+2. `npm start` or `npm run preview`
+   1. See the bundled version in action, browse to http://localhost:5000/
 
 # Code
 
@@ -45,11 +48,12 @@ To host this demo, you will need to clone the code and run locally.
 
 # Overview
 
-This sample includes multiple parts:
+This demonstration includes multiple parts:
 
--  A basic web page with Web Chat integrated via JavaScript bundle
+-  A web page with Web Chat integrated via JavaScript bundle
+-  Web Chat canvas customized through the use of CSS and Vanilla JS
 -  A Restify web server for distributing tokens
-   -  A REST API that generate Direct Line token for new conversations
+   -  A REST API that generates Direct Line token for new conversations
 
 
 ## Content of the `.env` files
@@ -62,6 +66,9 @@ To ease the setup of this sample, here is the template of `.env` files.
 
 ```
 COPILOT_APP_SECRET=EACsadPXlqrd.5hq2asd4UAiFasdvasqwmXrz4R-fzJdwad0M
+PORT=4000
+SERVER_PORT=4001
+PREVIEW_PORT=5000
 ```
 
 ### Version
