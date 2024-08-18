@@ -6,7 +6,7 @@ In this demo, we will show how to customize a microsoft copilot web chat canvas 
 
 # How to run locally
 
-This demo integrates direct line only.
+This demo integrates direct line to establish connection within Microsoft Copilot's Web Chat component.
 
 1. [Clone the code](#clone-the-code)
 1. [Prepare and run the code](#prepare-and-run-the-code)
@@ -15,8 +15,8 @@ This demo integrates direct line only.
 
 To host this demo, you will need to clone the code and run locally.
 
-1. Clone this repository
-1. Create one empty file for environment variables `.env`
+1. Clone this repository - `git clone https://github.com/salman0719/microsoft-copilot-web-chat.git`
+1. Create one empty file for environment variables in the root folder `.env`
 
 
 ## Configure Direct Line
