@@ -1,87 +1,89 @@
-#chat-window.chat-window--dark .webchat__text-content {
-  color: white;
-}
+#chat-window.chat-window--dark {
+  .webchat__text-content {
+    color: white;
+  }
 
-#chat-window.chat-window--dark>.chat-window__body,
-#chat-window.chat-window--dark #webchat {
-  background-color: black;
-}
+  >.chat-window__body,
+  #webchat {
+    background-color: black;
+  }
 
-#chat-window.chat-window--dark #webchat .webchat__bubble__content {
-  background: transparent;
-}
+  #webchat .webchat__bubble__content {
+    background: transparent;
+  }
 
-#chat-window.chat-window--dark .webchat__bubble--from-user .webchat__text-content {
-  background-color: #2D2D2D;
-}
+  .webchat__bubble--from-user .webchat__text-content {
+    background-color: #2D2D2D;
+  }
 
-#chat-window.chat-window--dark .webchat__send-box {
-  background: #2D2D2D80;
-}
+  .webchat__send-box {
+    background: #2D2D2D80;
+  }
 
-#chat-window.chat-window--dark .webchat__send-box-text-box__input,
-#chat-window.chat-window--dark .webchat__send-box__info,
-#chat-window.chat-window--dark .chat-window__initial-prompt,
-#chat-window.chat-window--dark .chat-window__navbar__title {
-  color: #fff;
-}
+  .webchat__send-box-text-box__input,
+  .webchat__send-box__info,
+  .chat-window__initial-prompt,
+  .chat-window__navbar__title {
+    color: #fff;
+  }
 
-#chat-window.chat-window--dark:not(.chat-window--condensed) .chat-window__initial-prompt {
-  border: 2px solid #FFFFFF4D;
-}
+  &:not(.chat-window--condensed) .chat-window__initial-prompt {
+    border: 2px solid #FFFFFF4D;
+  }
 
-#chat-window.chat-window--dark .webchat__send-box__main {
-  background-color: #2D2D2D;
-}
+  .webchat__send-box__main {
+    background-color: #2D2D2D;
+  }
 
-#chat-window.chat-window--dark .webchat__send-box {
-  background-color: #2D2D2D80;
-}
+  .webchat__send-box {
+    background-color: #2D2D2D80;
+  }
 
-#chat-window.chat-window--dark .webchat__activity-status {
-  color: #f6f6f6;
-}
+  .webchat__activity-status {
+    color: #f6f6f6;
+  }
 
-#chat-window.chat-window--dark .webchat__render-markdown a {
-  color: #FFFFFFB2;
-}
+  .webchat__render-markdown a {
+    color: #FFFFFFB2;
+  }
 
-#chat-window.chat-window--dark .webchat__send-icon {
-  background-image: url("../images/send-chat-icon-dark.svg");
-}
+  .webchat__send-icon {
+    background-image: url("../images/send-chat-icon-dark.svg");
+  }
 
-#chat-window.chat-window--dark .webchat__icon-button:not(:disabled):hover .webchat__icon-button__shade {
-  background-color: #565656;
-}
+  .webchat__icon-button:not(:disabled):hover .webchat__icon-button__shade {
+    background-color: #565656;
+  }
 
-#chat-window.chat-window--dark .chat-window__navbar {
-  background-color: #000;
-}
+  .chat-window__navbar {
+    background-color: #000;
+  }
 
-#chat-window.chat-window--dark .chat-window__navbar__collapse-icon,
-#chat-window.chat-window--dark .chat-window__navbar__expand-icon {
-  color: #fff;
-}
+  .chat-window__navbar__collapse-icon,
+  .chat-window__navbar__expand-icon {
+    color: #fff;
+  }
 
-#chat-window.chat-window--dark .chat-window__navbar__collapse-icon {
-  border: 2px solid #fff;
-}
+  .chat-window__navbar__collapse-icon {
+    border: 2px solid #fff;
+  }
 
-#chat-window.chat-window--dark .chat-window__navbar__mode-username {
-  color: #fff;
-}
+  .chat-window__navbar__mode-username {
+    color: #fff;
+  }
 
-#chat-window.chat-window--dark .chat-window__navbar__mode-button {
-  border: 1px solid #fff;
-  background-color: #F5F5F5;
-  color: #1E1E1E;
-  background-image: url("../images/light-mode-icon.svg");
-}
+  .chat-window__navbar__mode-button {
+    border: 1px solid #fff;
+    background-color: #F5F5F5;
+    color: #1E1E1E;
+    background-image: url("../images/light-mode-icon.svg");
+  }
 
-#chat-window.chat-window--dark .chat-window__navbar__mode-button:hover {
-  background-color: #dedede;
-}
+  .chat-window__navbar__mode-button:hover {
+    background-color: #dedede;
+  }
 
-#chat-window.chat-window--dark .chat-window__navbar__mode-button::after {
-  content: 'Light mode';
+  .chat-window__navbar__mode-button::after {
+    content: 'Light mode';
+  }
 }
