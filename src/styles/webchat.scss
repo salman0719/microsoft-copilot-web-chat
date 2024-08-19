@@ -1,10 +1,15 @@
+$max-webchat-width: 1200px;
+$condensed-webchat-width: 300px;
+$regular-webchat-width: 500px;
+$max-layout-width: 75%; // Determines the width of the bubble chats
+
 #chat-window {
   z-index: 9999;
   background: transparent;
   position: fixed;
   right: 160px;
   bottom: 40px;
-  width: 500px;
+  width: $regular-webchat-width;
   max-width: 100vw;
   max-height: calc(100vh - 80px);
   display: flex;
@@ -178,7 +183,7 @@
   }
 
   .webchat__stacked-layout__main {
-    max-width: 75%;
+    max-width: $max-layout-width;
   }
 
   .webchat__stacked-layout--from-user>.webchat__stacked-layout__main {
@@ -289,7 +294,7 @@
     #webchat {
       margin: auto;
       height: calc(100vh - 67.5px);
-      max-width: 1200px;
+      max-width: $max-webchat-width;
       width: auto;
       max-height: unset;
     }
@@ -308,7 +313,7 @@
   }
 
   &.chat-window--condensed {
-    width: 240px;
+    width: $condensed-webchat-width;
 
     .chat-window__navbar__collapse-icon {
       display: block;
