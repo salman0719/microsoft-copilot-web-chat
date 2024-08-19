@@ -13,41 +13,119 @@ import {
   handleModeToggle,
   handleUsername,
   handleWindowToggle,
-  initiateChatPrompt,
   insertDisclosureText,
   insertInputCounter,
   setupExpandIcon,
-  updateConversationId,
   updateInputPlaceholder,
-  updateTimestamp
 } from "./utils/helper.js";
-import botAvatarImageSrc from "./images/bot.png";
+import botAvatarImageSrc from "./images/chatboticon.png";
 
 (async function main() {
-  // TODO
-  // This is for obtaining Direct Line token from the bot.
-  // Should be replaced with your own mechanism
-  const { token } = await fetchToken();
+  // Add your BOT ID below 
+  var theURL = "https://2d1f588f9702ed519606739c183a1d.c9.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_tempTestForCanvasDevelopment/directline/token?api-version=2022-03-01-preview" // You can find the token URL via the mobile app channel configuration
+  /**
+  var userId = clientApplication.account?.accountIdentifier != null ? 
+          ("AIDE" + clientApplication.account.accountIdentifier).substr(0, 64) 
+          : (Math.random().toString() + Date.now().toString()).substr(0,64);
+          **/
+  let currentToken;
+  let oldToken = sessionStorage.getItem('oldToken') != undefined && sessionStorage.getItem('oldToken') != "undefined" ? sessionStorage.getItem('oldToken') : null;
+  var isNewSession;
+  if (oldToken == undefined && oldToken == null) {
+    const { token } = await fetchJSON(theURL);
+    isNewSession = true;
+    currentToken = token;
+    sessionStorage.setItem("oldToken", token);
+  }
+  else {
+    if (isTokenExpired(oldToken)) {
+      const { token } = await fetchJSON(theURL);
+      isNewSession = true;
+      currentToken = token;
+      sessionStorage.setItem("oldToken", token);
+    }
+    else {
+      currentToken = oldToken;
+      isNewSession = false;
+    }
+  }
+  let latestToken = { "token": currentToken };
+  let directLine;
+  if (latestToken !== undefined && latestToken !== null) {
+    directLine = await window.WebChat.createDirectLine(latestToken);
+  }
+  else
+    return;
 
-  const store = WebChat.createStore({}, () => next => action => {
+  const store = WebChat.createStore({}, ({ dispatch }) => next => action => {
     const { type, payload } = action
 
     if (type === 'DIRECT_LINE/CONNECT_FULFILLED') {
-      updateConversationId(payload.directLine.conversationId)
+      if (isNewSession) {
+        dispatch({
+          type: 'WEB_CHAT/SEND_EVENT',
+          payload: {
+            name: 'startConversation',
+            type: 'event',
+            value: { text: "hello" }
+          }
+        });
+      }
       setData('username', action.meta.username)
     } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
       if (payload.connectionStatus === DIRECT_LINE_STATUS_CONNECTED_CODE) {
         setTimeout(() => {
           setData('isDarkMode', localStorage.getItem(WEBCHAT_MODE_KEY) === '1')
-          // TODO
-          // Remove the following function or adjust the `INITIAL_CHAT_PROMPT_MESSAGE` 
-          // constant to update the initial prompt message 
-          initiateChatPrompt()
+          isNewSession && setData('isCondensed', true)
           setData('isClosed', localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1')
         }, 200)
       }
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
-      updateTimestamp(payload.activity)
+      const activity = action.payload.activity;
+      let resourceUri;
+      if (activity.from && activity.type === 'message')
+        updateLastMsgTime(activity.timestamp);
+      // Intercept OAuth card to get access token via SSO
+      if (activity.from && activity.from.role === 'bot' &&
+        (resourceUri = getOAuthCardResourceUri(activity))) {
+        /**if (isLastMsg(activity.timestamp)) {
+          exchangeTokenAsync(resourceUri).then(function (token) {
+            if (token) {
+              directLine.postActivity({
+                type: 'invoke',
+                name: 'signin/tokenExchange',
+                value: {
+                  id: activity.attachments[0].content.tokenExchangeResource.id,
+                  connectionName: activity.attachments[0].content.connectionName,
+                  token
+                },
+                "from": {
+                  id: userId,
+                  name: clientApplication.getActiveAccount().name,
+                  role: "user"
+                }
+              }).subscribe(
+                id => {
+                  if (id === 'retry') {
+                    // Bot was not able to handle the invoke, so display the oauthCard
+                    return next(action);
+                  }
+                  // Else: tokenexchange successful and we do not display the oauthCard
+                },
+                error => {
+                  // An error occurred to display the oauthCard
+                  return next(action);
+                }
+              );
+              return;
+            }
+              else
+                return next(action);
+          });
+        }
+        else
+          return;**/
+      }
     } else if (type === 'WEB_CHAT/SUBMIT_SEND_BOX') {
       if (getData('sendBoxValue').length > INPUT_CHAR_LIMIT) {
         return
@@ -55,32 +133,30 @@ import botAvatarImageSrc from "./images/bot.png";
     }
 
     return next(action);
-  })
+  });
 
-  WebChat.renderWebChat(
+  const styleOptions = {
+    // Add styleOptions to customize Web Chat canvas
+    hideUploadButton: true,
+    primaryFont: fontFamily(['Roboto', 'Helvetica Neue', 'Arial', 'sans-serif']),
+    // bubbleBackground: '#f2f2f7',
+    // bubbleTextColor: '#1c1c1e',
+    // botAvatarBackgroundColor: 'rgba(255, 255, 255, 1)',
+    botAvatarImage: botAvatarImageSrc,
+    botAvatarInitials: BOT_NAME[0].toUpperCase(),
+  };
+
+  window.WebChat.renderWebChat(
     {
-      directLine: WebChat.createDirectLine({ token }),
+      directLine,
       store,
-      styleOptions: {
-        // TODO
-        // Add your custom font
-        primaryFont: ['Roboto', 'Calibri', 'Helvetica Neue', 'Arial', 'sans-serif']
-          .map(font => `'${font}'`).join(', '),
-        // TODO
-        // Add your bot image
-        botAvatarImage: botAvatarImageSrc,
-        botAvatarInitials: BOT_NAME[0].toUpperCase(),
-      },
-      // TODO
-      // Provide your userId and username
-      userID: '1234',
-      username: 'Jenny Smith'
+      // userID: userId,
+      styleOptions
     },
     document.getElementById('webchat')
-  )
+  );
 
   setData('webChatStore', store)
-  setData('chatPromptInitialized', false)
   handleUsername()
   handleInput()
   insertDisclosureText()

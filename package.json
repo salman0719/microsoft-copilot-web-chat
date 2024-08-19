@@ -4,11 +4,11 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "dev": "concurrently \"vite\" \"node-dev server/index.js --no-notify --respawn .\"",
+    "dev": "vite",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc && vite build",
     "preview": "npm start",
-    "start": "concurrently \"tsc && vite build && vite preview\" \"node-dev server/index.js --no-notify --respawn .\""
+    "start": "tsc && vite build && vite preview"
   },
   "author": "Salman Hossain",
   "license": "MIT",

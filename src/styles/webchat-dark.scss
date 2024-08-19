@@ -1,6 +1,11 @@
 #chat-window.chat-window--dark {
+
   .webchat__text-content {
     color: white;
+  }
+
+  .webchat__bubble__content .ac-textBlock {
+    color: white !important;
   }
 
   >.chat-window__body,
@@ -22,13 +27,8 @@
 
   .webchat__send-box-text-box__input,
   .webchat__send-box__info,
-  .chat-window__initial-prompt,
   .chat-window__navbar__title {
     color: #fff;
-  }
-
-  &:not(.chat-window--condensed) .chat-window__initial-prompt {
-    border: 2px solid #FFFFFF4D;
   }
 
   .webchat__send-box__main {

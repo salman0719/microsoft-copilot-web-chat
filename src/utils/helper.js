@@ -1,5 +1,5 @@
 import { toggleChatWindow, toggleDarkMode } from "./actions.js";
-import { BOT_NAME, CONVERSATION_ID_KEY, DEFAULT_SEND_BOX_ERROR_MESSAGE, DISCLOSURE_TEXT, INITIAL_CHAT_PROMPT_MESSAGE, INPUT_CHAR_LIMIT, LAST_MESSAGE_TIMESTAMP_KEY, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
+import { BOT_NAME, DEFAULT_SEND_BOX_ERROR_MESSAGE, DISCLOSURE_TEXT, INPUT_CHAR_LIMIT, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
 import { getData, getElement, setData, subscribe } from "./store.js";
 
 export const insertDisclosureText = () => {
@@ -88,47 +88,11 @@ export const handleModeToggle = () => {
   })
 }
 
-export const initiateChatPrompt = () => {
-  if (getData('chatPromptInitialized')) { return }
-  setData('chatPromptInitialized', true)
-
-  if (localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY)) { return }
-  if (getData('webChatStore').getState().activities.length) { return }
-  if (!getData('isClosed')) { return }
-
-  setData('isCondensed', true)
-
-  const elem = document.createElement('div')
-  elem.className = 'chat-window__initial-prompt'
-  elem.innerHTML = INITIAL_CHAT_PROMPT_MESSAGE
-  const transcriptContainer = document.querySelector(
-    '#chat-window .webchat__basic-transcript__scrollable'
-  )
-  transcriptContainer.insertBefore(elem, transcriptContainer.firstElementChild)
-}
-
 export const handleUsername = () => {
   return subscribe(['username'], () => {
     document.querySelector('#chat-window .chat-window__navbar__mode-username')
       .innerHTML = getData('username')
   })
-}
-
-export const updateConversationId = (conversationId) => {
-  if (localStorage.getItem(CONVERSATION_ID_KEY) !== conversationId) {
-    localStorage.setItem(CONVERSATION_ID_KEY, conversationId)
-    localStorage.removeItem(LAST_MESSAGE_TIMESTAMP_KEY)
-  }
-}
-
-export const updateTimestamp = (activity) => {
-  const { type, timestamp } = activity
-  if (type !== 'message') { return }
-
-  const prevTimestamp = localStorage.getItem(LAST_MESSAGE_TIMESTAMP_KEY)
-  if (!prevTimestamp || timestamp > prevTimestamp) {
-    localStorage.setItem(LAST_MESSAGE_TIMESTAMP_KEY, timestamp)
-  }
 }
 
 export const getSendBoxErrorInfo = () => {

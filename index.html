@@ -1,41 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="utf-8" />
-  <link rel="shortcut icon" href="/BotServices.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <title>Web Chat Demo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-    rel="stylesheet">
+  <title>A.I.D.E (Beta)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-32x32.png">
+  <link rel="manifest" href="./favicon/site.webmanifest">
   <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+  <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.js"
+    integrity="sha384-+8A1rifuHuJxJgQn6UCxGgmo6Q2SvIeEAqtPOsXCpi0DpqZLtuDhxxnqjJZw/1ve"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    if (typeof msal === 'undefined') document.write(unescape("%3Cscript type='text/javascript' src='https://alcdn.msftauth.net/browser/2.35.0/js/msal-browser.js' integrity='sha384-+8A1rifuHuJxJgQn6UCxGgmo6Q2SvIeEAqtPOsXCpi0DpqZLtuDhxxnqjJZw/1ve' crossorigin='anonymous'%3E%3C/script%3E"));
+  </script>
+  <script src="https://unpkg.com/@azure/storage-blob@10.3.0/browser/azure-storage.blob.min.js"
+    integrity="sha384-fsfhtLyVQo3L3Bh73qgQoRR328xEeXnRGdoi53kjo1uectCfAHFfavrBBN2Nkbdf"
+    crossorigin="anonymous"></script>
 
   <style>
     html,
     body {
       height: 100%;
-      width: 100%;
-      font-family: "Roboto", sans-serif;
     }
 
     body {
       margin: 0;
     }
+
+    .main {
+      margin: 18px;
+      border-radius: 4px;
+    }
+
+    div[role="form"] {
+      background-color: white;
+    }
+
+    #loginscreen {
+      position: fixed;
+      display: none;
+      background-color: white;
+      z-index: 2;
+      width: 100%;
+      height: 80%;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      overflow-y: auto;
+      margin-top: 80px
+    }
+
+    #loginupperimage {
+      max-width: 250px;
+    }
+
+    #logincomponent {
+      width: 90%;
+      font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+      align-items: center;
+      flex-direction: column;
+      display: flex;
+    }
+
+    .loginbutton {
+      width: 100%;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 700;
+      font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+      padding: 10px 10px;
+      cursor: pointer;
+      border: none;
+      background-color: #FFDC00;
+      color: black;
+      border-radius: 4px;
+    }
+
+    .loginbutton:hover {
+      filter: brightness(0.85);
+      text-decoration: underline;
+    }
   </style>
+
   <link rel="stylesheet" href="/src/styles/webchat.scss">
   <link rel="stylesheet" href="/src/styles/webchat-dark.scss">
+
 </head>
 
 <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="loginscreen">
+    <div id="logincomponent">
+      <img src="./chatbotUpper.png" id="loginupperimage">
+      <p style="text-align:center;">
+        <span style="font-size:20px;font-weight: 700;line-height: 32px;">Chat with A.I.D.E.</span>
+      </p>
+      <ul style="width: 100%;font-weight: 400; line-height: 24px;">
+        <li>24/7 educational technology support</li>
+        <li>Easy access to EdTech Hub</li>
+      </ul>
+    </div>
+    <div id="logincomponent">
+      <button class="loginbutton" onclick="onSignInClick()">Start conversation</button>
+    </div>
+  </div>
+
   <script>
-    // This is a helper function for fetching JSON resources.
-    async function fetchToken(options = {}) {
-      const res = await fetch('/api/directline/token', {
+    function onSignin(idToken) {
+      let requestObj1 = {
+        scopes: ["user.read", 'openid', 'profile']
+      };
+      document.getElementById("loginscreen").style.display = "none";
+      main().catch(err => console.error("An error occurred: " + err));
+    }
+
+    function onSignInClick() {
+      let requestObj = {
+        scopes: ["user.read", 'openid', 'profile']
+      };
+
+      clientApplication.loginPopup(requestObj)
+        .then(function (response) {
+          clientApplication.setActiveAccount(response.account);
+          onSignin();
+        })
+        .catch(function (error) { console.log(error) });
+    }
+
+    async function isAuthenticated() {
+      let currentAccounts = clientApplication.getAllAccounts();
+      if (currentAccounts.length > 0) {
+        let requestObj = {
+          scopes: ["user.read", 'openid', 'profile'],
+          redirectUri: 'https://unswauepstaetsbot.blob.core.windows.net/custom-canvas/RedirectUri.html'
+        };
+        return clientApplication.acquireTokenSilent(requestObj)
+          .then(function () {
+            return true;
+          })
+          .catch(function (error) {
+            console.log(error);
+            return false;
+          });
+      } else
+        return false;
+    }
+
+    function getOAuthCardResourceUri(activity) {
+      if (activity &&
+        activity.attachments &&
+        activity.attachments[0] &&
+        activity.attachments[0].contentType === 'application/vnd.microsoft.card.oauth' &&
+        activity.attachments[0].content.tokenExchangeResource) {
+        // asking for token exchange with AAD
+        return activity.attachments[0].content.tokenExchangeResource.uri;
+      }
+    }
+
+    function exchangeTokenAsync(resourceUri) {
+      let currentAccounts = clientApplication.getAllAccounts();
+      if (currentAccounts.length > 0) {
+        let requestObj = {
+          scopes: [resourceUri],
+          redirectUri: 'https://unswauepstaetsbot.blob.core.windows.net/custom-canvas/RedirectUri.html',
+        };
+        return clientApplication.acquireTokenSilent(requestObj)
+          .then(function (tokenResponse) {
+            return tokenResponse.accessToken;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      else {
+        return Promise.resolve(null);
+      }
+    }
+
+    async function fetchJSON(url, options = {}) {
+      const res = await fetch(url, {
         ...options,
         headers: {
           ...options.headers,
@@ -49,8 +193,54 @@
 
       return await res.json();
     }
+
+    function isTokenExpired(token) {
+      if (!token) {
+        // Token is considered expired if not available
+        return true;
+      }
+      const tokenData = parseJwt(token);
+      // Check if the token has an 'exp' claim
+      if (tokenData && tokenData.exp) {
+        const expirationTime = tokenData.exp * 1000; // Convert to milliseconds
+        const currentTime = new Date().getTime();
+        // Check if the token has expired
+        return currentTime > expirationTime;
+      }
+      // Token is considered expired if 'exp' claim is missing
+      return true;
+    }
+
+    function parseJwt(token) {
+      try {
+        // Parse the JWT token
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch (error) {
+        console.error('Error parsing JWT token:', error);
+        return null;
+      }
+    }
+
+    function isLastMsg(timestamp) {
+      var oldTimestamp = sessionStorage.getItem('lastMsgTime');
+      if (oldTimestamp !== null && new Date(timestamp) < new Date(oldTimestamp)) {
+        return false;
+      } else
+        return true;
+    }
+
+    function updateLastMsgTime(timestamp) {
+      if (isLastMsg(timestamp))
+        sessionStorage.setItem('lastMsgTime', timestamp);
+    }
+
+    function fontFamily(fonts) {
+      return fonts.map(font => `'${font}'`).join(', ');
+    }
   </script>
+
   <script type="module" src="/src/main.js"></script>
+
 </body>
 
 </html>

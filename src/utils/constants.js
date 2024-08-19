@@ -1,10 +1,7 @@
-export const INITIAL_CHAT_PROMPT_MESSAGE = 'Need help with submitting your assessment?'
-export const CONVERSATION_ID_KEY = 'webchat-conversation-id'
-export const LAST_MESSAGE_TIMESTAMP_KEY = 'webchat-last-message-timestamp'
 export const WEBCHAT_WINDOW_CLOSED_KEY = 'webchat-window-closed'
 export const WEBCHAT_MODE_KEY = 'webchat-mode'
 export const INPUT_CHAR_LIMIT = 500
-export const BOT_NAME = 'Scout'
+export const BOT_NAME = 'A.I.D.E (Beta)'
 export const DISCLOSURE_TEXT = BOT_NAME + ' can make mistakes, verify important information.'
 export const DEFAULT_SEND_BOX_ERROR_MESSAGE = 'Maximum limit of ' + INPUT_CHAR_LIMIT + ' characters reached.'
 export const DIRECT_LINE_STATUS_CONNECTED_CODE = 2
