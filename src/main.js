@@ -1,6 +1,9 @@
 import {
   BOT_NAME,
+  BOT_TOKEN_ENDPOINT,
   INPUT_CHAR_LIMIT,
+  MSAL_CLIENT_ID,
+  MSAL_TENANT_ID,
 } from "./utils/constants.js";
 import { getData, setData } from "./utils/store.js";
 import configureElements from "./utils/configureElements.js";
@@ -20,7 +23,7 @@ import { processStatusUpdate } from "./utils/actions.js";
 
 window.IntegrateBot = async function () {
   // Add your BOT ID below 
-  var theURL = "https://829ad9b9104ce6878ce96c9c25af46.ca.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_studentBotDev/directline/token?api-version=2022-03-01-preview"; // You can find the token URL via the mobile app channel configuration
+  var theURL = BOT_TOKEN_ENDPOINT
 
   var userId = clientApplication.account?.accountIdentifier != null ?
     ("AIDE" + clientApplication.account.accountIdentifier).substring(0, 64)
@@ -68,7 +71,7 @@ window.IntegrateBot = async function () {
           }
         });
       }
-      setData('username', action.meta.username)
+      setData('username', action.meta.username || clientApplication.getActiveAccount()?.name || '')
     } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
       processStatusUpdate(payload, isNewSession)
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
@@ -76,6 +79,7 @@ window.IntegrateBot = async function () {
       let resourceUri;
       if (activity.from && activity.type === 'message')
         updateLastMsgTime(activity.timestamp);
+
       // Intercept OAuth card to get access token via SSO
       if (activity.from && activity.from.role === 'bot' &&
         (resourceUri = getOAuthCardResourceUri(activity))) {
@@ -164,8 +168,8 @@ window.IntegrateBot = async function () {
 (function () {
   var msalConfig = {
     auth: {
-      clientId: 'bf3b31f3-7df6-45d6-8f66-70a15dbeec76',
-      authority: 'https://login.microsoftonline.com/3ff6cfa4-e715-48db-b8e1-0867b9f9fba3'
+      clientId: MSAL_CLIENT_ID,
+      authority: 'https://login.microsoftonline.com/' + MSAL_TENANT_ID,
     },
     cache: {
       cacheLocation: 'localStorage',

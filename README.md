@@ -1,6 +1,6 @@
 # Description
 
-In this demo, we will show how to customize a microsoft copilot web chat canvas through HTML, CSS & Vanilla Javascript. 
+In this demo, we will show how to customize a microsoft copilot web chat canvas through HTML, CSS & Vanilla Javascript while integrating Microsoft Authentication Library. 
 
 > IMPORTANT: When dealing with personal data, please respect user privacy. Follow platform guidelines and post your privacy statement online.
 
@@ -19,12 +19,16 @@ To host this demo, you will need to clone the code and run locally.
 1. Create one empty file for environment variables in the root folder `.env`
 
 
-## Configure Direct Line
+## Configure Bot & App
 1. Create Copilot Bot/App through the Microsoft Copilot Studio
-2. Enter Settings->Security->Web channel security
-3. Collect a secret and enter it in the `.env` file (Don't expose it elsewhere)
-      -  `COPILOT_APP_SECRET=<your_copilot_app_secret>`  
-
+2. Enter Channels->Mobile App and collect the token endpoint & populate the following env variable
+      -  `VITE_BOT_TOKEN_ENDPOINT=<your_bot_token_endpoint>`
+3. Enter Azure->App registrations->All applications and then select your newly created app (this is associated with your bot).
+4. Enter Quickstart->Single-page application->Javascript and complete configuration
+5. Go to Manage->Authentication inside that app if you want to update the redirect URIs. Point it to your port that your localhost is using. (So set `http://localhost:5173)` if that is where your code is previewed.)
+6. Go to 'Overview' to collect the client & tenant ID information and update the env variables
+      -  `VITE_MSAL_CLIENT_ID=<your_app_client_id>`
+      -  `VITE_MSAL_TENANT_ID=<your_app_tenant_id>`
 
 ## Prepare and run the code
 
@@ -41,19 +45,13 @@ To host this demo, you will need to clone the code and run locally.
 2. `npm start` or `npm run preview`
    1. See the bundled version in action, browse to http://localhost:5000/
 
-# Code
-
--  This is the REST API for distributing Direct Line tokens
-   -  `GET /api/directline/token` will generate a new Direct Line token for the React app
-
 # Overview
 
 This demonstration includes multiple parts:
 
--  A web page with Web Chat integrated via JavaScript bundle
+-  A microsoft authentication system (using `msal`)
+-  Microsoft Copilot's Web Chat integrated via JavaScript bundle
 -  Web Chat canvas customized through the use of CSS and Vanilla JS
--  A Restify web server for distributing tokens
-   -  A REST API that generates Direct Line token for new conversations
 
 
 ## Content of the `.env` files
@@ -65,10 +63,12 @@ To ease the setup of this sample, here is the template of `.env` files.
 ### `.env`
 
 ```
-COPILOT_APP_SECRET=EACsadPXlqrd.5hq2asd4UAiFasdvasqwmXrz4R-fzJdwad0M
 PORT=4000
 SERVER_PORT=4001
 PREVIEW_PORT=5000
+VITE_MSAL_CLIENT_ID=
+VITE_MSAL_TENANT_ID=
+VITE_BOT_TOKEN_ENDPOINT=
 ```
 
 ### Version

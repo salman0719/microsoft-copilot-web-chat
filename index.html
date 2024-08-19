@@ -135,7 +135,6 @@
       if (currentAccounts.length > 0) {
         let requestObj = {
           scopes: ["user.read", 'openid', 'profile'],
-          redirectUri: 'https://unswauepstaetsbot.blob.core.windows.net/custom-canvas/RedirectUri.html'
         };
         return clientApplication.acquireTokenSilent(requestObj)
           .then(function () {
@@ -165,7 +164,6 @@
       if (currentAccounts.length > 0) {
         let requestObj = {
           scopes: [resourceUri],
-          redirectUri: 'https://unswauepstaetsbot.blob.core.windows.net/custom-canvas/RedirectUri.html',
         };
         return clientApplication.acquireTokenSilent(requestObj)
           .then(function (tokenResponse) {
