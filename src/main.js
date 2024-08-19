@@ -1,9 +1,6 @@
 import {
   BOT_NAME,
-  DIRECT_LINE_STATUS_CONNECTED_CODE,
   INPUT_CHAR_LIMIT,
-  WEBCHAT_MODE_KEY,
-  WEBCHAT_WINDOW_CLOSED_KEY,
 } from "./utils/constants.js";
 import { getData, setData } from "./utils/store.js";
 import configureElements from "./utils/configureElements.js";
