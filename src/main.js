@@ -24,11 +24,10 @@ import { processStatusUpdate } from "./utils/actions.js";
 window.IntegrateBot = async function () {
   // Add your BOT ID below 
   var theURL = "https://829ad9b9104ce6878ce96c9c25af46.ca.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_studentBotDev/directline/token?api-version=2022-03-01-preview"; // You can find the token URL via the mobile app channel configuration
-  /**
-  var userId = clientApplication.account?.accountIdentifier != null ? 
-          ("AIDE" + clientApplication.account.accountIdentifier).substr(0, 64) 
-          : (Math.random().toString() + Date.now().toString()).substr(0,64);
-          **/
+
+  var userId = clientApplication.account?.accountIdentifier != null ?
+    ("AIDE" + clientApplication.account.accountIdentifier).substring(0, 64)
+    : (Math.random().toString() + Date.now().toString()).substring(0, 64);
   let currentToken;
   let oldToken = sessionStorage.getItem('oldToken') != undefined && sessionStorage.getItem('oldToken') != "undefined" ? sessionStorage.getItem('oldToken') : null;
   var isNewSession;
