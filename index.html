@@ -92,7 +92,7 @@
 <body>
   <div id="loginscreen">
     <div id="logincomponent">
-      <img src="./chatbotUpper.png" id="loginupperimage">
+      <img src="/src/images/chatbotUpper.png" id="loginupperimage">
       <p style="text-align:center;">
         <span style="font-size:20px;font-weight: 700;line-height: 32px;">Chat with A.I.D.E.</span>
       </p>
@@ -107,12 +107,14 @@
   </div>
 
   <script>
+    var clientApplication;
+
     function onSignin(idToken) {
       let requestObj1 = {
         scopes: ["user.read", 'openid', 'profile']
       };
       document.getElementById("loginscreen").style.display = "none";
-      main().catch(err => console.error("An error occurred: " + err));
+      window.IntegrateBot().catch(err => console.error("An error occurred: " + err));
     }
 
     function onSignInClick() {

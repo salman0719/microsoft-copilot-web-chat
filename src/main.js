@@ -6,7 +6,7 @@ import {
   WEBCHAT_WINDOW_CLOSED_KEY,
 } from "./utils/constants.js";
 import { getData, setData } from "./utils/store.js";
-import "./utils/configureElements.js";
+import configureElements from "./utils/configureElements.js";
 import {
   handleCondensation,
   handleInput,
@@ -19,10 +19,11 @@ import {
   updateInputPlaceholder,
 } from "./utils/helper.js";
 import botAvatarImageSrc from "./images/chatboticon.png";
+import { processStatusUpdate } from "./utils/actions.js";
 
-(async function main() {
+window.IntegrateBot = async function () {
   // Add your BOT ID below 
-  var theURL = "https://2d1f588f9702ed519606739c183a1d.c9.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_tempTestForCanvasDevelopment/directline/token?api-version=2022-03-01-preview" // You can find the token URL via the mobile app channel configuration
+  var theURL = "https://829ad9b9104ce6878ce96c9c25af46.ca.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_studentBotDev/directline/token?api-version=2022-03-01-preview"; // You can find the token URL via the mobile app channel configuration
   /**
   var userId = clientApplication.account?.accountIdentifier != null ? 
           ("AIDE" + clientApplication.account.accountIdentifier).substr(0, 64) 
@@ -73,13 +74,7 @@ import botAvatarImageSrc from "./images/chatboticon.png";
       }
       setData('username', action.meta.username)
     } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
-      if (payload.connectionStatus === DIRECT_LINE_STATUS_CONNECTED_CODE) {
-        setTimeout(() => {
-          setData('isDarkMode', localStorage.getItem(WEBCHAT_MODE_KEY) === '1')
-          isNewSession && setData('isCondensed', true)
-          setData('isClosed', localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1')
-        }, 200)
-      }
+      processStatusUpdate(payload, isNewSession)
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
       const activity = action.payload.activity;
       let resourceUri;
@@ -88,7 +83,7 @@ import botAvatarImageSrc from "./images/chatboticon.png";
       // Intercept OAuth card to get access token via SSO
       if (activity.from && activity.from.role === 'bot' &&
         (resourceUri = getOAuthCardResourceUri(activity))) {
-        /**if (isLastMsg(activity.timestamp)) {
+        if (isLastMsg(activity.timestamp)) {
           exchangeTokenAsync(resourceUri).then(function (token) {
             if (token) {
               directLine.postActivity({
@@ -119,12 +114,12 @@ import botAvatarImageSrc from "./images/chatboticon.png";
               );
               return;
             }
-              else
-                return next(action);
+            else
+              return next(action);
           });
         }
         else
-          return;**/
+          return;
       }
     } else if (type === 'WEB_CHAT/SUBMIT_SEND_BOX') {
       if (getData('sendBoxValue').length > INPUT_CHAR_LIMIT) {
@@ -146,6 +141,8 @@ import botAvatarImageSrc from "./images/chatboticon.png";
     botAvatarInitials: BOT_NAME[0].toUpperCase(),
   };
 
+  configureElements()
+
   window.WebChat.renderWebChat(
     {
       directLine,
@@ -166,4 +163,31 @@ import botAvatarImageSrc from "./images/chatboticon.png";
   handleCondensation()
   insertInputCounter()
   handleModeToggle()
-})().catch(err => console.error(err))
+};
+
+(function () {
+  var msalConfig = {
+    auth: {
+      clientId: 'bf3b31f3-7df6-45d6-8f66-70a15dbeec76',
+      authority: 'https://login.microsoftonline.com/3ff6cfa4-e715-48db-b8e1-0867b9f9fba3'
+    },
+    cache: {
+      cacheLocation: 'localStorage',
+      storeAuthStateInCookie: true
+    }
+  };
+  if (!clientApplication) {
+    clientApplication = new msal.PublicClientApplication(msalConfig);
+    let oldToken = sessionStorage.getItem('oldToken') != undefined && sessionStorage.getItem('oldToken') != "undefined" ? sessionStorage.getItem('oldToken') : null;
+    if (oldToken == null || isTokenExpired(oldToken)) {
+      isAuthenticated().then(function (authenticated) {
+        if (authenticated) {
+          onSignin();
+        } else {
+          document.getElementById("loginscreen").style.display = "block flex";
+        }
+      })
+    } else
+      window.IntegrateBot().catch(err => console.error("An error occurred: " + err));
+  }
+}());

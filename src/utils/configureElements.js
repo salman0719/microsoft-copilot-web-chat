@@ -1,14 +1,19 @@
 import "./createContainer.js";
+import createContainer from "./createContainer.js";
 import { setData, setElement } from "./store.js";
 
-const container = document.querySelector('#chat-window')
-const inputCounter = document.createElement('span')
-const sendBoxErrorInfoElem = document.createElement('div')
-const modeButton = document.querySelector('#chat-window .chat-window__navbar__mode-button')
+export default function configureElements() {
+  createContainer()
 
-setElement('container', container)
-setElement('inputCounter', inputCounter)
-setElement('sendBoxErrorInfoElem', sendBoxErrorInfoElem)
-setElement('modeButton', modeButton)
+  const container = document.querySelector('#chat-window')
+  const inputCounter = document.createElement('span')
+  const sendBoxErrorInfoElem = document.createElement('div')
+  const modeButton = document.querySelector('#chat-window .chat-window__navbar__mode-button')
 
-setData('isClosed', container.classList.contains('chat-window--closed'))
+  setElement('container', container)
+  setElement('inputCounter', inputCounter)
+  setElement('sendBoxErrorInfoElem', sendBoxErrorInfoElem)
+  setElement('modeButton', modeButton)
+
+  setData('isClosed', container.classList.contains('chat-window--closed'))
+}
