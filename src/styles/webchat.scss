@@ -32,6 +32,7 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
+    background-color: #fff;
   }
 
   .chat-window__navbar__title {
@@ -276,6 +277,7 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
     height: 100vh;
     max-width: 100vw;
     max-height: 100vh;
+    background-color: #fff;
 
     >.chat-window__body {
       border: 0;

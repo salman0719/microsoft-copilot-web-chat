@@ -86,4 +86,8 @@
   .chat-window__navbar__mode-button::after {
     content: 'Light mode';
   }
+
+  &.chat-window--expanded {
+    background-color: #000;
+  }
 }
