@@ -56,8 +56,13 @@ export const handleWindowToggle = () => {
     toggleChatWindow()
   })
   const collapseIcon = document.querySelector('#chat-window .chat-window__navbar__collapse-icon')
-  collapseIcon.addEventListener('click', (e) => {
+  const stopPropagation = (e) => {
     e.stopPropagation()
+  }
+  collapseIcon.addEventListener('mousedown', stopPropagation)
+  collapseIcon.addEventListener('touchstart', stopPropagation)
+  collapseIcon.addEventListener('click', (e) => {
+    stopPropagation(e)
     toggleChatWindow(false)
   })
 
@@ -90,8 +95,10 @@ export const handleCondensation = (isNewSession) => {
     webchatBody.addEventListener('keydown', uncondense)
 
     const unlistenIsClosed = subscribe(['isClosed'], () => {
-      !getData('isClosed') && setData('isCondensed', false)
-      unlistenIsClosed()
+      if (!getData('isClosed')) {
+        setData('isCondensed', false)
+        unlistenIsClosed()
+      }
     })
 
     const res = subscribe(['isCondensed'], () => {
