@@ -23,6 +23,10 @@ window.IntegrateBot = async function () {
   // Add your BOT ID below 
   var theURL = "https://829ad9b9104ce6878ce96c9c25af46.ca.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_studentBotDev/directline/token?api-version=2022-03-01-preview"; // You can find the token URL via the mobile app channel configuration
 
+  if (import.meta.env.MODE === 'development') {
+    theURL = "https://2d1f588f9702ed519606739c183a1d.c9.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_tempTestForCanvasDevelopment/directline/token?api-version=2022-03-01-preview" // You can find the token URL via the mobile app channel configuration
+  }
+
   var userId = clientApplication.account?.accountIdentifier != null ?
     ("AIDE" + clientApplication.account.accountIdentifier).substring(0, 64)
     : (Math.random().toString() + Date.now().toString()).substring(0, 64);
@@ -165,6 +169,28 @@ window.IntegrateBot = async function () {
 };
 
 (function () {
+  if (import.meta.env.MODE === 'development') {
+    clientApplication = {
+      getActiveAccount: () => {
+        return {
+          name: 'Jenny Smith'
+        }
+      },
+      account: {
+        accountIdentifier: 'asdhkj-213bnjasd-123hb'
+      }
+    }
+
+    window.isAuthenticated = () => {
+      return true
+    }
+
+    window.IntegrateBot()
+
+    return
+  }
+
+
   var msalConfig = {
     auth: {
       clientId: 'bf3b31f3-7df6-45d6-8f66-70a15dbeec76',
