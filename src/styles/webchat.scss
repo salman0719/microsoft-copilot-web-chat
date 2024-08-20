@@ -266,6 +266,10 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
     margin: 8px 14px;
   }
 
+  .webchat__send-box__info {
+    color: rgb(118, 118, 118);
+  }
+
   .webchat__send-box__error-info--hidden {
     display: none;
   }
