@@ -1,5 +1,6 @@
 import {
   BOT_NAME,
+  FULLSCREEN_SEARCH_QUERY_KEY,
   INPUT_CHAR_LIMIT,
 } from "./utils/constants.js";
 import { getData, setData } from "./utils/store.js";
@@ -12,7 +13,7 @@ import {
   handleWindowToggle,
   insertDisclosureText,
   insertInputCounter,
-  setupExpandIcon,
+  handleFullscreen,
   updateInputPlaceholder,
 } from "./utils/helper.js";
 import botAvatarImageSrc from "./images/chatboticon.png";
@@ -68,7 +69,7 @@ window.IntegrateBot = async function () {
           }
         });
       }
-      setData('username', action.meta.username || clientApplication?.getActiveAccount().name || '')
+      setData('username', action.meta.username || clientApplication?.getActiveAccount()?.name || '')
     } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
       processStatusUpdate(payload, isNewSession)
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
@@ -138,6 +139,9 @@ window.IntegrateBot = async function () {
   };
 
   configureElements()
+  handleFullscreen()
+  setData('isFullscreen',
+    (new URLSearchParams(location.search)).get(FULLSCREEN_SEARCH_QUERY_KEY) === '1')
 
   window.WebChat.renderWebChat(
     {
@@ -154,9 +158,8 @@ window.IntegrateBot = async function () {
   handleInput()
   insertDisclosureText()
   updateInputPlaceholder()
-  setupExpandIcon()
   handleWindowToggle()
-  handleCondensation()
+  !getData('isFullscreen') && handleCondensation()
   insertInputCounter()
   handleModeToggle()
 };

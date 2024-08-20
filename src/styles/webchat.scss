@@ -266,11 +266,11 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
     display: none;
   }
 
-  &:not(.chat-window--expanded) .chat-window__navbar {
+  &:not(.chat-window--fullscreen) .chat-window__navbar {
     border-radius: 28px 28px 0px 0px;
   }
 
-  &.chat-window--expanded {
+  &.chat-window--fullscreen {
     width: 100vw;
     right: 0px;
     bottom: 0px;
@@ -364,7 +364,7 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
       margin-right: 0px;
     }
 
-    &.chat-window--expanded .chat-window__navbar__mode-username,
+    &.chat-window--fullscreen .chat-window__navbar__mode-username,
     .chat-window__navbar__mode-username {
       display: none;
     }

@@ -1,5 +1,5 @@
 import { toggleChatWindow, toggleDarkMode } from "./actions.js";
-import { BOT_NAME, DEFAULT_SEND_BOX_ERROR_MESSAGE, DISCLOSURE_TEXT, INPUT_CHAR_LIMIT, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
+import { BOT_NAME, DEFAULT_SEND_BOX_ERROR_MESSAGE, DISCLOSURE_TEXT, FULLSCREEN_SEARCH_QUERY_KEY, INPUT_CHAR_LIMIT, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
 import { getData, getElement, setData, subscribe } from "./store.js";
 
 export const insertDisclosureText = () => {
@@ -15,15 +15,19 @@ export const updateInputPlaceholder = () => {
     .placeholder = 'Message ' + BOT_NAME
 }
 
-export const setupExpandIcon = () => {
+export const handleFullscreen = () => {
   const expandIcon = document.querySelector('#chat-window .chat-window__navbar__expand-icon')
+  const container = getElement('container')
   expandIcon.addEventListener('click', () => {
-    getElement('container').classList.add('chat-window--expanded')
+    const searchQuery = new URLSearchParams(location.search)
+    searchQuery.set(FULLSCREEN_SEARCH_QUERY_KEY, '1')
+    let newSearch = searchQuery.toString()
+    if (newSearch) { newSearch = '?' + newSearch }
+    window.open(location.origin + location.pathname + newSearch + location.hash)
   })
-  document.body.addEventListener('keydown', (e) => {
-    const container = getElement('container')
-    e.key === 'Escape' && container.classList.contains('chat-window--expanded') &&
-      container.classList.remove('chat-window--expanded')
+
+  return subscribe(['isFullscreen'], () => {
+    container.classList[getData('isFullscreen') ? 'add' : 'remove']('chat-window--fullscreen')
   })
 }
 

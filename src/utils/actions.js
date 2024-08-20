@@ -13,7 +13,7 @@ export const processStatusUpdate = (payload, isNewSession) => {
   if (payload.connectionStatus === DIRECT_LINE_STATUS_CONNECTED_CODE) {
     setTimeout(async () => {
       setData('isDarkMode', localStorage.getItem(WEBCHAT_MODE_KEY) === '1')
-      isNewSession && await window.isAuthenticated() && setData('isCondensed', true)
+      !getData('isFullscreen') && isNewSession && await window.isAuthenticated() && setData('isCondensed', true)
       setData('isClosed', localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1')
     }, 200)
   }
