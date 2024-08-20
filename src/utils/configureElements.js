@@ -1,9 +1,8 @@
-import "./createContainer.js";
-import createContainer from "./createContainer.js";
+import renderMarkup from "./renderMarkup.js";
 import { setData, setElement } from "./store.js";
 
 export default function configureElements() {
-  createContainer()
+  renderMarkup()
 
   const container = document.querySelector('#chat-window')
   const inputCounter = document.createElement('span')

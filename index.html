@@ -27,6 +27,7 @@
 
     body {
       margin: 0;
+      background-color: #eee;
     }
 
     .main {
@@ -37,212 +38,16 @@
     div[role="form"] {
       background-color: white;
     }
-
-    #loginscreen {
-      position: fixed;
-      display: none;
-      background-color: white;
-      z-index: 2;
-      width: 100%;
-      height: 80%;
-      flex-direction: column;
-      align-items: center;
-      overflow-x: hidden;
-      overflow-y: auto;
-      margin-top: 80px
-    }
-
-    #loginupperimage {
-      max-width: 250px;
-    }
-
-    #logincomponent {
-      width: 90%;
-      font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-      align-items: center;
-      flex-direction: column;
-      display: flex;
-    }
-
-    .loginbutton {
-      width: 100%;
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 700;
-      font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-      padding: 10px 10px;
-      cursor: pointer;
-      border: none;
-      background-color: #FFDC00;
-      color: black;
-      border-radius: 4px;
-    }
-
-    .loginbutton:hover {
-      filter: brightness(0.85);
-      text-decoration: underline;
-    }
   </style>
 
+  <link rel="stylesheet" href="/src/styles/login.scss">
   <link rel="stylesheet" href="/src/styles/webchat.scss">
   <link rel="stylesheet" href="/src/styles/webchat-dark.scss">
 
 </head>
 
 <body>
-  <div id="loginscreen">
-    <div id="logincomponent">
-      <img src="/src/images/chatbotUpper.png" id="loginupperimage">
-      <p style="text-align:center;">
-        <span style="font-size:20px;font-weight: 700;line-height: 32px;">Chat with A.I.D.E.</span>
-      </p>
-      <ul style="width: 100%;font-weight: 400; line-height: 24px;">
-        <li>24/7 educational technology support</li>
-        <li>Easy access to EdTech Hub</li>
-      </ul>
-    </div>
-    <div id="logincomponent">
-      <button class="loginbutton" onclick="onSignInClick()">Start conversation</button>
-    </div>
-  </div>
-
-  <script>
-    var clientApplication;
-
-    function onSignin(idToken) {
-      let requestObj1 = {
-        scopes: ["user.read", 'openid', 'profile']
-      };
-      document.getElementById("loginscreen").style.display = "none";
-      window.IntegrateBot().catch(err => console.error("An error occurred: " + err));
-    }
-
-    function onSignInClick() {
-      let requestObj = {
-        scopes: ["user.read", 'openid', 'profile']
-      };
-
-      clientApplication.loginPopup(requestObj)
-        .then(function (response) {
-          clientApplication.setActiveAccount(response.account);
-          onSignin();
-        })
-        .catch(function (error) { console.log(error) });
-    }
-
-    async function isAuthenticated() {
-      let currentAccounts = clientApplication.getAllAccounts();
-      if (currentAccounts.length > 0) {
-        let requestObj = {
-          scopes: ["user.read", 'openid', 'profile'],
-          redirectUri: 'https://unswauepstaetsbot.blob.core.windows.net/custom-canvas/RedirectUri.html'
-        };
-        return clientApplication.acquireTokenSilent(requestObj)
-          .then(function () {
-            return true;
-          })
-          .catch(function (error) {
-            console.log(error);
-            return false;
-          });
-      } else
-        return false;
-    }
-
-    function getOAuthCardResourceUri(activity) {
-      if (activity &&
-        activity.attachments &&
-        activity.attachments[0] &&
-        activity.attachments[0].contentType === 'application/vnd.microsoft.card.oauth' &&
-        activity.attachments[0].content.tokenExchangeResource) {
-        // asking for token exchange with AAD
-        return activity.attachments[0].content.tokenExchangeResource.uri;
-      }
-    }
-
-    function exchangeTokenAsync(resourceUri) {
-      let currentAccounts = clientApplication.getAllAccounts();
-      if (currentAccounts.length > 0) {
-        let requestObj = {
-          scopes: [resourceUri],
-          redirectUri: 'https://unswauepstaetsbot.blob.core.windows.net/custom-canvas/RedirectUri.html',
-        };
-        return clientApplication.acquireTokenSilent(requestObj)
-          .then(function (tokenResponse) {
-            return tokenResponse.accessToken;
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
-      else {
-        return Promise.resolve(null);
-      }
-    }
-
-    async function fetchJSON(url, options = {}) {
-      const res = await fetch(url, {
-        ...options,
-        headers: {
-          ...options.headers,
-          accept: 'application/json'
-        }
-      });
-
-      if (!res.ok) {
-        throw new Error(`Failed to fetch JSON due to ${res.status}`);
-      }
-
-      return await res.json();
-    }
-
-    function isTokenExpired(token) {
-      if (!token) {
-        // Token is considered expired if not available
-        return true;
-      }
-      const tokenData = parseJwt(token);
-      // Check if the token has an 'exp' claim
-      if (tokenData && tokenData.exp) {
-        const expirationTime = tokenData.exp * 1000; // Convert to milliseconds
-        const currentTime = new Date().getTime();
-        // Check if the token has expired
-        return currentTime > expirationTime;
-      }
-      // Token is considered expired if 'exp' claim is missing
-      return true;
-    }
-
-    function parseJwt(token) {
-      try {
-        // Parse the JWT token
-        return JSON.parse(atob(token.split('.')[1]));
-      } catch (error) {
-        console.error('Error parsing JWT token:', error);
-        return null;
-      }
-    }
-
-    function isLastMsg(timestamp) {
-      var oldTimestamp = sessionStorage.getItem('lastMsgTime');
-      if (oldTimestamp !== null && new Date(timestamp) < new Date(oldTimestamp)) {
-        return false;
-      } else
-        return true;
-    }
-
-    function updateLastMsgTime(timestamp) {
-      if (isLastMsg(timestamp))
-        sessionStorage.setItem('lastMsgTime', timestamp);
-    }
-
-    function fontFamily(fonts) {
-      return fonts.map(font => `'${font}'`).join(', ');
-    }
-  </script>
-
   <script type="module" src="/src/main.js"></script>
-
 </body>
 
 </html>
