@@ -3,7 +3,7 @@ import loginBotIconSrc from "../images/login-bot-icon.png";
 
 export default function renderMarkup() {
   const html = `
-<div id="chat-window" class="chat-window--webchat-uninitialized">
+<div id="chat-window" class="chat-window--webchat-uninitialized chat-window--closed">
   <div class="chat-window__body">
     <div class="chat-window__navbar">
       <div class="chat-window__navbar__title">${BOT_NAME}</div>

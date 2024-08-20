@@ -15,7 +15,6 @@ import {
 } from "./helper.js";
 import botAvatarImageSrc from "../images/chat-bot-icon.png";
 import { exchangeTokenAsync, fetchJSON, fontFamily, getOAuthCardResourceUri, isLastMsg, isTokenExpired, updateLastMsgTime } from "./rootScript.js";
-import cssVariables from '../styles/variables.module.scss'
 
 async function main() {
   handleWebchatInitialization()
@@ -157,9 +156,7 @@ async function main() {
   updateInputPlaceholder()
   insertInputCounter()
 
-  setTimeout(() => {
-    setData('webchatInitialized', true)
-  }, parseInt(cssVariables['transition-duration-ms']))
+  setData('webchatInitialized', true)
 };
 
 export default function renderWebChat() {
