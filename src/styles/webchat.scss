@@ -274,6 +274,10 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
     display: none;
   }
 
+  img.webchat__render-markdown__external-link-icon {
+    display: none;
+  }
+
   &:not(.chat-window--fullscreen) .chat-window__navbar {
     border-radius: 28px 28px 0px 0px;
   }
