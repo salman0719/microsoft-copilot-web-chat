@@ -223,9 +223,12 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
   .webchat__suggested-actions__button {
     border: 0;
     background-color: transparent;
+    padding-left: 10px;
+    padding-right: 10px;
 
     &:hover {
       background-color: revert;
+      border-radius: 28px;
     }
   }
 
@@ -335,6 +338,18 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
     #webchat {
       background-color: #F2F2F2B2;
       max-height: $condensed-webchat-height;
+    }
+
+    .webchat__bubble {
+      border-radius: 14px;
+
+      >.webchat__bubble__content {
+        border-radius: 14px;
+      }
+    }
+
+    .webchat__text-content {
+      padding: 5px;
     }
   }
 }
