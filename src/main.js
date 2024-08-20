@@ -8,8 +8,8 @@ import { isAuthenticated, isTokenExpired, onSignIn } from "./utils/rootScript.js
   configureElements()
   setupLoginButton()
   handleAuthentication()
-  handleFullscreen()
   handleWindowToggle()
+  handleFullscreen()
   handleModeToggle()
 
   if (import.meta.env.MODE === 'development' && import.meta.env.VITE_USE_DUMMY_MODE === '1') {

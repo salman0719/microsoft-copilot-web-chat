@@ -42,8 +42,9 @@ export const handleFullscreen = () => {
     container.classList[getData('isFullscreen') ? 'add' : 'remove']('chat-window--fullscreen')
   })
 
-  setData('isFullscreen',
-    (new URLSearchParams(location.search)).get(FULLSCREEN_SEARCH_QUERY_KEY) === '1')
+  const isFullscreen = (new URLSearchParams(location.search)).get(FULLSCREEN_SEARCH_QUERY_KEY) === '1'
+  setData('isFullscreen', isFullscreen)
+  isFullscreen && setData('isClosed', false)
 
   return res
 }
