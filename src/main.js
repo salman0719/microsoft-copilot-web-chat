@@ -114,8 +114,8 @@ window.IntegrateBot = async function () {
               return next(action);
           });
         }
-        else
-          return;
+
+        return
       }
     } else if (type === 'WEB_CHAT/SUBMIT_SEND_BOX') {
       if (getData('sendBoxValue').length > INPUT_CHAR_LIMIT) {
