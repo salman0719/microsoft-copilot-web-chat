@@ -344,6 +344,10 @@
       max-height: $condensed-webchat-height;
     }
 
+    .webchat__stacked-layout__main {
+      max-width: 100%;
+    }
+
     .webchat__bubble {
       border-radius: 14px;
 
