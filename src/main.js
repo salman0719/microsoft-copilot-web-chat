@@ -23,7 +23,7 @@ window.IntegrateBot = async function () {
   // Add your BOT ID below 
   var theURL = "https://829ad9b9104ce6878ce96c9c25af46.ca.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_studentBotDev/directline/token?api-version=2022-03-01-preview"; // You can find the token URL via the mobile app channel configuration
 
-  if (import.meta.env.MODE === 'development') {
+  if (import.meta.env.MODE === 'development' && import.meta.env.VITE_USE_DUMMY_MODE === '1') {
     theURL = "https://2d1f588f9702ed519606739c183a1d.c9.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_tempTestForCanvasDevelopment/directline/token?api-version=2022-03-01-preview" // You can find the token URL via the mobile app channel configuration
   }
 
@@ -169,7 +169,7 @@ window.IntegrateBot = async function () {
 };
 
 (function () {
-  if (import.meta.env.MODE === 'development') {
+  if (import.meta.env.MODE === 'development' && import.meta.env.VITE_USE_DUMMY_MODE === '1') {
     clientApplication = {
       getActiveAccount: () => {
         return {
