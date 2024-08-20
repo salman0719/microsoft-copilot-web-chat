@@ -1,0 +1,10 @@
+$max-webchat-width: 1200px;
+$condensed-webchat-width: 300px;
+$condensed-webchat-height: 175px;
+$regular-webchat-width: 500px;
+$max-layout-width: 75%; // Determines the width of the bubble chats
+$transition-duration-ms: 300;
+
+:export {
+  transition-duration-ms: $transition-duration-ms;
+}

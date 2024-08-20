@@ -96,11 +96,11 @@ export const handleCondensation = (isNewSession) => {
     const res = subscribe(['isCondensed'], () => {
       const isCondensed = getData('isCondensed')
       if (isCondensed) {
-        container.classList.add('chat-window--condensed')
+        !getData('isClosed') && container.classList.add('chat-window--condensed')
         localStorage.setItem(WEBCHAT_WINDOW_CONDENSED_KEY, '1')
       } else {
         container.classList.remove('chat-window--condensed')
-        document.querySelector('#chat-window .webchat__send-box-text-box__input')?.focus()
+        container.querySelector('.webchat__send-box-text-box__input')?.focus()
         localStorage.removeItem(WEBCHAT_WINDOW_CONDENSED_KEY)
       }
     })

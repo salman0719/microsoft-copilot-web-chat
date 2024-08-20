@@ -1,6 +1,6 @@
 import clientApplication from "./utils/clientApplication.js";
 import configureElements from "./utils/configureElements.js";
-import { handleAuthentication, handleCondensation, handleFullscreen, handleModeToggle, handleWindowToggle, setupLoginButton } from "./utils/helper.js";
+import { handleAuthentication, handleFullscreen, handleModeToggle, handleWindowToggle, setupLoginButton } from "./utils/helper.js";
 import renderWebChat from "./utils/renderWebChat.js";
 import { isAuthenticated, isTokenExpired, onSignIn } from "./utils/rootScript.js";
 
