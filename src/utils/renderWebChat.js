@@ -5,18 +5,20 @@ import {
 } from "./constants.js";
 import { getData, setData } from "./store.js";
 import {
+  handleCondensation,
   handleInput,
   handleUsername,
-  handleWindowToggle,
+  handleWebchatInitialization,
   insertDisclosureText,
   insertInputCounter,
   updateInputPlaceholder,
 } from "./helper.js";
 import botAvatarImageSrc from "../images/chat-bot-icon.png";
-import { processStatusUpdate } from "./actions.js";
 import { exchangeTokenAsync, fetchJSON, fontFamily, getOAuthCardResourceUri, isLastMsg, isTokenExpired, updateLastMsgTime } from "./rootScript.js";
 
 async function main() {
+  handleWebchatInitialization()
+
   // Add your BOT ID below 
   var theURL = "https://829ad9b9104ce6878ce96c9c25af46.ca.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_studentBotDev/directline/token?api-version=2022-03-01-preview"; // You can find the token URL via the mobile app channel configuration
 
@@ -35,15 +37,13 @@ async function main() {
     isNewSession = true;
     currentToken = token;
     sessionStorage.setItem("oldToken", token);
-  }
-  else {
+  } else {
     if (isTokenExpired(oldToken)) {
       const { token } = await fetchJSON(theURL);
       isNewSession = true;
       currentToken = token;
       sessionStorage.setItem("oldToken", token);
-    }
-    else {
+    } else {
       currentToken = oldToken;
       isNewSession = false;
     }
@@ -52,12 +52,14 @@ async function main() {
   let directLine;
   if (latestToken !== undefined && latestToken !== null) {
     directLine = await window.WebChat.createDirectLine(latestToken);
-  }
-  else
+  } else {
     return;
+  }
+
+  handleCondensation(isNewSession)
 
   const store = WebChat.createStore({}, ({ dispatch }) => next => action => {
-    const { type, payload } = action
+    const { type } = action
 
     if (type === 'DIRECT_LINE/CONNECT_FULFILLED') {
       if (isNewSession) {
@@ -71,8 +73,6 @@ async function main() {
         });
       }
       setData('username', action.meta.username || clientApplication?.getActiveAccount()?.name || '')
-    } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
-      processStatusUpdate(payload, isNewSession)
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
       const activity = action.payload.activity;
       let resourceUri;
@@ -154,8 +154,9 @@ async function main() {
   handleInput()
   insertDisclosureText()
   updateInputPlaceholder()
-  handleWindowToggle()
   insertInputCounter()
+
+  setData('webchatInitialized', true)
 };
 
 export default function renderWebChat() {

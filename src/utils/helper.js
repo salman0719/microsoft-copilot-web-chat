@@ -1,5 +1,6 @@
 import { toggleChatWindow, toggleDarkMode } from "./actions.js";
-import { BOT_NAME, DEFAULT_SEND_BOX_ERROR_MESSAGE, DISCLOSURE_TEXT, FULLSCREEN_SEARCH_QUERY_KEY, INPUT_CHAR_LIMIT, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY } from "./constants.js";
+import { BOT_NAME, DEFAULT_SEND_BOX_ERROR_MESSAGE, DISCLOSURE_TEXT, FULLSCREEN_SEARCH_QUERY_KEY, INPUT_CHAR_LIMIT, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY, WEBCHAT_WINDOW_CONDENSED_KEY } from "./constants.js";
+import { isAuthenticated, onSignInClick } from "./rootScript.js";
 import { getData, getElement, setData, subscribe } from "./store.js";
 
 export const insertDisclosureText = () => {
@@ -15,6 +16,17 @@ export const updateInputPlaceholder = () => {
     .placeholder = 'Message ' + BOT_NAME
 }
 
+export const handleAuthentication = () => {
+  const container = getElement('container')
+  const res = subscribe(['authenticated'], () => {
+    container.classList[getData('authenticated') ? 'remove' : 'add']('chat-window--unauthenticated')
+  })
+
+  isAuthenticated()
+
+  return res
+}
+
 export const handleFullscreen = () => {
   const expandIcon = document.querySelector('#chat-window .chat-window__navbar__expand-icon')
   const container = getElement('container')
@@ -26,12 +38,18 @@ export const handleFullscreen = () => {
     window.open(location.origin + location.pathname + newSearch + location.hash)
   })
 
-  return subscribe(['isFullscreen'], () => {
+  const res = subscribe(['isFullscreen'], () => {
     container.classList[getData('isFullscreen') ? 'add' : 'remove']('chat-window--fullscreen')
   })
+
+  setData('isFullscreen',
+    (new URLSearchParams(location.search)).get(FULLSCREEN_SEARCH_QUERY_KEY) === '1')
+
+  return res
 }
 
 export const handleWindowToggle = () => {
+  const container = getElement('container')
   const botElem = document.querySelector('#chat-window #webchat-bot')
   botElem.addEventListener('click', () => {
     toggleChatWindow()
@@ -42,33 +60,55 @@ export const handleWindowToggle = () => {
     toggleChatWindow(false)
   })
 
-  return subscribe(['isClosed'], () => {
+  const res = subscribe(['isClosed'], () => {
     const isClosed = getData('isClosed')
 
-    getElement('container').classList[isClosed ? 'add' : 'remove']('chat-window--closed')
+    container.classList[isClosed ? 'add' : 'remove']('chat-window--closed')
     isClosed ? localStorage.setItem(WEBCHAT_WINDOW_CLOSED_KEY, '1') :
       localStorage.removeItem(WEBCHAT_WINDOW_CLOSED_KEY)
   })
+
+  setData('isClosed', localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1')
+
+  return res
 }
 
-export const handleCondensation = () => {
-  const uncondense = () => {
-    getData('isCondensed') && setData('isCondensed', false)
-  }
-  const webchatBody = document.querySelector('#chat-window .chat-window__body')
-  webchatBody.addEventListener('click', uncondense)
-  webchatBody.addEventListener('keydown', uncondense)
+export const handleCondensation = (isNewSession) => {
+  const container = getElement('container')
 
-  return subscribe(['isCondensed'], () => {
-    const isCondensed = getData('isCondensed')
-    const container = getElement('container')
-    if (isCondensed) {
-      container.classList.add('chat-window--condensed')
-    } else {
-      container.classList.remove('chat-window--condensed')
-      document.querySelector('#chat-window .webchat__send-box-text-box__input')?.focus()
+  if (getData('isFullscreen') || (!isNewSession && localStorage.getItem(WEBCHAT_WINDOW_CONDENSED_KEY) !== '1')) {
+    setData('isCondensed', false)
+    return
+  } else {
+    const uncondense = () => {
+      getData('isCondensed') && setData('isCondensed', false)
     }
-  })
+    const webchatBody = container.querySelector('.chat-window__body')
+    webchatBody.addEventListener('touchstart', uncondense)
+    webchatBody.addEventListener('mousedown', uncondense)
+    webchatBody.addEventListener('keydown', uncondense)
+
+    const unlistenIsClosed = subscribe(['isClosed'], () => {
+      !getData('isClosed') && setData('isCondensed', false)
+      unlistenIsClosed()
+    })
+
+    const res = subscribe(['isCondensed'], () => {
+      const isCondensed = getData('isCondensed')
+      if (isCondensed) {
+        container.classList.add('chat-window--condensed')
+        localStorage.setItem(WEBCHAT_WINDOW_CONDENSED_KEY, '1')
+      } else {
+        container.classList.remove('chat-window--condensed')
+        document.querySelector('#chat-window .webchat__send-box-text-box__input')?.focus()
+        localStorage.removeItem(WEBCHAT_WINDOW_CONDENSED_KEY)
+      }
+    })
+
+    setData('isCondensed', true)
+
+    return res
+  }
 }
 
 export const insertInputCounter = () => {
@@ -83,13 +123,33 @@ export const handleModeToggle = () => {
     toggleDarkMode()
   })
 
-  return subscribe(['isDarkMode'], () => {
+  const res = subscribe(['isDarkMode'], () => {
     const isDarkMode = getData('isDarkMode')
 
     getElement('container').classList[isDarkMode ? 'add' : 'remove']('chat-window--dark')
     isDarkMode ? localStorage.setItem(WEBCHAT_MODE_KEY, '1') :
       localStorage.removeItem(WEBCHAT_MODE_KEY)
   })
+
+  setData('isDarkMode', localStorage.getItem(WEBCHAT_MODE_KEY) === '1')
+
+  return res
+}
+
+export const handleWebchatInitialization = () => {
+  const container = getElement('container')
+  setData('webchatInitialized', !container.classList.contains('chat-window--webchat-uninitialized'))
+
+  return subscribe(['webchatInitialized'], () => {
+    container.classList[getData('webchatInitialized') ? 'remove' : 'add'](
+      'chat-window--webchat-uninitialized'
+    )
+  })
+}
+
+export const setupLoginButton = () => {
+  getElement('loginScreen').querySelector('.login-button')
+    .addEventListener('click', onSignInClick)
 }
 
 export const handleUsername = () => {

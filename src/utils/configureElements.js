@@ -1,5 +1,5 @@
 import renderMarkup from "./renderMarkup.js";
-import { setData, setElement } from "./store.js";
+import { setElement } from "./store.js";
 
 export default function configureElements() {
   renderMarkup()
@@ -8,11 +8,11 @@ export default function configureElements() {
   const inputCounter = document.createElement('span')
   const sendBoxErrorInfoElem = document.createElement('div')
   const modeButton = document.querySelector('#chat-window .chat-window__navbar__mode-button')
+  const loginScreen = container.querySelector('#login-screen')
 
   setElement('container', container)
   setElement('inputCounter', inputCounter)
   setElement('sendBoxErrorInfoElem', sendBoxErrorInfoElem)
   setElement('modeButton', modeButton)
-
-  setData('isClosed', container.classList.contains('chat-window--closed'))
+  setElement('loginScreen', loginScreen)
 }

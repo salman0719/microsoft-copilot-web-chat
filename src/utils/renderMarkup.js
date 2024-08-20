@@ -1,12 +1,9 @@
 import { BOT_NAME } from "./constants.js";
 import loginBotIconSrc from "../images/login-bot-icon.png";
 
-// TODO
-// Attach `onSignIn` listener
-
 export default function renderMarkup() {
   const html = `
-<div id="chat-window" class="chat-window--closed">
+<div id="chat-window" class="chat-window--webchat-uninitialized">
   <div class="chat-window__body">
     <div class="chat-window__navbar">
       <div class="chat-window__navbar__title">${BOT_NAME}</div>
@@ -38,7 +35,7 @@ export default function renderMarkup() {
         </ul>
       </div>
       <div id="login-component">
-        <button class="login-button" onclick="onSignInClick()">Start conversation</button>
+        <button class="login-button">Start conversation</button>
       </div>
     </div>
   </div>

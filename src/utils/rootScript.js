@@ -1,10 +1,9 @@
 import clientApplication from "./clientApplication.js";
 import renderWebChat from "./renderWebChat.js";
+import { setData } from "./store.js";
 
 export function onSignIn() {
-  // TODO
-  // Trigger action / setData()
-  document.getElementById("#chat-window login-screen").style.display = "none";
+  setData('authenticated', true)
   renderWebChat()
 }
 
@@ -22,8 +21,14 @@ export function onSignInClick() {
 }
 
 export async function isAuthenticated() {
+  const returnValue = (value) => {
+    value = !!value
+    setData('authenticated', value)
+    return value
+  }
+
   if (import.meta.env.MODE === 'development' && import.meta.env.VITE_USE_DUMMY_MODE === '1') {
-    return true
+    return returnValue(true)
   }
 
   let currentAccounts = clientApplication.getAllAccounts();
@@ -34,14 +39,15 @@ export async function isAuthenticated() {
     };
     return clientApplication.acquireTokenSilent(requestObj)
       .then(function () {
-        return true;
+        return returnValue(true)
       })
       .catch(function (error) {
         console.log(error);
-        return false;
+        return returnValue(false)
       });
-  } else
-    return false;
+  } else {
+    return returnValue(false)
+  }
 }
 
 export function getOAuthCardResourceUri(activity) {

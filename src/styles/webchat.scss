@@ -356,9 +356,37 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
       }
     }
 
+    .webchat__basic-transcript__scrollable {
+      overflow: hidden;
+    }
+
     .webchat__text-content {
       padding: 5px;
     }
+  }
+
+  &.chat-window--unauthenticated {
+
+    .chat-window__navbar,
+    #webchat {
+      display: none;
+    }
+
+    #login-screen {
+      display: block flex;
+    }
+  }
+
+  &.chat-window--webchat-uninitialized {
+    >.chat-window__body {
+      border: 0;
+
+      .chat-window__navbar,
+      #webchat {
+        display: none;
+      }
+    }
+
   }
 }
 
