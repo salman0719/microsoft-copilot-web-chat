@@ -1,6 +1,6 @@
 const subscribers = {
-  // key: [[Symbol1, callback1], [Symbol2, callback2]]
-  // 'isClosed': [[Symbol(), () => {}], [Symbol(), () => {}]]
+  // key: [callback1, callback2]
+  // 'isClosed': [() => {}, () => {}]
 }
 
 const elements = {
@@ -39,7 +39,7 @@ export const setData = (key, value) => {
   if (oldValue !== value) {
     data[key] = value
 
-    subscribers[key]?.forEach(([_, callback]) => {
+    subscribers[key]?.forEach((callback) => {
       callbacksPending.push(callback)
     })
 
@@ -53,13 +53,13 @@ export const subscribe = (keys, callback) => {
   const symbol = Symbol()
   for (let key of keys) {
     if (!(key in subscribers)) { subscribers[key] = [] }
-    subscribers[key].push([symbol, callback])
+    subscribers[key].push(callback)
   }
 
   return () => {
     for (let subscriberKey in subscribers) {
       subscribers[subscriberKey] = subscribers[subscriberKey]
-        .filter((id) => (symbol === id))
+        .filter((fn) => (callback !== fn))
     }
   }
 }
