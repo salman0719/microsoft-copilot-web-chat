@@ -68,7 +68,7 @@ window.IntegrateBot = async function () {
           }
         });
       }
-      setData('username', action.meta.username)
+      setData('username', action.meta.username || clientApplication?.getActiveAccount().name || '')
     } else if (type === 'DIRECT_LINE/CONNECTION_STATUS_UPDATE') {
       processStatusUpdate(payload, isNewSession)
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
