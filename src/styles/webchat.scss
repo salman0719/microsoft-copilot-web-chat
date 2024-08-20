@@ -127,14 +127,14 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
 
   .webchat__send-box {
     background-color: #F2F2F2B2;
-    border-radius: 0px 0px 29px 29px;
+    border-radius: 29px;
     padding-top: 8px;
   }
 
   .webchat__send-box__main {
     border-radius: 29px;
     background-color: #fff;
-    margin: 0px 12px 8px;
+    margin: 8px 12px 8px;
     border: 1px solid #ccc;
   }
 
@@ -217,7 +217,7 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
   .webchat__suggested-actions__carousel {
     padding-top: 0px;
     padding-bottom: 0px;
-    margin-top: -8px
+    margin: 0px 5px;
   }
 
   .webchat__suggested-actions__button {
