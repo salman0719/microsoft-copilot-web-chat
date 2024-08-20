@@ -1,5 +1,6 @@
 $max-webchat-width: 1200px;
 $condensed-webchat-width: 300px;
+$condensed-webchat-height: 175px;
 $regular-webchat-width: 500px;
 $max-layout-width: 75%; // Determines the width of the bubble chats
 
@@ -333,6 +334,7 @@ $max-layout-width: 75%; // Determines the width of the bubble chats
 
     #webchat {
       background-color: #F2F2F2B2;
+      max-height: $condensed-webchat-height;
     }
   }
 }
