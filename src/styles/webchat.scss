@@ -365,9 +365,29 @@
     }
   }
 
-  &.chat-window--unauthenticated {
+  &.chat-window--webchat-uninitialized {
+    >.chat-window__body {
 
-    .chat-window__navbar,
+      #webchat {
+        display: none;
+      }
+    }
+
+    &:not(.chat-window--unauthenticated)>.chat-window__body {
+      border: 0;
+
+      .chat-window__navbar {
+        display: none;
+      }
+    }
+  }
+
+  &.chat-window--unauthenticated {
+    >.chat-window__body {
+      background-color: #F2F2F2B2;
+    }
+
+    .chat-window__navbar>*:not(.chat-window__navbar__collapse-icon),
     #webchat {
       display: none;
     }
@@ -375,18 +395,11 @@
     #login-screen {
       display: block flex;
     }
-  }
 
-  &.chat-window--webchat-uninitialized {
-    >.chat-window__body {
-      border: 0;
-
-      .chat-window__navbar,
-      #webchat {
-        display: none;
-      }
+    .chat-window__navbar>.chat-window__navbar__collapse-icon {
+      margin-left: auto;
+      display: block;
     }
-
   }
 }
 
