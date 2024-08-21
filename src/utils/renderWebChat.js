@@ -32,7 +32,7 @@ async function main() {
   let currentToken;
   let oldToken = sessionStorage.getItem('oldToken') != undefined && sessionStorage.getItem('oldToken') != "undefined" ? sessionStorage.getItem('oldToken') : null;
   var isNewSession;
-  if (oldToken == undefined && oldToken == null) {
+  if (getData('isFullscreen') || oldToken === undefined || oldToken === null) {
     const { token } = await fetchJSON(theURL);
     isNewSession = true;
     currentToken = token;
