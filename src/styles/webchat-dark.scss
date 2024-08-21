@@ -63,12 +63,14 @@
     background-color: #000;
   }
 
-  .chat-window__navbar__collapse-icon,
-  .chat-window__navbar__expand-icon {
-    color: #fff;
+  @if $enable-fullscreen {
+    .chat-window__navbar__expand-icon {
+      color: #fff;
+    }
   }
 
   .chat-window__navbar__collapse-icon {
+    color: #fff;
     border: 2px solid #fff;
   }
 

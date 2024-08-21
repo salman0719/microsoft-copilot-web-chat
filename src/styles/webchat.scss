@@ -1,5 +1,15 @@
 @import "variables.module.scss";
 
+@mixin expand-collapse-icon-styles {
+  color: #000;
+  cursor: pointer;
+  transition: transform .1s linear;
+  transform-origin: center;
+  display: flex;
+  align-self: center;
+  flex-shrink: 0;
+}
+
 #chat-window {
   z-index: 9999;
   background: transparent;
@@ -66,25 +76,31 @@
     margin-left: auto;
   }
 
-  .chat-window__navbar__expand-icon,
-  .chat-window__navbar__collapse-icon {
-    color: #000;
-    cursor: pointer;
-    transition: transform .1s linear;
-    transform-origin: center;
-    display: flex;
-    align-self: center;
-    flex-shrink: 0;
+  @if $enable-fullscreen {
+
+    .chat-window__navbar__expand-icon,
+    .chat-window__navbar__collapse-icon {
+      @include expand-collapse-icon-styles;
+    }
+
+    .chat-window__navbar__expand-icon:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  @else {
+    .chat-window__navbar__collapse-icon {
+      @include expand-collapse-icon-styles;
+    }
   }
 
   .chat-window__navbar__collapse-icon {
-    display: none;
+    @if $enable-fullscreen {
+      display: none;
+    }
+
     border: 2px solid #000;
     border-radius: 28px;
-  }
-
-  .chat-window__navbar__expand-icon:hover {
-    transform: scale(1.1);
   }
 
   .chat-window__navbar__collapse-icon:hover {
@@ -292,8 +308,10 @@
       border-radius: 0;
     }
 
-    .chat-window__navbar__expand-icon {
-      display: none;
+    @if $enable-fullscreen {
+      .chat-window__navbar__expand-icon {
+        display: none;
+      }
     }
 
     .chat-window__navbar__mode-username {
