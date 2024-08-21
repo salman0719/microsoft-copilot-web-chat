@@ -2,7 +2,7 @@
   position: fixed;
   z-index: 9999;
   right: 135px;
-  bottom: 29px;
+  bottom: 30px;
 
   >iframe.bot-iframe {
     border: 0px;
@@ -22,6 +22,11 @@
 
     &.bot-iframe--unauthenticated {
       height: 440px;
+    }
+
+    &.bot-iframe--closed {
+      width: 64px !important;
+      height: 76px !important;
     }
   }
 }

@@ -24,9 +24,20 @@
         iframe.classList[value ? 'add' : 'remove']('bot-iframe--condensed')
       } else if (key === 'authenticated') {
         iframe.classList[value ? 'remove' : 'add']('bot-iframe--unauthenticated')
+      } else if (key === 'isClosed') {
+        if (!value) {
+          iframe.classList['remove']('bot-iframe--closed')
+        } else {
+          setTimeout(() => {
+            const curValue = store.isClosed
+            iframe.classList[curValue ? 'add' : 'remove']('bot-iframe--closed')
+          }, 300)
+        }
       }
     } else if (type === 'conversationResize') {
       const { height } = data
+
+      if (store.isClosed) { return }
 
       const extraHeight = height - 80
       iframe.style.height = Math.max(
