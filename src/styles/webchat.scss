@@ -469,16 +469,16 @@
     width: 100%;
     max-width: 100%;
     bottom: 0px;
-    right: unset;
+    right: 0px;
     position: fixed;
     box-sizing: border-box;
-    height: 100vh;
     overflow: auto;
     max-height: 100vh;
     overflow: hidden;
 
     .chat-window__body {
       margin-right: 25px;
+      overflow: hidden;
     }
 
     #webchat {
@@ -490,8 +490,20 @@
       margin-right: 0px;
     }
 
+    &.chat-window--webchat-uninitialized #webchat-bot {
+      margin-top: auto;
+    }
+
     .webchat__css-custom-properties>div:first-child {
       max-height: calc(100vh - 150px);
+    }
+
+    &.chat-window--condensed {
+      height: auto;
+
+      .webchat__css-custom-properties>div:first-child {
+        max-height: 100vh;
+      }
     }
   }
 }

@@ -6,6 +6,7 @@ import {
 import { getData, setData } from "./store.js";
 import {
   handleCondensation,
+  handleConversationResize,
   handleInput,
   handleUsername,
   handleWebchatInitialization,
@@ -155,6 +156,7 @@ async function main() {
   insertDisclosureText()
   updateInputPlaceholder()
   insertInputCounter()
+  window.__IS_EMBED_CHILD__ && handleConversationResize()
 
   setData('webchatInitialized', true)
 };

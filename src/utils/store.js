@@ -81,7 +81,7 @@ export const pushSetData = (key, value) => {
     key,
     value,
     source: 'bot-iframe',
-    event: 'setData'
+    type: 'setData'
   };
 
   window.parent.postMessage(data, '*')

@@ -207,3 +207,23 @@ export const handleInput = () => {
     })
   ]
 }
+
+export const handleConversationResize = () => {
+  const conversationContainer = getElement('container')
+    .querySelector('.webchat__basic-transcript__scrollable')
+
+  function sendIframeSize() {
+    const data = {
+      width: conversationContainer.scrollWidth,
+      height: conversationContainer.scrollHeight,
+      source: 'bot-iframe',
+      type: 'conversationResize'
+    };
+    window.parent.postMessage(data, '*');
+  }
+
+  const resizeObserver = new ResizeObserver(sendIframeSize);
+  resizeObserver.observe(conversationContainer);
+
+  sendIframeSize();
+}
