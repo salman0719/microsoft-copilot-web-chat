@@ -1,0 +1,16 @@
+#bot-iframe-wrapper {
+  position: fixed;
+  z-index: 9999;
+  right: 135px;
+  bottom: 29px;
+
+  >iframe {
+    border: 0px;
+    width: 525px;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 0px;
+    height: 375px;
+    background: transparent;
+  }
+}

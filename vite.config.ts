@@ -7,7 +7,10 @@ export default defineConfig(({ mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `$enable-fullscreen: ${env.VITE_ENABLE_FULLSCREEN ? 'true' : 'false'};`
+          additionalData: `
+            $enable-fullscreen: ${env.VITE_ENABLE_FULLSCREEN ? 'true' : 'false'};
+            $is-embed-child: true;
+          `
         }
       }
     },

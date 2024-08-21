@@ -133,7 +133,7 @@
     align-self: end;
     margin-right: -25px;
     margin-top: 10px;
-    flex: 1 0 64px;
+    flex: 0 0 64px;
     background-size: contain;
   }
 
@@ -421,43 +421,77 @@
   }
 }
 
-@media (max-width: 768px) {
-  #chat-window {
-    right: 40px;
-    max-width: calc(100vw - 80px);
-
-    #webchat {
+@if not $is-embed-child {
+  @media (max-width: 768px) {
+    #chat-window {
+      right: 40px;
       max-width: calc(100vw - 80px);
+
+      #webchat {
+        max-width: calc(100vw - 80px);
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    #chat-window {
+      right: 20px;
+      bottom: 20px;
+      max-height: calc(100vh - 40px);
+      max-width: calc(100vw - 40px);
+      overflow: auto;
+
+      #webchat {
+        max-width: calc(100vw - 40px);
+      }
+
+      #webchat-bot {
+        margin-right: 0px;
+      }
+
+      &.chat-window--fullscreen .chat-window__navbar__mode-username,
+      .chat-window__navbar__mode-username {
+        display: none;
+      }
+
+      .chat-window__navbar {
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        overflow: auto;
+        gap: 15px 4px;
+      }
     }
   }
 }
 
-@media (max-width: 480px) {
+@if $is-embed-child {
   #chat-window {
-    right: 20px;
-    bottom: 20px;
-    max-height: calc(100vh - 40px);
-    max-width: calc(100vw - 40px);
+    width: 100%;
+    max-width: 100%;
+    bottom: 0px;
+    right: unset;
+    position: fixed;
+    box-sizing: border-box;
+    height: 100vh;
     overflow: auto;
+    max-height: 100vh;
+    overflow: hidden;
+
+    .chat-window__body {
+      margin-right: 25px;
+    }
 
     #webchat {
-      max-width: calc(100vw - 40px);
+      max-width: 100%;
+      max-height: 100vh;
     }
 
     #webchat-bot {
       margin-right: 0px;
     }
 
-    &.chat-window--fullscreen .chat-window__navbar__mode-username,
-    .chat-window__navbar__mode-username {
-      display: none;
-    }
-
-    .chat-window__navbar {
-      flex-wrap: nowrap;
-      white-space: nowrap;
-      overflow: auto;
-      gap: 15px 4px;
+    .webchat__css-custom-properties>div:first-child {
+      max-height: calc(100vh - 150px);
     }
   }
 }
