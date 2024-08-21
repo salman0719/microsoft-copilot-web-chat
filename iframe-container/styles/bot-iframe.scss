@@ -4,7 +4,7 @@
   right: 135px;
   bottom: 29px;
 
-  >iframe {
+  >iframe.bot-iframe {
     border: 0px;
     width: 525px;
     box-sizing: border-box;
@@ -14,6 +14,11 @@
     background: transparent;
     max-width: calc(100vw - 25px);
     max-height: calc(100vh - 75px);
+
+    &.bot-iframe--condensed {
+      width: 325px;
+      height: 300px;
+    }
   }
 }
 
@@ -23,7 +28,7 @@
     bottom: unset;
     top: 20px;
 
-    >iframe {
+    >iframe.bot-iframe {
       max-height: unset;
       border: 0px;
       width: 525px;

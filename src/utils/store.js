@@ -1,3 +1,5 @@
+const isWindowEmbedded = window.top !== window.self
+
 const subscribers = {
   // key: [callback1, callback2]
   // 'isClosed': [() => {}, () => {}]
@@ -43,6 +45,10 @@ export const setData = (key, value) => {
       callbacksPending.push(callback)
     })
 
+    if (window.__IS_EMBED_CHILD__) {
+      pushSetData(key, value)
+    }
+
     setTimeout(processCallbacks)
   }
 }
@@ -62,4 +68,21 @@ export const subscribe = (keys, callback) => {
         .filter((fn) => (callback !== fn))
     }
   }
+}
+
+export const pushSetData = (key, value) => {
+  if (!isWindowEmbedded) { return }
+
+  if (!['string', 'number', 'boolean'].includes(typeof value)) {
+    return
+  }
+
+  const data = {
+    key,
+    value,
+    source: 'bot-iframe',
+    event: 'setData'
+  };
+
+  window.parent.postMessage(data, '*')
 }

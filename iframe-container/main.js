@@ -2,10 +2,25 @@
 // console.log('window.parent', window.parent)
 
 (function () {
+  const iframe = document.querySelector('#bot-iframe-wrapper>iframe.bot-iframe');
+
+  window.addEventListener('message', (event) => {
+    // TEMP
+    // if (event.origin !== 'http://iframe-origin.com') return; // Replace with your iframe's origin
+    const { key, value, source } = event.data;
+    if (source !== 'bot-iframe') { return }
+
+    if (key === 'isCondensed') {
+      iframe.classList[value ? 'add' : 'remove']('bot-iframe--condensed')
+    }
+
+    // TEMP
+    console.log('Received from child', 'key', key, 'value', value)
+  });
+
   return
 
   // Parent Window Script
-  const iframe = document.querySelector('#bot-iframe-wrapper>iframe');
 
   // Function to send the parent window's dimensions to the iframe
   function sendParentDimensions() {
