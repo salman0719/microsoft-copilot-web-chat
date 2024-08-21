@@ -12,5 +12,26 @@
     margin: 0px;
     height: 375px;
     background: transparent;
+    max-width: calc(100vw - 25px);
+    max-height: calc(100vh - 75px);
+  }
+}
+
+@media (max-width: 768px) {
+  #bot-iframe-wrapper {
+    right: 0px;
+    bottom: unset;
+    top: 20px;
+
+    >iframe {
+      max-height: unset;
+      border: 0px;
+      width: 525px;
+      box-sizing: border-box;
+      overflow: hidden;
+      margin: 0px;
+      height: 375px;
+      background: transparent;
+    }
   }
 }
