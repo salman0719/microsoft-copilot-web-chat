@@ -7,9 +7,13 @@
     "dev": "vite",
     "dev-iframe": "concurrently \"vite --config vite-embed-child.config.ts\" \"vite --config iframe-container/vite.config.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && vite build",
+    "build-old": "tsc && vite build",
+    "build-child": "vite build --config vite-embed-child.config.ts",
+    "build-parent": "tsc && vite build --config iframe-container/vite.config.ts",
+    "build": "concurrently \"npm run build-child\" \"npm run build-parent\"",
     "preview": "npm start",
-    "start": "tsc && vite build && vite preview"
+    "start-old": "tsc && vite build && vite preview",
+    "start": "concurrently \"vite preview --config vite-embed-child.config.ts\" \"vite preview --config vite-embed-child.config.ts\""
   },
   "author": "Salman Hossain",
   "license": "MIT",
