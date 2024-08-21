@@ -396,7 +396,7 @@
       display: block flex;
     }
 
-    .chat-window__navbar>.chat-window__navbar__collapse-icon {
+    &:not(.chat-window--fullscreen) .chat-window__navbar>.chat-window__navbar__collapse-icon {
       margin-left: auto;
       display: block;
     }

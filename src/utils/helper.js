@@ -63,7 +63,7 @@ export const handleWindowToggle = () => {
   collapseIcon.addEventListener('touchstart', stopPropagation)
   collapseIcon.addEventListener('click', (e) => {
     stopPropagation(e)
-    toggleChatWindow(false)
+    !getData('isFullscreen') && toggleChatWindow(false)
   })
 
   const res = subscribe(['isClosed'], () => {
