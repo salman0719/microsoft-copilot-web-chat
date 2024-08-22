@@ -481,6 +481,12 @@
       overflow: hidden;
     }
 
+    .chat-window__navbar {
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      overflow: auto;
+    }
+
     #webchat {
       max-width: 100%;
       max-height: 100vh;

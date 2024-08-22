@@ -37,7 +37,7 @@
     bottom: 8px;
 
     >iframe.bot-iframe {
-      max-height: 100vh;
+      max-height: calc(100vh - 16px);
     }
   }
 }

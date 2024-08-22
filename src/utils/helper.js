@@ -209,16 +209,19 @@ export const handleInput = () => {
 }
 
 export const handleConversationResize = () => {
-  const conversationContainer = getElement('container')
+  const container = getElement('container')
+  const conversationContainer = container
     .querySelector('.webchat__basic-transcript__scrollable')
 
   function sendIframeSize() {
+    const containerHeight = container.offsetHeight
+    const conversationHeight = conversationContainer.offsetHeight
+
     const data = {
-      width: conversationContainer.scrollWidth,
-      height: conversationContainer.scrollHeight,
+      height: containerHeight - conversationHeight + conversationContainer.scrollHeight + 20,
       source: 'bot-iframe',
       type: 'conversationResize'
-    };
+    }
 
     window.parent.postMessage(data, '*');
   }

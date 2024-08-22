@@ -3,13 +3,9 @@
 
   const store = {}
 
-  const stateHeightMapper = {
-    'isCondensed': 375,
-    'regular': 500,
-  }
-
   window.addEventListener('message', (event) => {
     // TODO
+    // Use constant
     // if (event.origin !== 'http://iframe-origin.com') return; 
     const { data } = event
     const { source, type } = data;
@@ -31,6 +27,8 @@
           setTimeout(() => {
             const curValue = store.isClosed
             iframe.classList[curValue ? 'add' : 'remove']('bot-iframe--closed')
+            // TODO
+            // Use constant
           }, 300)
         }
       }
@@ -39,12 +37,9 @@
 
       if (store.isClosed) { return }
 
-      const extraHeight = height - 40
-      iframe.style.height = Math.max(
-        Math.min(extraHeight, window.innerHeight - 80),
-        stateHeightMapper[store.isCondensed ? 'isCondensed' : 'regular']
-      ) + 'px'
-
+      // TODO
+      // Use constant
+      iframe.style.height = Math.max(height, 350) + 'px'
     }
 
   });
