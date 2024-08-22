@@ -39,7 +39,7 @@
 
       if (store.isClosed) { return }
 
-      const extraHeight = height - 80
+      const extraHeight = height - 40
       iframe.style.height = Math.max(
         Math.min(extraHeight, window.innerHeight - 80),
         stateHeightMapper[store.isCondensed ? 'isCondensed' : 'regular']
