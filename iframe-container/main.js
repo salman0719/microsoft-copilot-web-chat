@@ -35,6 +35,11 @@
     } else if (type === 'conversationResize') {
       const { height } = data
 
+      if (!store.authenticated) {
+        iframe.style.removeProperty('height')
+        return
+      }
+
       if (store.isClosed) { return }
 
       // TODO
