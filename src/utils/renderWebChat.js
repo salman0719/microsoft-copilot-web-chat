@@ -156,7 +156,7 @@ async function main() {
   insertDisclosureText()
   updateInputPlaceholder()
   insertInputCounter()
-  window.__IS_EMBED_CHILD__ && handleConversationResize()
+  __IS_EMBED_CHILD__ && handleConversationResize()
 
   setData('webchatInitialized', true)
 };

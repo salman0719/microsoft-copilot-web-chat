@@ -219,6 +219,7 @@ export const handleConversationResize = () => {
       source: 'bot-iframe',
       type: 'conversationResize'
     };
+
     window.parent.postMessage(data, '*');
   }
 

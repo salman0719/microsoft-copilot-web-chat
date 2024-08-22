@@ -45,7 +45,7 @@ export const setData = (key, value) => {
       callbacksPending.push(callback)
     })
 
-    if (window.__IS_EMBED_CHILD__) {
+    if (__IS_EMBED_CHILD__) {
       pushSetData(key, value)
     }
 

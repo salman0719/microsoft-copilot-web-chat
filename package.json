@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "dev": "vite",
-    "dev-iframe": "concurrently \"vite --config vite-embed-child.config.ts\" \"vite --config iframe-container/vite.config.ts\"",
+    "dev-old": "vite",
+    "dev": "concurrently \"vite --config vite-embed-child.config.ts\" \"vite --config iframe-container/vite.config.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-old": "tsc && vite build",
     "build-child": "vite build --config vite-embed-child.config.ts",
@@ -13,7 +13,7 @@
     "build": "concurrently \"npm run build-child\" \"npm run build-parent\"",
     "preview": "npm start",
     "start-old": "tsc && vite build && vite preview",
-    "start": "concurrently \"vite preview --config vite-embed-child.config.ts\" \"vite preview --config vite-embed-child.config.ts\""
+    "start": "concurrently \"vite preview --config vite-embed-child.config.ts\" \"vite preview --config iframe-container/vite.config.ts\""
   },
   "author": "Salman Hossain",
   "license": "MIT",

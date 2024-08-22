@@ -6,7 +6,7 @@ export default function defineConfig(config: ConfigEnv) {
 
   return mergeConfig(baseConfig(config), {
     define: {
-      __IS_EMBED_CHILD__: true
+      __IS_EMBED_CHILD__: true,
     },
     css: {
       preprocessorOptions: {
@@ -19,7 +19,10 @@ export default function defineConfig(config: ConfigEnv) {
       }
     },
     server: {
-      port: parseInt(env.EMBED_CHILD_PORT || '6000'),
+      port: parseInt(env.EMBED_CHILD_PORT || '7000'),
+    },
+    preview: {
+      port: parseInt(env.EMBED_CHILD_PORT || '7000'),
     }
   });
 }

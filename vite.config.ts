@@ -4,6 +4,9 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
+    define: {
+      __IS_EMBED_CHILD__: false,
+    },
     css: {
       preprocessorOptions: {
         scss: {

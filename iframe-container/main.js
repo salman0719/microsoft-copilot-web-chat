@@ -9,7 +9,7 @@
   }
 
   window.addEventListener('message', (event) => {
-    // TEMP
+    // TODO
     // if (event.origin !== 'http://iframe-origin.com') return; 
     const { data } = event
     const { source, type } = data;
