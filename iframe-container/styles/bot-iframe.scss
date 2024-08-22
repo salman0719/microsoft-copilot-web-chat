@@ -12,7 +12,7 @@
     margin: 0px;
     height: 500px;
     background: transparent;
-    max-width: calc(100vw - 25px);
+    max-width: calc(100vw - 33px);
     max-height: calc(100vh - 75px);
 
     &.bot-iframe--condensed {
@@ -33,12 +33,11 @@
 
 @media (max-width: 768px) {
   #bot-iframe-wrapper {
-    right: 0px;
-    bottom: unset;
-    top: 20px;
+    right: 8px;
+    bottom: 8px;
 
     >iframe.bot-iframe {
-      max-height: unset;
+      max-height: 100vh;
     }
   }
 }
