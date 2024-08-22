@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
         scss: {
           additionalData: `
             $enable-fullscreen: ${env.VITE_ENABLE_FULLSCREEN ? 'true' : 'false'};
-            $is-embed-child: true;
+            $is-embed-child: false;
           `
         }
       }
