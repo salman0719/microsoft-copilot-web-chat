@@ -8,12 +8,10 @@ import renderMarkup from "./utils/renderMarkup";
   const store = {}
 
   window.addEventListener('message', (event) => {
-    // TODO
-    // Use constant
-    // if (event.origin !== 'http://iframe-origin.com') return; 
+    if (event.source !== iframe.contentWindow) { return }
+
     const { data } = event
-    const { source, type } = data;
-    if (source !== 'bot-iframe') { return }
+    const { type } = data;
 
     if (type === 'setData') {
       const { key, value } = data

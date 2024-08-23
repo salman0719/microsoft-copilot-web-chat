@@ -219,11 +219,15 @@ export const handleConversationResize = () => {
 
     const data = {
       height: containerHeight - conversationHeight + conversationContainer.scrollHeight + 10,
-      source: 'bot-iframe',
       type: 'conversationResize'
     }
 
-    window.parent.postMessage(data, '*');
+    window.parent.postMessage(
+      data,
+      import.meta.env.DEV ?
+        'http://localhost:' + (import.meta.env.VITE_EMBED_PARENT_PORT || '4000') :
+        import.meta.env.VITE_EMBED_PARENT_ORIGIN || '*'
+    );
   }
 
   const resizeObserver = new ResizeObserver(sendIframeSize);

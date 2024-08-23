@@ -80,7 +80,6 @@ export const pushSetData = (key, value) => {
   const data = {
     key,
     value,
-    source: 'bot-iframe',
     type: 'setData'
   };
 

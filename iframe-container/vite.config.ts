@@ -8,11 +8,11 @@ export default defineConfig(({ mode }) => {
     envDir,
     root: './iframe-container',
     server: {
-      port: parseInt(env.EMBED_PARENT_PORT || '4000'),
+      port: parseInt(env.VITE_EMBED_PARENT_PORT || '4000'),
     },
     preview: {
       open: true,
-      port: parseInt(env.EMBED_PARENT_PREVIEW_PORT || '4100')
+      port: parseInt(env.VITE_EMBED_PARENT_PREVIEW_PORT || '4100')
     }
   }
 });
