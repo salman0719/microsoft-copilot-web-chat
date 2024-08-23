@@ -119,7 +119,6 @@
     position: relative;
     width: 100%;
     border-radius: 0px 0px 28px 28px;
-    max-height: 60vh;
     overflow: auto;
   }
 
@@ -189,7 +188,7 @@
   .webchat__css-custom-properties>div:first-child {
     background: transparent;
     overflow: auto;
-    max-height: 60vh;
+    max-height: calc(100vh - 225px);
   }
 
   &:not(.chat-window--condensed) .webchat__css-custom-properties>div:first-child {
