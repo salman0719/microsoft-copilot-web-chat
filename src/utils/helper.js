@@ -218,7 +218,7 @@ export const handleConversationResize = () => {
     const conversationHeight = conversationContainer.offsetHeight
 
     const data = {
-      height: containerHeight - conversationHeight + conversationContainer.scrollHeight + 20,
+      height: containerHeight - conversationHeight + conversationContainer.scrollHeight + 10,
       source: 'bot-iframe',
       type: 'conversationResize'
     }

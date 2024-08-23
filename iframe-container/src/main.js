@@ -48,7 +48,7 @@ import renderMarkup from "./utils/renderMarkup";
 
       // TODO
       // Use constant
-      iframe.style.height = Math.max(height, 350) + 'px'
+      iframe.style.height = Math.max(height, 335) + 'px'
     }
 
   });
