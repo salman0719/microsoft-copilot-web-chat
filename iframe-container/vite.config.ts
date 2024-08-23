@@ -1,9 +1,11 @@
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '')
+  const envDir = process.cwd()
+  const env = loadEnv(mode, envDir, '')
 
   return {
+    envDir,
     root: './iframe-container',
     server: {
       port: parseInt(env.PORT || '4000'),

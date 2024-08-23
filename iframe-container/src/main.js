@@ -1,4 +1,8 @@
+import renderMarkup from "./utils/renderMarkup";
+
 (function () {
+  renderMarkup()
+
   const iframe = document.querySelector('#bot-iframe-wrapper>iframe.bot-iframe');
 
   const store = {}

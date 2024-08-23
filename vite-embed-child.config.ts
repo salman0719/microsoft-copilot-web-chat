@@ -19,10 +19,10 @@ export default function defineConfig(config: ConfigEnv) {
       }
     },
     server: {
-      port: parseInt(env.EMBED_CHILD_PORT || '7000'),
+      port: parseInt(env.VITE_EMBED_CHILD_PORT || '7000'),
     },
     preview: {
-      port: parseInt(env.EMBED_CHILD_PORT || '7000'),
+      port: parseInt(env.VITE_EMBED_CHILD_PORT || '7000'),
     }
   });
 }
