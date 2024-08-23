@@ -26,7 +26,7 @@ export default function renderMarkup() {
     </div>
     <div id="webchat"></div>
     <div id="login-screen">
-      <div id="login-component">
+      <div>
         <img src=${loginBotIconSrc} id="login-upper-image">
         <p style="text-align:center;">
           <span style="font-size:20px;font-weight: 700;line-height: 32px;">Chat with ${BOT_NAME}</span>
@@ -36,7 +36,7 @@ export default function renderMarkup() {
           <li>Easy access to EdTech Hub</li>
         </ul>
       </div>
-      <div id="login-component">
+      <div>
         <button class="login-button">Start conversation</button>
       </div>
     </div>
