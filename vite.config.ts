@@ -1,5 +1,19 @@
 import { defineConfig, loadEnv } from 'vite';
 
+const defaultScssAdditionalDataObj = {
+  'enable-fullscreen': 'false',
+  'is-embed-child': 'false'
+}
+
+export const getScssAdditionalData = (obj: Record<string, string> = {}) => {
+  let scss = '', scssObj = { ...defaultScssAdditionalDataObj, ...obj }
+  for (const [key, value] of Object.entries(scssObj)) {
+    scss += '$' + key + ':' + value + ';'
+  }
+
+  return scss
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
@@ -10,23 +24,23 @@ export default defineConfig(({ mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `
-            $enable-fullscreen: ${env.VITE_ENABLE_FULLSCREEN ? 'true' : 'false'};
-            $is-embed-child: false;
-          `
+          additionalData: getScssAdditionalData({
+            'enable-fullscreen': env.VITE_ENABLE_FULLSCREEN ? 'true' : 'false'
+          })
         }
       }
     },
     server: {
-      port: parseInt(env.PORT || '4000'),
+      port: parseInt(env.PORT || '3000'),
       proxy: {
         '/api': {
-          target: 'http://localhost:' + (env.SERVER_PORT || '4001'),
+          target: 'http://localhost:' + (env.SERVER_PORT || '3001'),
           changeOrigin: true
         }
       }
     },
     preview: {
+      open: true,
       port: parseInt(env.PREVIEW_PORT || '5000')
     }
   }

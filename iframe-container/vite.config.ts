@@ -8,16 +8,11 @@ export default defineConfig(({ mode }) => {
     envDir,
     root: './iframe-container',
     server: {
-      port: parseInt(env.PORT || '4000'),
-      proxy: {
-        '/api': {
-          target: 'http://localhost:' + (env.SERVER_PORT || '4001'),
-          changeOrigin: true
-        }
-      }
+      port: parseInt(env.EMBED_PARENT_PORT || '4000'),
     },
     preview: {
-      port: parseInt(env.PREVIEW_PORT || '5000')
+      open: true,
+      port: parseInt(env.EMBED_PARENT_PREVIEW_PORT || '4100')
     }
   }
 });
