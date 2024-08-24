@@ -1,4 +1,4 @@
-import { toggleChatWindow, toggleDarkMode } from "./actions.js";
+import { postMessageToParent, toggleChatWindow, toggleDarkMode } from "./actions.js";
 import { BOT_NAME, DEFAULT_SEND_BOX_ERROR_MESSAGE, DISCLOSURE_TEXT, FULLSCREEN_SEARCH_QUERY_KEY, INPUT_CHAR_LIMIT, WEBCHAT_MODE_KEY, WEBCHAT_WINDOW_CLOSED_KEY, WEBCHAT_WINDOW_CONDENSED_KEY } from "./constants.js";
 import { isAuthenticated, onSignInClick } from "./rootScript.js";
 import { getData, getElement, setData, subscribe } from "./store.js";
@@ -222,12 +222,7 @@ export const handleConversationResize = () => {
       type: 'conversationResize'
     }
 
-    window.parent.postMessage(
-      data,
-      import.meta.env.DEV ?
-        'http://localhost:' + (import.meta.env.VITE_EMBED_PARENT_PORT || '4000') :
-        import.meta.env.VITE_EMBED_PARENT_ORIGIN || '*'
-    );
+    postMessageToParent(data)
   }
 
   const resizeObserver = new ResizeObserver(sendIframeSize);

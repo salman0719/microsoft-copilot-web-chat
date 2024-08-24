@@ -1,3 +1,5 @@
+import { postMessageToParent } from "./actions"
+
 const isWindowEmbedded = window.top !== window.self
 
 const subscribers = {
@@ -83,5 +85,5 @@ export const pushSetData = (key, value) => {
     type: 'setData'
   };
 
-  window.parent.postMessage(data, '*')
+  postMessageToParent(data)
 }
