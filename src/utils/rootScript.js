@@ -1,6 +1,6 @@
 import clientApplication from "./clientApplication.js";
 import renderWebChat from "./renderWebChat.js";
-import { setData } from "./store.js";
+import { setData } from "./store.ts";
 
 export function onSignIn() {
   setData('authenticated', true)

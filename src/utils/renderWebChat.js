@@ -3,8 +3,8 @@ import {
   BOT_NAME,
   BOT_TOKEN_ENDPOINT,
   INPUT_CHAR_LIMIT,
-} from "./constants.js";
-import { getData, setData } from "./store.js";
+} from "./constants.ts";
+import { getData, setData } from "./store.ts";
 import {
   handleCondensation,
   handleConversationResize,
