@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
     },
     preview: {
       open: true,
-      port: parseInt(env.VITE_EMBED_PARENT_PREVIEW_PORT || '4100')
+      port: parseInt(env.VITE_EMBED_PARENT_PREVIEW_PORT || '5000')
     }
   }
 });
