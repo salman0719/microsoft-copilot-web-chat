@@ -20,11 +20,6 @@ export default function defineConfig(config: ConfigEnv) {
     },
     server: {
       port: parseInt(env.VITE_EMBED_CHILD_PORT || '7000'),
-      proxy: {
-        '/api': {
-          target: 'http://localhost:' + (env.VITE_EMBED_CHILD_SERVER_PORT || '7001'),
-        }
-      }
     },
     preview: {
       open: false,
