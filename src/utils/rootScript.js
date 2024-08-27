@@ -27,7 +27,10 @@ export async function isAuthenticated() {
     return value
   }
 
-  if (import.meta.env.MODE === 'development' && import.meta.env.VITE_USE_DUMMY_MODE === '1') {
+  if (import.meta.env.MODE === 'development' && (
+    import.meta.env.VITE_USE_DUMMY_MODE === '1' ||
+    import.meta.env.VITE_IGNORE_AUTH === '1'
+  )) {
     return returnValue(true)
   }
 

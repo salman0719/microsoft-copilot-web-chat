@@ -12,7 +12,10 @@ import { isAuthenticated, isTokenExpired, onSignIn } from "./utils/rootScript.js
   import.meta.env.VITE_ENABLE_FULLSCREEN === '1' && handleFullscreen()
   handleModeToggle()
 
-  if (import.meta.env.MODE === 'development' && import.meta.env.VITE_USE_DUMMY_MODE === '1') {
+  if (import.meta.env.MODE === 'development' && (
+    import.meta.env.VITE_USE_DUMMY_MODE === '1' ||
+    import.meta.env.VITE_IGNORE_AUTH === '1'
+  )) {
     clientApplication.getActiveAccount = () => ({
       name: 'Jenny Smith'
     })
