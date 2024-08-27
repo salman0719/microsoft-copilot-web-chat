@@ -53,6 +53,7 @@ export const handleFullscreen = import.meta.env.ENABLE_FULLSCREEN === '1' ?
 
 export const handleWindowToggle = () => {
   const container = getElement('container')
+  const containerBody = container.querySelector('.chat-window__body')
   const botElem = document.querySelector('#chat-window #webchat-bot')
   botElem.addEventListener('click', () => {
     toggleChatWindow()
@@ -71,9 +72,23 @@ export const handleWindowToggle = () => {
   const res = subscribe(['isClosed'], () => {
     const isClosed = getData('isClosed')
 
-    container.classList[isClosed ? 'add' : 'remove']('chat-window--closed')
-    isClosed ? localStorage.setItem(WEBCHAT_WINDOW_CLOSED_KEY, '1') :
-      localStorage.removeItem(WEBCHAT_WINDOW_CLOSED_KEY)
+    if (isClosed) {
+      setTimeout(() => {
+        if (getData('isClosed') === isClosed) {
+          containerBody.classList.add('chat-window__body--hidden')
+        }
+        // TODO
+        // Use constant
+      }, 300)
+    } else {
+      containerBody.classList.remove('chat-window__body--hidden')
+    }
+
+    setTimeout(() => {
+      container.classList[isClosed ? 'add' : 'remove']('chat-window--closed')
+      isClosed ? localStorage.setItem(WEBCHAT_WINDOW_CLOSED_KEY, '1') :
+        localStorage.removeItem(WEBCHAT_WINDOW_CLOSED_KEY)
+    }, 1)
   })
 
   setData('isClosed', localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1')
