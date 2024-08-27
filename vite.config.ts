@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
       preprocessorOptions: {
         scss: {
           additionalData: getScssAdditionalData({
-            'enable-fullscreen': env.VITE_ENABLE_FULLSCREEN ? 'true' : 'false'
+            'enable-fullscreen': env.VITE_ENABLE_FULLSCREEN === '1' ? 'true' : 'false'
           })
         }
       }
@@ -37,6 +37,9 @@ export default defineConfig(({ mode }) => {
     preview: {
       open: true,
       port: parseInt(env.PREVIEW_PORT || '3100')
-    }
+    },
+    plugins: [
+      preact()
+    ]
   }
 });
