@@ -32,20 +32,11 @@ export default defineConfig(({ mode }) => {
       }
     },
     server: {
-      port: parseInt(env.PORT || '3000'),
-      proxy: {
-        '/api': {
-          target: 'http://localhost:' + (env.SERVER_PORT || '3001'),
-          changeOrigin: true
-        }
-      }
+      port: parseInt(env.PORT || '3000')
     },
     preview: {
       open: true,
-      port: parseInt(env.PREVIEW_PORT || '5000')
-    },
-    plugins: [
-      preact()
-    ]
+      port: parseInt(env.PREVIEW_PORT || '3100')
+    }
   }
 });

@@ -3,41 +3,42 @@
   z-index: 9999;
   right: 135px;
   bottom: 30px;
+  // TODO
+  // Use constant
+  width: 525px;
+  height: 500px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 67px);
 
   >iframe.bot-iframe {
     border: 0px;
-    width: 525px;
+    width: 100%;
+    height: 100%;
     box-sizing: border-box;
     overflow: hidden;
     margin: 0px;
-    height: 500px;
     background: transparent;
-    max-width: calc(100vw - 33px);
-    max-height: calc(100vh - 75px);
+  }
 
-    &.bot-iframe--condensed {
-      width: 325px;
-      height: 300px;
-    }
+  &.bot-iframe--condensed {
+    height: 300px;
+    width: 325px;
+  }
 
-    &.bot-iframe--unauthenticated {
-      height: 440px;
-    }
+  &.bot-iframe--unauthenticated {
+    height: 440px;
+  }
 
-    &.bot-iframe--closed {
-      width: 64px !important;
-      height: 76px !important;
-    }
+  &.bot-iframe--closed {
+    width: 64px !important;
+    height: 64px !important;
   }
 }
 
 @media (max-width: 768px) {
   #bot-iframe-wrapper {
-    right: 8px;
+    right: 20px;
     bottom: 8px;
-
-    >iframe.bot-iframe {
-      max-height: calc(100vh - 16px);
-    }
+    max-height: calc(100vh - 16px);
   }
 }
