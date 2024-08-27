@@ -301,45 +301,48 @@
     border-radius: 28px 28px 0px 0px;
   }
 
-  &.chat-window--fullscreen {
-    width: 100vw;
-    right: 0px;
-    bottom: 0px;
-    height: 100vh;
-    max-width: 100vw;
-    max-height: 100vh;
-    background-color: #fff;
+  @if $enable-fullscreen {
+    &.chat-window--fullscreen {
+      right: 0px;
+      bottom: 0px;
+      height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      background-color: #fff;
 
-    >.chat-window__body {
-      border: 0;
-      border-radius: 0;
-    }
+      >.chat-window__body {
+        width: 100vw;
+        max-width: 100vw;
+        border: 0;
+        border-radius: 0;
+        margin-right: 0px;
+        overflow: hidden;
+      }
 
-    @if $enable-fullscreen {
       .chat-window__navbar__expand-icon {
         display: none;
       }
-    }
 
-    .chat-window__navbar__mode-username {
-      display: inline-flex;
-      align-items: center;
-    }
+      .chat-window__navbar__mode-username {
+        display: inline-flex;
+        align-items: center;
+      }
 
-    #webchat {
-      margin: auto;
-      height: calc(100vh - 67.5px);
-      max-width: $max-webchat-width;
-      width: auto;
-      max-height: unset;
-    }
+      #webchat {
+        margin: auto;
+        height: calc(100vh - 67.5px);
+        max-width: $max-webchat-width;
+        width: auto;
+        max-height: unset;
+      }
 
-    #webchat-bot {
-      display: none;
-    }
+      #webchat-bot {
+        display: none;
+      }
 
-    .webchat__css-custom-properties>div:first-child {
-      max-height: unset;
+      .webchat__css-custom-properties>div:first-child {
+        max-height: unset;
+      }
     }
   }
 

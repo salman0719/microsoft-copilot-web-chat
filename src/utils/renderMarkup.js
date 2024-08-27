@@ -9,7 +9,7 @@ export default function renderMarkup() {
       <div class="chat-window__navbar__title">${BOT_NAME}</div>
       <div class="chat-window__navbar__filler"></div>
       <div class="chat-window__navbar__mode-button"></div>
-      ${import.meta.env.ENABLE_FULLSCREEN === '1' ?
+      ${import.meta.env.VITE_ENABLE_FULLSCREEN === '1' ?
       `<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"
         class="chat-window__navbar__expand-icon">
         <path

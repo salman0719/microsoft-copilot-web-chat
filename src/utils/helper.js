@@ -27,7 +27,7 @@ export const handleAuthentication = () => {
   return res
 }
 
-export const handleFullscreen = import.meta.env.ENABLE_FULLSCREEN === '1' ?
+export const handleFullscreen = import.meta.env.VITE_ENABLE_FULLSCREEN === '1' ?
   () => {
     const expandIcon = document.querySelector('#chat-window .chat-window__navbar__expand-icon')
     const container = getElement('container')
