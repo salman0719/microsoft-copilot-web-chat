@@ -5,5 +5,5 @@ import { ELEMENT_ID } from './constants.ts';
 
 export default function configureElements() {
   render(<Container />, document.body);
-  container.value = document.querySelector(ELEMENT_ID);
+  container.value = document.querySelector('#' + ELEMENT_ID);
 }

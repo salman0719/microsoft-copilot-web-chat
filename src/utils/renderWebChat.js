@@ -8,11 +8,7 @@ import {
   sendBoxChatLimitCrossed,
   username,
 } from './store.ts';
-import {
-  handleConversationResize,
-  insertDisclosureText,
-  updateInputPlaceholder,
-} from './helper.js';
+import { observeConversationResize, updateInputPlaceholder } from './helper.ts';
 import botAvatarImageSrc from '../images/chat-bot-icon.png';
 import {
   exchangeTokenAsync,
@@ -163,11 +159,15 @@ async function main() {
 
   webchatStore.value = store;
 
-  insertDisclosureText();
   updateInputPlaceholder();
-  __IS_EMBED_CHILD__ && handleConversationResize();
+  __IS_EMBED_CHILD__ && observeConversationResize();
 
   webchatInitialized.value = true;
+
+  // TODO
+  // Need to ponder probable unmounting scenario
+  // In that case, we will need to clean up a lot of the states
+  // along with observer(s)
 }
 
 export default function renderWebChat() {
