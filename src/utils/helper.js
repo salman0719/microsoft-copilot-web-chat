@@ -38,38 +38,6 @@ export const handleAuthentication = () => {
   return res;
 };
 
-export const handleFullscreen =
-  import.meta.env.VITE_ENABLE_FULLSCREEN === '1'
-    ? () => {
-        const expandIcon = document.querySelector('#chat-window .chat-window__navbar__expand-icon');
-        const container = getElement('container');
-        expandIcon.addEventListener('click', () => {
-          const searchQuery = new URLSearchParams(location.search);
-          searchQuery.set(FULLSCREEN_SEARCH_QUERY_KEY, '1');
-          let newSearch = searchQuery.toString();
-          if (newSearch) {
-            newSearch = '?' + newSearch;
-          }
-          window.open(location.origin + location.pathname + newSearch + location.hash);
-        });
-
-        const res = subscribe(['isFullscreen'], () => {
-          container.classList[getData('isFullscreen') ? 'add' : 'remove'](
-            'chat-window--fullscreen'
-          );
-        });
-
-        const isFullscreen =
-          new URLSearchParams(location.search).get(FULLSCREEN_SEARCH_QUERY_KEY) === '1';
-        setData('isFullscreen', isFullscreen);
-        if (isFullscreen) {
-          isClosed.value = false;
-        }
-
-        return res;
-      }
-    : () => {};
-
 export const handleCondensation = (isNewSession) => {
   // TODO
   // Take it elsewhere

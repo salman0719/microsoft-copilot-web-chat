@@ -7,9 +7,16 @@ import {
 } from '../../utils/constants.ts';
 import loginBotIconSrc from '../../images/login-bot-icon.png';
 import classNames from 'classnames';
-import { initialized, isClosed as rootIsClosed, isDark, isCondensed } from '../../utils/store.ts';
+import {
+  initialized,
+  isClosed as rootIsClosed,
+  isDark,
+  isCondensed,
+  isFullscreen,
+} from '../../utils/store.ts';
 import { effect, useComputed, useSignal } from '@preact/signals';
 import { useRef } from 'preact/hooks';
+import ExpandIcon from '../ExpandIcon/index.tsx';
 
 effect(() => {
   isDark.value
@@ -53,6 +60,7 @@ const Container: FunctionalComponent = () => {
 
   const className = useComputed(() => {
     return classNames(
+      isFullscreen.value && 'chat-window--fullscreen',
       isCondensed.value && 'chat-window--condensed',
       isClosed.value && 'chat-window--closed',
       !initialized.value && 'chat-window--webchat-uninitialized',
@@ -103,24 +111,7 @@ const Container: FunctionalComponent = () => {
             }}
             className='chat-window__navbar__mode-button'
           />
-          {import.meta.env.VITE_ENABLE_FULLSCREEN === '1' && (
-            <svg
-              width='30'
-              height='30'
-              viewBox='0 0 30 30'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-              className='chat-window__navbar__expand-icon'
-            >
-              <path
-                d='M18.75 3.75H26.25M26.25 3.75V11.25M26.25 3.75L17.5 12.5M11.25 26.25H3.75M3.75 26.25V18.75M3.75 26.25L12.5 17.5'
-                stroke='currentColor'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              />
-            </svg>
-          )}
+          {import.meta.env.VITE_ENABLE_FULLSCREEN === '1' && <ExpandIcon />}
           <svg
             width='20'
             height='20'

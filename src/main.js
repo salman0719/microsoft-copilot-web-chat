@@ -1,6 +1,6 @@
 import clientApplication from './utils/clientApplication.js';
 import configureElements from './utils/configureElements.ts';
-import { handleAuthentication, handleFullscreen, setupLoginButton } from './utils/helper.js';
+import { handleAuthentication, setupLoginButton } from './utils/helper.js';
 import renderWebChat from './utils/renderWebChat.js';
 import { isAuthenticated, isTokenExpired, onSignIn } from './utils/rootScript.js';
 
@@ -8,7 +8,6 @@ import { isAuthenticated, isTokenExpired, onSignIn } from './utils/rootScript.js
   configureElements();
   setupLoginButton();
   handleAuthentication();
-  import.meta.env.VITE_ENABLE_FULLSCREEN === '1' && handleFullscreen();
 
   if (
     import.meta.env.MODE === 'development' &&

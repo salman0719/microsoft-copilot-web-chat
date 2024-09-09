@@ -1,6 +1,7 @@
 import { effect, signal } from '@preact/signals';
 import { postMessageToParent } from './actions.ts';
 import {
+  FULLSCREEN_SEARCH_QUERY_KEY,
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
   WEBCHAT_WINDOW_CONDENSED_KEY,
@@ -85,12 +86,16 @@ export const initialized = signal(false);
 export const isClosed = signal(localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1');
 export const isDark = signal(localStorage.getItem(WEBCHAT_MODE_KEY) === '1');
 export const isCondensed = signal(localStorage.getItem(WEBCHAT_WINDOW_CONDENSED_KEY) === '1');
+export const isFullscreen = signal(
+  new URLSearchParams(location.search).get(FULLSCREEN_SEARCH_QUERY_KEY) === '1'
+);
 
 const broadcastSignals = {
   initialized,
   isClosed,
   isDark,
   isCondensed,
+  isFullscreen,
 };
 
 // @ts-expect-error: This will come from vite config's `define` attribute
