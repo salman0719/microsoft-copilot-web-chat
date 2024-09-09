@@ -1,11 +1,11 @@
 import { effect, signal } from '@preact/signals';
-import { postMessageToParent } from './actions.ts';
 import {
   FULLSCREEN_SEARCH_QUERY_KEY,
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
   WEBCHAT_WINDOW_CONDENSED_KEY,
 } from './constants.ts';
+import { postMessageToParent, SetDataPostMessageProps } from './helper.ts';
 
 const isWindowEmbedded = window.top !== window.self;
 
@@ -18,7 +18,7 @@ export const broadcastEffect = (key: string, value: unknown, oldValue: unknown) 
     return;
   }
 
-  const data = {
+  const data: SetDataPostMessageProps = {
     key,
     oldValue,
     value,

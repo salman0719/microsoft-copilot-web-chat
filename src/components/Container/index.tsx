@@ -1,6 +1,7 @@
 import { FunctionalComponent, JSX } from 'preact';
 import {
   BOT_NAME,
+  ELEMENT_ID,
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
   WEBCHAT_WINDOW_CONDENSED_KEY,
@@ -26,6 +27,7 @@ import InputError from '../InputError/index.tsx';
 // TODO
 // @ts-expect-error: We haven't converted the script to ts yet
 import { onSignInClick } from '../../utils/rootScript.js';
+import DisclosureText from '../DisclosureText/index.tsx';
 
 effect(() => {
   isDark.value
@@ -122,7 +124,7 @@ const Container: FunctionalComponent = () => {
   });
 
   return (
-    <div id='chat-window' className={className}>
+    <div id={ELEMENT_ID} className={className}>
       <div
         className={bodyClassName}
         onTouchStart={uncondense}
@@ -187,6 +189,7 @@ const Container: FunctionalComponent = () => {
       <div id='webchat-bot' onClick={() => (rootIsClosed.value = !rootIsClosed.value)}></div>
       <InputCounter />
       <InputError />
+      <DisclosureText />
     </div>
   );
 };
