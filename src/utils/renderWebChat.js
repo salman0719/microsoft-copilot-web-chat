@@ -6,7 +6,6 @@ import {
   handleInput,
   handleUsername,
   insertDisclosureText,
-  insertInputCounter,
   updateInputPlaceholder,
 } from './helper.js';
 import botAvatarImageSrc from '../images/chat-bot-icon.png';
@@ -164,7 +163,6 @@ async function main() {
   handleInput();
   insertDisclosureText();
   updateInputPlaceholder();
-  insertInputCounter();
   __IS_EMBED_CHILD__ && handleConversationResize();
 
   webchatInitialized.value = true;

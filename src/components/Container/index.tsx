@@ -16,8 +16,10 @@ import {
   authenticated,
 } from '../../utils/store.ts';
 import { effect, useComputed, useSignal } from '@preact/signals';
-import { useRef } from 'preact/hooks';
+import { useEffect, useRef } from 'preact/hooks';
 import ExpandIcon from '../ExpandIcon/index.tsx';
+import InputCounter from '../InputCounter/index.tsx';
+import { createPortal } from 'preact/compat';
 
 effect(() => {
   isDark.value
@@ -72,6 +74,25 @@ const Container: FunctionalComponent = () => {
       authenticatedValue && isDark.value && 'chat-window--dark'
     );
   });
+
+  const inputCounterContainer = useComputed<HTMLDivElement | undefined>(() => {
+    if (webchatInitialized.value) {
+      const containerNode = containerRef.current?.querySelector('.webchat__send-box__main');
+      if (!containerNode) {
+        return;
+      }
+
+      const div = document.createElement('div');
+      div.style.display = 'contents';
+      containerNode.insertBefore(div, containerNode.lastElementChild);
+
+      return div;
+    }
+  });
+
+  useEffect(() => {
+    return () => inputCounterContainer.value?.remove();
+  }, [inputCounterContainer]);
 
   const uncondense = (isCondensed.value && (() => (isCondensed.value = false))) || void 0;
 
@@ -161,6 +182,7 @@ const Container: FunctionalComponent = () => {
         </div>
       </div>
       <div id='webchat-bot' onClick={() => (rootIsClosed.value = !rootIsClosed.value)}></div>
+      {inputCounterContainer.value && createPortal(<InputCounter />, inputCounterContainer.value)}
     </div>
   );
 };

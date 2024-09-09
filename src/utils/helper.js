@@ -8,7 +8,6 @@ import {
 } from './constants.ts';
 import { onSignInClick } from './rootScript.js';
 import { getData, getElement, setData, subscribe } from './store.ts';
-import InputCounter from '../components/InputCounter/index.tsx';
 
 export const insertDisclosureText = () => {
   const sendBoxElem = document.querySelector('#webchat .webchat__send-box');
@@ -21,10 +20,6 @@ export const insertDisclosureText = () => {
 export const updateInputPlaceholder = () => {
   document.querySelector('#webchat .webchat__send-box-text-box__input').placeholder =
     'Message ' + BOT_NAME;
-};
-
-export const insertInputCounter = () => {
-  render(h(InputCounter), document.querySelector('#chat-window .webchat__send-box__main'));
 };
 
 export const setupLoginButton = () => {
