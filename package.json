@@ -25,6 +25,8 @@
   "author": "Salman Hossain",
   "license": "MIT",
   "dependencies": {
+    "@preact/signals": "^1.3.0",
+    "classnames": "^2.5.1",
     "preact": "^10.23.2"
   },
   "devDependencies": {

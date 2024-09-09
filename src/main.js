@@ -1,41 +1,37 @@
-import clientApplication from "./utils/clientApplication.js";
-import configureElements from "./utils/configureElements.ts";
-import { handleAuthentication, handleFullscreen, handleModeToggle, handleWindowToggle, setupLoginButton } from "./utils/helper.js";
-import renderWebChat from "./utils/renderWebChat.js";
-import { isAuthenticated, isTokenExpired, onSignIn } from "./utils/rootScript.js";
+import clientApplication from './utils/clientApplication.js';
+import configureElements from './utils/configureElements.ts';
+import { handleAuthentication, handleFullscreen, setupLoginButton } from './utils/helper.js';
+import renderWebChat from './utils/renderWebChat.js';
+import { isAuthenticated, isTokenExpired, onSignIn } from './utils/rootScript.js';
 
 (function () {
-  configureElements()
-  setupLoginButton()
-  handleAuthentication()
-  handleWindowToggle()
-  import.meta.env.VITE_ENABLE_FULLSCREEN === '1' && handleFullscreen()
-  handleModeToggle()
+  configureElements();
+  setupLoginButton();
+  handleAuthentication();
+  import.meta.env.VITE_ENABLE_FULLSCREEN === '1' && handleFullscreen();
 
-  if (import.meta.env.MODE === 'development' && (
-    import.meta.env.VITE_USE_DUMMY_MODE === '1' ||
-    import.meta.env.VITE_IGNORE_AUTH === '1'
-  )) {
+  if (
+    import.meta.env.MODE === 'development' &&
+    (import.meta.env.VITE_USE_DUMMY_MODE === '1' || import.meta.env.VITE_IGNORE_AUTH === '1')
+  ) {
     clientApplication.getActiveAccount = () => ({
-      name: 'Jenny Smith'
-    })
+      name: 'Jenny Smith',
+    });
 
-    renderWebChat()
-    return
+    renderWebChat();
+    return;
   }
 
-  let oldToken = sessionStorage.getItem('oldToken')
+  let oldToken = sessionStorage.getItem('oldToken');
   if (oldToken == undefined || oldToken == 'undefined') {
-    oldToken = null
+    oldToken = null;
   }
 
   if (oldToken == null || isTokenExpired(oldToken)) {
     isAuthenticated().then(function (authenticated) {
-      authenticated && onSignIn()
-    })
+      authenticated && onSignIn();
+    });
   } else {
-    renderWebChat()
+    renderWebChat();
   }
-
-}());
-
+})();
