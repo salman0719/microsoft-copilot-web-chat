@@ -1,9 +1,16 @@
 import clientApplication from './clientApplication.js';
-import { BOT_NAME, BOT_TOKEN_ENDPOINT, INPUT_CHAR_LIMIT } from './constants.ts';
-import { getData, webchatInitialized, setData, isFullscreen, isCondensed } from './store.ts';
+import { BOT_NAME, BOT_TOKEN_ENDPOINT } from './constants.ts';
+import {
+  getData,
+  webchatInitialized,
+  setData,
+  isFullscreen,
+  isCondensed,
+  webchatStore,
+  sendBoxChatLimitCrossed,
+} from './store.ts';
 import {
   handleConversationResize,
-  handleInput,
   handleUsername,
   insertDisclosureText,
   updateInputPlaceholder,
@@ -134,7 +141,7 @@ async function main() {
         return;
       }
     } else if (type === 'WEB_CHAT/SUBMIT_SEND_BOX') {
-      if (getData('sendBoxValue').length > INPUT_CHAR_LIMIT) {
+      if (sendBoxChatLimitCrossed.value) {
         return;
       }
     }
@@ -158,9 +165,9 @@ async function main() {
     document.getElementById('webchat')
   );
 
-  setData('webChatStore', store);
+  webchatStore.value = store;
+
   handleUsername();
-  handleInput();
   insertDisclosureText();
   updateInputPlaceholder();
   __IS_EMBED_CHILD__ && handleConversationResize();

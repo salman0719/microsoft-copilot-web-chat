@@ -6,7 +6,6 @@ export default function configureElements() {
   render(h(Container, null), document.body);
 
   const container = document.querySelector('#chat-window');
-  const sendBoxErrorInfoElem = document.createElement('div');
   const modeButton = document.querySelector('#chat-window .chat-window__navbar__mode-button');
 
   if (!container || !modeButton) {
@@ -20,7 +19,6 @@ export default function configureElements() {
   }
 
   setElement('container', container);
-  setElement('sendBoxErrorInfoElem', sendBoxErrorInfoElem);
   setElement('modeButton', modeButton);
   setElement('loginScreen', loginScreen);
 }

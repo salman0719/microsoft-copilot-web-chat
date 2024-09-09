@@ -1,13 +1,7 @@
-import { h, render } from 'preact';
 import { postMessageToParent } from './actions.ts';
-import {
-  BOT_NAME,
-  DEFAULT_SEND_BOX_ERROR_MESSAGE,
-  DISCLOSURE_TEXT,
-  INPUT_CHAR_LIMIT,
-} from './constants.ts';
+import { BOT_NAME, DISCLOSURE_TEXT, INPUT_CHAR_LIMIT } from './constants.ts';
 import { onSignInClick } from './rootScript.js';
-import { getData, getElement, setData, subscribe } from './store.ts';
+import { getData, getElement, subscribe } from './store.ts';
 
 export const insertDisclosureText = () => {
   const sendBoxElem = document.querySelector('#webchat .webchat__send-box');
@@ -35,38 +29,6 @@ export const handleUsername = () => {
 
 export const getSendBoxErrorInfo = () => {
   return 'Maximum limit of ' + INPUT_CHAR_LIMIT + ' characters reached.';
-};
-
-export const handleInput = () => {
-  const store = getData('webChatStore');
-
-  store.subscribe(() => {
-    setData('sendBoxValue', store.getState().sendBoxValue);
-  });
-
-  const sendBoxErrorInfoElem = getElement('sendBoxErrorInfoElem');
-  sendBoxErrorInfoElem.className = 'webchat__send-box__error-info';
-  sendBoxErrorInfoElem.innerHTML = DEFAULT_SEND_BOX_ERROR_MESSAGE;
-  document
-    .querySelector('#chat-window .webchat__send-box')
-    .insertAdjacentElement('beforebegin', sendBoxErrorInfoElem);
-
-  const submitBtn = document.querySelector('#chat-window .webchat__send-box__button');
-
-  return [
-    subscribe(['sendBoxValue'], (value) => {
-      setData('charLimitExceeded', value.length > INPUT_CHAR_LIMIT);
-    }),
-    subscribe(['charLimitExceeded'], () => {
-      if (getData('charLimitExceeded')) {
-        sendBoxErrorInfoElem.classList.remove('webchat__send-box__error-info--hidden');
-        submitBtn.disabled = true;
-      } else {
-        sendBoxErrorInfoElem.classList.add('webchat__send-box__error-info--hidden');
-        submitBtn.disabled = false;
-      }
-    }),
-  ];
 };
 
 export const handleConversationResize = () => {

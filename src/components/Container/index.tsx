@@ -14,12 +14,15 @@ import {
   isCondensed,
   isFullscreen,
   authenticated,
+  webchatStore,
+  sendBoxValue,
+  container,
 } from '../../utils/store.ts';
 import { effect, useComputed, useSignal } from '@preact/signals';
 import { useEffect, useRef } from 'preact/hooks';
 import ExpandIcon from '../ExpandIcon/index.tsx';
 import InputCounter from '../InputCounter/index.tsx';
-import { createPortal } from 'preact/compat';
+import InputError from '../InputError/index.tsx';
 
 effect(() => {
   isDark.value
@@ -75,26 +78,23 @@ const Container: FunctionalComponent = () => {
     );
   });
 
-  const inputCounterContainer = useComputed<HTMLDivElement | undefined>(() => {
-    if (webchatInitialized.value) {
-      const containerNode = containerRef.current?.querySelector('.webchat__send-box__main');
-      if (!containerNode) {
-        return;
-      }
-
-      const div = document.createElement('div');
-      div.style.display = 'contents';
-      containerNode.insertBefore(div, containerNode.lastElementChild);
-
-      return div;
-    }
-  });
-
-  useEffect(() => {
-    return () => inputCounterContainer.value?.remove();
-  }, [inputCounterContainer]);
-
   const uncondense = (isCondensed.value && (() => (isCondensed.value = false))) || void 0;
+
+  effect(() => {
+    const store = webchatStore.value;
+    if (!store) {
+      return;
+    }
+
+    // @ts-expect-error: We're not using WebChat's ts library yet
+    return store.subscribe(() => {
+      // @ts-expect-error: We're not using WebChat's ts library yet
+      const newSendBoxValue = store.getState().sendBoxValue;
+      if (newSendBoxValue !== sendBoxValue.value) {
+        sendBoxValue.value = newSendBoxValue;
+      }
+    });
+  });
 
   effect(() => {
     !isCondensed.value &&
@@ -120,8 +120,21 @@ const Container: FunctionalComponent = () => {
     }
   });
 
+  useEffect(() => {
+    return () => (container.value = null);
+  }, []);
+
   return (
-    <div id='chat-window' ref={containerRef} className={className}>
+    <div
+      id='chat-window'
+      ref={(node) => {
+        containerRef.current = node;
+        if (node) {
+          container.value = node;
+        }
+      }}
+      className={className}
+    >
       <div
         className={bodyClassName}
         onTouchStart={uncondense}
@@ -182,7 +195,8 @@ const Container: FunctionalComponent = () => {
         </div>
       </div>
       <div id='webchat-bot' onClick={() => (rootIsClosed.value = !rootIsClosed.value)}></div>
-      {inputCounterContainer.value && createPortal(<InputCounter />, inputCounterContainer.value)}
+      <InputCounter />
+      <InputError />
     </div>
   );
 };

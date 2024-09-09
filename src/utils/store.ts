@@ -82,6 +82,11 @@ export const broadcastEffect = (key: string, value: unknown, oldValue: unknown) 
   postMessageToParent(data);
 };
 
+export const webchatStore = signal<Record<string, unknown> | undefined>();
+export const container = signal<HTMLDivElement | null>(null);
+export const sendBoxValue = signal('');
+export const sendBoxChatLimitCrossed = signal(false);
+
 export const webchatInitialized = signal(false);
 export const authenticated = signal(false);
 export const isClosed = signal(localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1');

@@ -1,39 +1,61 @@
 import { FunctionalComponent } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
-import { getData, subscribe } from '../../utils/store';
+import {
+  container,
+  sendBoxChatLimitCrossed,
+  sendBoxValue,
+  webchatInitialized,
+} from '../../utils/store';
 import { INPUT_CHAR_LIMIT } from '../../utils/constants';
+import { effect, useComputed } from '@preact/signals';
+import classNames from 'classnames';
+import { createPortal } from 'preact/compat';
+
+effect(() => {
+  const oldValue = sendBoxChatLimitCrossed.value;
+  const newValue = sendBoxValue.value.length > INPUT_CHAR_LIMIT;
+
+  if (oldValue !== newValue) {
+    sendBoxChatLimitCrossed.value = newValue;
+  }
+});
+
+const Root: FunctionalComponent = () => {
+  const className = useComputed(() =>
+    classNames(
+      'webchat__send-box-text-box-counter',
+      sendBoxChatLimitCrossed.value && ' webchat__send-box-text-box-counter--error'
+    )
+  );
+
+  const text = useComputed(() => sendBoxValue.value.length + '/' + INPUT_CHAR_LIMIT);
+
+  return <span className={className}>{text}</span>;
+};
 
 const InputCounter: FunctionalComponent = () => {
-  const [value, setValue] = useState<string>(() => (getData('sendBoxValue') || '') as string);
-  const [hasError, setHasError] = useState<boolean>(false);
+  const node = useComputed<HTMLDivElement | undefined>(() => {
+    if (!webchatInitialized.value || !container.value) {
+      return;
+    }
 
-  useEffect(() => {
-    const unlistenArr = [
-      subscribe(['sendBoxValue'], (value: string) => {
-        setValue(value);
-      }),
-      subscribe(['charLimitExceeded'], (hasError: boolean) => {
-        setHasError(hasError);
-      }),
-    ];
+    const parent = container.value.querySelector('.webchat__send-box__main');
+    if (!parent) {
+      return;
+    }
 
-    return () => {
-      unlistenArr.forEach((unlisten) => {
-        unlisten();
-      });
-    };
-  }, []);
+    const div = document.createElement('div');
+    div.style.display = 'contents';
+    parent.insertBefore(div, parent.lastElementChild);
 
-  return (
-    <span
-      className={
-        'webchat__send-box-text-box-counter' +
-        (hasError ? ' webchat__send-box-text-box-counter--error' : '')
-      }
-    >
-      {value.length} / {INPUT_CHAR_LIMIT}
-    </span>
-  );
+    return div;
+  });
+
+  effect(() => {
+    const nodeValue = node.value;
+    return () => nodeValue?.remove();
+  });
+
+  return node.value ? createPortal(<Root />, node.value) : null;
 };
 
 export default InputCounter;
