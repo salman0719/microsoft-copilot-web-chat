@@ -1,7 +1,6 @@
 import { postMessageToParent } from './actions.ts';
 import { BOT_NAME, DISCLOSURE_TEXT, INPUT_CHAR_LIMIT } from './constants.ts';
-import { onSignInClick } from './rootScript.js';
-import { container, getData, getElement, subscribe } from './store.ts';
+import { container } from './store.ts';
 
 export const insertDisclosureText = () => {
   const sendBoxElem = document.querySelector('#webchat .webchat__send-box');
@@ -14,13 +13,6 @@ export const insertDisclosureText = () => {
 export const updateInputPlaceholder = () => {
   document.querySelector('#webchat .webchat__send-box-text-box__input').placeholder =
     'Message ' + BOT_NAME;
-};
-
-export const handleUsername = () => {
-  return subscribe(['username'], () => {
-    document.querySelector('#chat-window .chat-window__navbar__mode-username').innerHTML =
-      getData('username');
-  });
 };
 
 export const getSendBoxErrorInfo = () => {

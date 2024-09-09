@@ -17,6 +17,7 @@ import {
   webchatStore,
   sendBoxValue,
   container,
+  username,
 } from '../../utils/store.ts';
 import { effect, useComputed, useSignal } from '@preact/signals';
 import ExpandIcon from '../ExpandIcon/index.tsx';
@@ -160,7 +161,7 @@ const Container: FunctionalComponent = () => {
               strokeLinejoin='round'
             />
           </svg>
-          <div className='chat-window__navbar__mode-username'></div>
+          <div className='chat-window__navbar__mode-username'>{username}</div>
         </div>
         <div id='webchat'></div>
         <div id='login-screen'>

@@ -1,17 +1,15 @@
 import clientApplication from './clientApplication.js';
 import { BOT_NAME, BOT_TOKEN_ENDPOINT } from './constants.ts';
 import {
-  getData,
   webchatInitialized,
-  setData,
   isFullscreen,
   isCondensed,
   webchatStore,
   sendBoxChatLimitCrossed,
+  username,
 } from './store.ts';
 import {
   handleConversationResize,
-  handleUsername,
   insertDisclosureText,
   updateInputPlaceholder,
 } from './helper.js';
@@ -88,10 +86,8 @@ async function main() {
           },
         });
       }
-      setData(
-        'username',
-        action.meta.username || clientApplication?.getActiveAccount()?.name || ''
-      );
+
+      username.value = action.meta.username || clientApplication?.getActiveAccount()?.name || '';
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
       const activity = action.payload.activity;
       let resourceUri;
@@ -167,7 +163,6 @@ async function main() {
 
   webchatStore.value = store;
 
-  handleUsername();
   insertDisclosureText();
   updateInputPlaceholder();
   __IS_EMBED_CHILD__ && handleConversationResize();
