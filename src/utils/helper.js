@@ -4,12 +4,10 @@ import {
   BOT_NAME,
   DEFAULT_SEND_BOX_ERROR_MESSAGE,
   DISCLOSURE_TEXT,
-  FULLSCREEN_SEARCH_QUERY_KEY,
   INPUT_CHAR_LIMIT,
-  WEBCHAT_WINDOW_CONDENSED_KEY,
 } from './constants.ts';
-import { isAuthenticated, onSignInClick } from './rootScript.js';
-import { getData, getElement, isClosed, isCondensed, setData, subscribe } from './store.ts';
+import { onSignInClick } from './rootScript.js';
+import { getData, getElement, setData, subscribe } from './store.ts';
 import InputCounter from '../components/InputCounter/index.tsx';
 
 export const insertDisclosureText = () => {
@@ -25,49 +23,8 @@ export const updateInputPlaceholder = () => {
     'Message ' + BOT_NAME;
 };
 
-export const handleAuthentication = () => {
-  const container = getElement('container');
-  const res = subscribe(['authenticated'], () => {
-    container.classList[getData('authenticated') ? 'remove' : 'add'](
-      'chat-window--unauthenticated'
-    );
-  });
-
-  isAuthenticated();
-
-  return res;
-};
-
-export const handleCondensation = (isNewSession) => {
-  // TODO
-  // Take it elsewhere
-  if (
-    getData('isFullscreen') ||
-    (!isNewSession && localStorage.getItem(WEBCHAT_WINDOW_CONDENSED_KEY) !== '1')
-  ) {
-    isCondensed.value = false;
-    return;
-  } else {
-    isCondensed.value = true;
-  }
-};
-
 export const insertInputCounter = () => {
   render(h(InputCounter), document.querySelector('#chat-window .webchat__send-box__main'));
-};
-
-export const handleWebchatInitialization = () => {
-  const container = getElement('container');
-  setData(
-    'webchatInitialized',
-    !container.classList.contains('chat-window--webchat-uninitialized')
-  );
-
-  return subscribe(['webchatInitialized'], () => {
-    container.classList[getData('webchatInitialized') ? 'remove' : 'add'](
-      'chat-window--webchat-uninitialized'
-    );
-  });
 };
 
 export const setupLoginButton = () => {

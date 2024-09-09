@@ -1,13 +1,11 @@
 import clientApplication from './utils/clientApplication.js';
 import configureElements from './utils/configureElements.ts';
-import { handleAuthentication, setupLoginButton } from './utils/helper.js';
-import renderWebChat from './utils/renderWebChat.js';
-import { isAuthenticated, isTokenExpired, onSignIn } from './utils/rootScript.js';
+import { setupLoginButton } from './utils/helper.js';
+import { isAuthenticated, onSignIn } from './utils/rootScript.js';
 
 (function () {
   configureElements();
   setupLoginButton();
-  handleAuthentication();
 
   if (
     import.meta.env.MODE === 'development' &&
@@ -16,9 +14,6 @@ import { isAuthenticated, isTokenExpired, onSignIn } from './utils/rootScript.js
     clientApplication.getActiveAccount = () => ({
       name: 'Jenny Smith',
     });
-
-    renderWebChat();
-    return;
   }
 
   let oldToken = sessionStorage.getItem('oldToken');
@@ -26,11 +21,7 @@ import { isAuthenticated, isTokenExpired, onSignIn } from './utils/rootScript.js
     oldToken = null;
   }
 
-  if (oldToken == null || isTokenExpired(oldToken)) {
-    isAuthenticated().then(function (authenticated) {
-      authenticated && onSignIn();
-    });
-  } else {
-    renderWebChat();
-  }
+  isAuthenticated().then(function (authenticated) {
+    authenticated && onSignIn();
+  });
 })();

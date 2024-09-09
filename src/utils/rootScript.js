@@ -1,64 +1,70 @@
-import clientApplication from "./clientApplication.js";
-import renderWebChat from "./renderWebChat.js";
-import { setData } from "./store.ts";
+import clientApplication from './clientApplication.js';
+import renderWebChat from './renderWebChat.js';
+import { authenticated } from './store.ts';
 
 export function onSignIn() {
-  setData('authenticated', true)
-  renderWebChat()
+  authenticated.value = true;
+  renderWebChat();
 }
 
 export function onSignInClick() {
   let requestObj = {
-    scopes: ["user.read", 'openid', 'profile']
+    scopes: ['user.read', 'openid', 'profile'],
   };
 
-  clientApplication.loginPopup(requestObj)
+  clientApplication
+    .loginPopup(requestObj)
     .then(function (response) {
       clientApplication.setActiveAccount(response.account);
       onSignIn();
     })
-    .catch(function (error) { console.log(error) });
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
 export async function isAuthenticated() {
   const returnValue = (value) => {
-    value = !!value
-    setData('authenticated', value)
-    return value
-  }
+    value = !!value;
+    authenticated.value = value;
+    return value;
+  };
 
-  if (import.meta.env.MODE === 'development' && (
-    import.meta.env.VITE_USE_DUMMY_MODE === '1' ||
-    import.meta.env.VITE_IGNORE_AUTH === '1'
-  )) {
-    return returnValue(true)
+  if (
+    import.meta.env.MODE === 'development' &&
+    (import.meta.env.VITE_USE_DUMMY_MODE === '1' || import.meta.env.VITE_IGNORE_AUTH === '1')
+  ) {
+    return returnValue(true);
   }
 
   let currentAccounts = clientApplication.getAllAccounts();
   if (currentAccounts.length > 0) {
     let requestObj = {
-      scopes: ["user.read", 'openid', 'profile'],
-      redirectUri: 'https://unswauepstaetsbot.blob.core.windows.net/custom-canvas/RedirectUri.html'
+      scopes: ['user.read', 'openid', 'profile'],
+      redirectUri: 'https://unswauepstaetsbot.blob.core.windows.net/custom-canvas/RedirectUri.html',
     };
-    return clientApplication.acquireTokenSilent(requestObj)
+    return clientApplication
+      .acquireTokenSilent(requestObj)
       .then(function () {
-        return returnValue(true)
+        return returnValue(true);
       })
       .catch(function (error) {
         console.log(error);
-        return returnValue(false)
+        return returnValue(false);
       });
   } else {
-    return returnValue(false)
+    return returnValue(false);
   }
 }
 
 export function getOAuthCardResourceUri(activity) {
-  if (activity &&
+  if (
+    activity &&
     activity.attachments &&
     activity.attachments[0] &&
     activity.attachments[0].contentType === 'application/vnd.microsoft.card.oauth' &&
-    activity.attachments[0].content.tokenExchangeResource) {
+    activity.attachments[0].content.tokenExchangeResource
+  ) {
     // asking for token exchange with AAD
     return activity.attachments[0].content.tokenExchangeResource.uri;
   }
@@ -71,15 +77,15 @@ export function exchangeTokenAsync(resourceUri) {
       scopes: [resourceUri],
       redirectUri: 'https://unswauepstaetsbot.blob.core.windows.net/custom-canvas/RedirectUri.html',
     };
-    return clientApplication.acquireTokenSilent(requestObj)
+    return clientApplication
+      .acquireTokenSilent(requestObj)
       .then(function (tokenResponse) {
         return tokenResponse.accessToken;
       })
       .catch(function (error) {
         console.log(error);
       });
-  }
-  else {
+  } else {
     return Promise.resolve(null);
   }
 }
@@ -89,8 +95,8 @@ export async function fetchJSON(url, options = {}) {
     ...options,
     headers: {
       ...options.headers,
-      accept: 'application/json'
-    }
+      accept: 'application/json',
+    },
   });
 
   if (!res.ok) {
@@ -131,15 +137,13 @@ export function isLastMsg(timestamp) {
   var oldTimestamp = sessionStorage.getItem('lastMsgTime');
   if (oldTimestamp !== null && new Date(timestamp) < new Date(oldTimestamp)) {
     return false;
-  } else
-    return true;
+  } else return true;
 }
 
 export function updateLastMsgTime(timestamp) {
-  if (isLastMsg(timestamp))
-    sessionStorage.setItem('lastMsgTime', timestamp);
+  if (isLastMsg(timestamp)) sessionStorage.setItem('lastMsgTime', timestamp);
 }
 
 export function fontFamily(fonts) {
-  return fonts.map(font => `'${font}'`).join(', ');
+  return fonts.map((font) => `'${font}'`).join(', ');
 }

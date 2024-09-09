@@ -8,11 +8,12 @@ import {
 import loginBotIconSrc from '../../images/login-bot-icon.png';
 import classNames from 'classnames';
 import {
-  initialized,
+  webchatInitialized,
   isClosed as rootIsClosed,
   isDark,
   isCondensed,
   isFullscreen,
+  authenticated,
 } from '../../utils/store.ts';
 import { effect, useComputed, useSignal } from '@preact/signals';
 import { useRef } from 'preact/hooks';
@@ -59,12 +60,16 @@ const Container: FunctionalComponent = () => {
   const isClosed = useSignal<boolean>(rootIsClosed.peek());
 
   const className = useComputed(() => {
+    const authenticatedValue = authenticated.value;
+    const fullscreenValue = isFullscreen.value;
+
     return classNames(
-      isFullscreen.value && 'chat-window--fullscreen',
-      isCondensed.value && 'chat-window--condensed',
+      !authenticatedValue && 'chat-window--unauthenticated',
+      fullscreenValue && 'chat-window--fullscreen',
+      !fullscreenValue && authenticatedValue && isCondensed.value && 'chat-window--condensed',
       isClosed.value && 'chat-window--closed',
-      !initialized.value && 'chat-window--webchat-uninitialized',
-      isDark.value && 'chat-window--dark'
+      !webchatInitialized.value && 'chat-window--webchat-uninitialized',
+      authenticatedValue && isDark.value && 'chat-window--dark'
     );
   });
 

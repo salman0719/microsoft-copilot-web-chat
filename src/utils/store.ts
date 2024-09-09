@@ -82,7 +82,8 @@ export const broadcastEffect = (key: string, value: unknown, oldValue: unknown) 
   postMessageToParent(data);
 };
 
-export const initialized = signal(false);
+export const webchatInitialized = signal(false);
+export const authenticated = signal(false);
 export const isClosed = signal(localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1');
 export const isDark = signal(localStorage.getItem(WEBCHAT_MODE_KEY) === '1');
 export const isCondensed = signal(localStorage.getItem(WEBCHAT_WINDOW_CONDENSED_KEY) === '1');
@@ -91,7 +92,8 @@ export const isFullscreen = signal(
 );
 
 const broadcastSignals = {
-  initialized,
+  webchatInitialized,
+  authenticated,
   isClosed,
   isDark,
   isCondensed,

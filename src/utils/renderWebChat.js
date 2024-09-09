@@ -1,12 +1,10 @@
 import clientApplication from './clientApplication.js';
 import { BOT_NAME, BOT_TOKEN_ENDPOINT, INPUT_CHAR_LIMIT } from './constants.ts';
-import { getData, initialized, setData } from './store.ts';
+import { getData, webchatInitialized, setData, isFullscreen, isCondensed } from './store.ts';
 import {
-  handleCondensation,
   handleConversationResize,
   handleInput,
   handleUsername,
-  handleWebchatInitialization,
   insertDisclosureText,
   insertInputCounter,
   updateInputPlaceholder,
@@ -23,8 +21,6 @@ import {
 } from './rootScript.js';
 
 async function main() {
-  handleWebchatInitialization();
-
   // Add your BOT ID below
   var theURL = BOT_TOKEN_ENDPOINT;
 
@@ -44,7 +40,7 @@ async function main() {
       ? sessionStorage.getItem('oldToken')
       : null;
   var isNewSession;
-  if (getData('isFullscreen') || oldToken === undefined || oldToken === null) {
+  if (isFullscreen.value || oldToken === undefined || oldToken === null) {
     const { token } = await fetchJSON(theURL);
     isNewSession = true;
     currentToken = token;
@@ -68,7 +64,9 @@ async function main() {
     return;
   }
 
-  handleCondensation(isNewSession);
+  if (isNewSession) {
+    isCondensed.value = true;
+  }
 
   const store = WebChat.createStore({}, ({ dispatch }) => (next) => (action) => {
     const { type } = action;
@@ -169,7 +167,7 @@ async function main() {
   insertInputCounter();
   __IS_EMBED_CHILD__ && handleConversationResize();
 
-  initialized.value = true;
+  webchatInitialized.value = true;
 }
 
 export default function renderWebChat() {
