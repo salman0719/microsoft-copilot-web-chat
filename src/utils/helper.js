@@ -1,7 +1,7 @@
 import { postMessageToParent } from './actions.ts';
 import { BOT_NAME, DISCLOSURE_TEXT, INPUT_CHAR_LIMIT } from './constants.ts';
 import { onSignInClick } from './rootScript.js';
-import { getData, getElement, subscribe } from './store.ts';
+import { container, getData, getElement, subscribe } from './store.ts';
 
 export const insertDisclosureText = () => {
   const sendBoxElem = document.querySelector('#webchat .webchat__send-box');
@@ -16,10 +16,6 @@ export const updateInputPlaceholder = () => {
     'Message ' + BOT_NAME;
 };
 
-export const setupLoginButton = () => {
-  getElement('loginScreen').querySelector('.login-button').addEventListener('click', onSignInClick);
-};
-
 export const handleUsername = () => {
   return subscribe(['username'], () => {
     document.querySelector('#chat-window .chat-window__navbar__mode-username').innerHTML =
@@ -32,11 +28,11 @@ export const getSendBoxErrorInfo = () => {
 };
 
 export const handleConversationResize = () => {
-  const container = getElement('container');
-  const conversationContainer = container.querySelector('.webchat__basic-transcript__scrollable');
+  const root = container.value;
+  const conversationContainer = root.querySelector('.webchat__basic-transcript__scrollable');
 
   function sendIframeSize() {
-    const containerHeight = container.offsetHeight;
+    const containerHeight = root.offsetHeight;
     const conversationHeight = conversationContainer.offsetHeight;
 
     const data = {

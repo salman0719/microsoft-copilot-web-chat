@@ -19,10 +19,12 @@ import {
   container,
 } from '../../utils/store.ts';
 import { effect, useComputed, useSignal } from '@preact/signals';
-import { useEffect, useRef } from 'preact/hooks';
 import ExpandIcon from '../ExpandIcon/index.tsx';
 import InputCounter from '../InputCounter/index.tsx';
 import InputError from '../InputError/index.tsx';
+// TODO
+// @ts-expect-error: We haven't converted the script to ts yet
+import { onSignInClick } from '../../utils/rootScript.js';
 
 effect(() => {
   isDark.value
@@ -56,8 +58,6 @@ const stopPropagation = (e: Event) => {
 };
 
 const Container: FunctionalComponent = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const isBodyHidden = useSignal<boolean>(false);
   const bodyClassName = useComputed<string>(() =>
     classNames('chat-window__body', isBodyHidden.value && 'chat-window__body--hidden')
@@ -99,7 +99,7 @@ const Container: FunctionalComponent = () => {
   effect(() => {
     !isCondensed.value &&
       setTimeout(() => {
-        containerRef.current
+        container.value
           ?.querySelector<HTMLInputElement>('.webchat__send-box-text-box__input')
           ?.focus();
       });
@@ -120,21 +120,8 @@ const Container: FunctionalComponent = () => {
     }
   });
 
-  useEffect(() => {
-    return () => (container.value = null);
-  }, []);
-
   return (
-    <div
-      id='chat-window'
-      ref={(node) => {
-        containerRef.current = node;
-        if (node) {
-          container.value = node;
-        }
-      }}
-      className={className}
-    >
+    <div id='chat-window' className={className}>
       <div
         className={bodyClassName}
         onTouchStart={uncondense}
@@ -190,7 +177,9 @@ const Container: FunctionalComponent = () => {
             </ul>
           </div>
           <div>
-            <button className='login-button'>Start conversation</button>
+            <button className='login-button' onClick={onSignInClick}>
+              Start conversation
+            </button>
           </div>
         </div>
       </div>

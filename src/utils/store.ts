@@ -11,7 +11,6 @@ const isWindowEmbedded = window.top !== window.self;
 
 const data: Record<string, unknown> = {};
 const subscribers: Record<string, Function[]> = {};
-const elements: Record<string, Element> = {};
 let callbacksPending: [Function, unknown, unknown][] = [];
 
 const processCallbacks = () => {
@@ -26,12 +25,6 @@ const processCallbacks = () => {
 
   callbacksPending = callbacksPending.filter(([callback]) => !callbackMap.has(callback));
 };
-
-export const setElement = (key: string, elem: Element) => {
-  elements[key] = elem;
-};
-
-export const getElement = (key: string): Element | undefined => elements[key];
 
 export const setData = (key: string, value: unknown) => {
   const oldValue = data[key];

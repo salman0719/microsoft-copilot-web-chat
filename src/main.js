@@ -1,11 +1,9 @@
 import clientApplication from './utils/clientApplication.js';
-import configureElements from './utils/configureElements.ts';
-import { setupLoginButton } from './utils/helper.js';
+import configureElements from './utils/configureElements.tsx';
 import { isAuthenticated, onSignIn } from './utils/rootScript.js';
 
 (function () {
   configureElements();
-  setupLoginButton();
 
   if (
     import.meta.env.MODE === 'development' &&
