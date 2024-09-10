@@ -64,7 +64,7 @@ async function main() {
     return;
   }
 
-  if (isNewSession) {
+  if (isNewSession && !isFullscreen.value) {
     isCondensed.value = true;
   }
 
