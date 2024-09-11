@@ -1,10 +1,11 @@
-import { defineConfig, loadEnv } from 'vite';
+import baseConfig from '../vite.config.ts';
+import { ConfigEnv, loadEnv, mergeConfig } from 'vite';
 
-export default defineConfig(({ mode }) => {
-  const envDir = process.cwd()
-  const env = loadEnv(mode, envDir, '')
+export default function defineConfig(config: ConfigEnv) {
+  const envDir = process.cwd();
+  const env = loadEnv(config.mode, envDir, '');
 
-  return {
+  return mergeConfig(baseConfig(config), {
     envDir,
     root: './iframe-container',
     server: {
@@ -12,7 +13,7 @@ export default defineConfig(({ mode }) => {
     },
     preview: {
       open: true,
-      port: parseInt(env.VITE_EMBED_PARENT_PREVIEW_PORT || '5000')
-    }
-  }
-});
+      port: parseInt(env.VITE_EMBED_PARENT_PREVIEW_PORT || '5000'),
+    },
+  });
+}

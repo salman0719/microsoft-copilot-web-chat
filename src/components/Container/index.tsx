@@ -116,7 +116,8 @@ const Container: FunctionalComponent = () => {
     if (rootIsClosed.value) {
       const isBodyHiddenTimeoutId = setTimeout(() => {
         isBodyHidden.value = true;
-      }, 300);
+        // @ts-expect-error: This value will come from vite's `define`
+      }, __CHAT_WINDOW_TRANSITION_DURATION_MS__);
       return () => clearTimeout(isBodyHiddenTimeoutId);
     } else {
       isBodyHidden.value = false;
