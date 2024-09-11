@@ -1,4 +1,4 @@
-import { BOT_NAME, TARGET_ORIGIN } from './constants.ts';
+import { BOT_NAME, IS_WINDOW_EMBEDDED, TARGET_ORIGIN } from './constants.ts';
 import { container } from './store.ts';
 
 export const updateInputPlaceholder = () => {
@@ -27,7 +27,7 @@ export interface SetDataPostMessageProps {
 type PostMessageProps = ResizePostMessageProps | SetDataPostMessageProps;
 
 export const postMessageToParent = (data: PostMessageProps) => {
-  window.parent.postMessage(data, TARGET_ORIGIN);
+  IS_WINDOW_EMBEDDED && window.parent.postMessage(data, TARGET_ORIGIN);
 };
 
 export const observeConversationResize = () => {

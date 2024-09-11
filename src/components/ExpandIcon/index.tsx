@@ -12,13 +12,18 @@ effect(() => {
 
 const ExpandIcon: FunctionalComponent = () => {
   const enableFullscreen = () => {
-    const searchQuery = new URLSearchParams(location.search);
-    searchQuery.set(FULLSCREEN_SEARCH_QUERY_KEY, '1');
-    let newSearch = searchQuery.toString();
-    if (newSearch) {
-      newSearch = '?' + newSearch;
+    // @ts-expect-error: comes from vite's define
+    if (__IS_EMBED_CHILD__) {
+      window.open(location.href);
+    } else {
+      const searchQuery = new URLSearchParams(location.search);
+      searchQuery.set(FULLSCREEN_SEARCH_QUERY_KEY, '1');
+      let newSearch = searchQuery.toString();
+      if (newSearch) {
+        newSearch = '?' + newSearch;
+      }
+      window.open(location.origin + location.pathname + newSearch + location.hash);
     }
-    window.open(location.origin + location.pathname + newSearch + location.hash);
   };
 
   return (

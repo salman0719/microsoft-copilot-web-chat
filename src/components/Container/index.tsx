@@ -29,6 +29,9 @@ import InputError from '../InputError/index.tsx';
 import { onSignInClick } from '../../utils/rootScript.js';
 import DisclosureText from '../DisclosureText/index.tsx';
 
+// TODO
+// Group the following and other effects from other files and take them to
+// a different source
 effect(() => {
   isDark.value
     ? localStorage.setItem(WEBCHAT_MODE_KEY, '1')

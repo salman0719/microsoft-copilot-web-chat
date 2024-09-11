@@ -1,16 +1,15 @@
 import { effect, signal } from '@preact/signals';
 import {
   FULLSCREEN_SEARCH_QUERY_KEY,
+  IS_WINDOW_EMBEDDED,
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
   WEBCHAT_WINDOW_CONDENSED_KEY,
 } from './constants.ts';
 import { postMessageToParent, SetDataPostMessageProps } from './helper.ts';
 
-const isWindowEmbedded = window.top !== window.self;
-
 export const broadcastEffect = (key: string, value: unknown, oldValue: unknown) => {
-  if (!isWindowEmbedded) {
+  if (!IS_WINDOW_EMBEDDED) {
     return;
   }
 
@@ -39,7 +38,10 @@ export const isClosed = signal(localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) =
 export const isDark = signal(localStorage.getItem(WEBCHAT_MODE_KEY) === '1');
 export const isCondensed = signal(localStorage.getItem(WEBCHAT_WINDOW_CONDENSED_KEY) === '1');
 export const isFullscreen = signal(
-  new URLSearchParams(location.search).get(FULLSCREEN_SEARCH_QUERY_KEY) === '1'
+  // @ts-expect-error: Comes from vite's define
+  __IS_EMBED_CHILD__
+    ? !IS_WINDOW_EMBEDDED
+    : new URLSearchParams(location.search).get(FULLSCREEN_SEARCH_QUERY_KEY) === '1'
 );
 export const username = signal('');
 
