@@ -46,9 +46,7 @@ import renderMarkup from './utils/renderMarkup';
         return;
       }
 
-      // TODO
-      // Use constant
-      parent.style.height = Math.max(height, 335) + 'px';
+      parent.style.height = height + 'px';
     }
   });
 })();

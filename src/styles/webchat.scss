@@ -514,8 +514,6 @@
     }
 
     &.chat-window--condensed {
-      height: auto;
-
       .webchat__css-custom-properties > div:first-child {
         max-height: 100vh;
       }

@@ -1,16 +1,16 @@
+$min-height: calc($condensed-webchat-height + 125px);
+
 #bot-iframe-wrapper {
   position: fixed;
   z-index: 9999;
   right: 135px;
   bottom: 30px;
-  // TODO
-  // Use constant
-  width: 525px;
-  height: 500px;
+  width: $regular-webchat-width;
   max-width: calc(100vw - 40px);
   max-height: calc(100vh - 67px);
+  min-height: calc($min-height + 35px);
 
-  >iframe.bot-iframe {
+  > iframe.bot-iframe {
     border: 0px;
     width: 100%;
     height: 100%;
@@ -21,8 +21,10 @@
   }
 
   &.bot-iframe--condensed {
-    height: 300px;
-    width: 325px;
+    width: $condensed-webchat-width;
+    height: calc($condensed-webchat-height + 125px);
+    max-height: $min-height;
+    min-height: $min-height;
   }
 
   &.bot-iframe--unauthenticated {
@@ -32,6 +34,7 @@
   &.bot-iframe--closed {
     width: 64px !important;
     height: 64px !important;
+    min-height: unset;
   }
 }
 

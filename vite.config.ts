@@ -4,6 +4,9 @@ import preact from '@preact/preset-vite';
 const defaultScssAdditionalDataObj = {
   'enable-fullscreen': 'false',
   'is-embed-child': 'false',
+  'regular-webchat-width': '500px',
+  'condensed-webchat-width': '325px',
+  'condensed-webchat-height': '175px',
 };
 
 export const getScssAdditionalData = (obj: Record<string, string> = {}) => {
