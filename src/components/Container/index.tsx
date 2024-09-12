@@ -31,10 +31,14 @@ const Container: FunctionalComponent = () => {
   );
   const isClosed = useSignal<boolean>(rootIsClosed.peek());
 
+  // TODO
+  // Move it elsewhere
   const submitBtn = useComputed<HTMLButtonElement | null | undefined>(() =>
     container.value?.querySelector('.webchat__send-box__button')
   );
 
+  // TODO
+  // Move it elsewhere
   effect(() => {
     const submitBtnValue = submitBtn.value;
     const hasErrorValue = sendBoxChatLimitCrossed.value;
@@ -55,7 +59,7 @@ const Container: FunctionalComponent = () => {
     const fullscreenValue = isFullscreen.value;
 
     return classNames(
-      !authenticatedValue && 'chat-window--unauthenticated',
+      authenticatedValue === false && 'chat-window--unauthenticated',
       fullscreenValue && 'chat-window--fullscreen',
       !fullscreenValue && authenticatedValue && isCondensed.value && 'chat-window--condensed',
       isClosed.value && 'chat-window--closed',

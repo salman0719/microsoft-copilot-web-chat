@@ -25,8 +25,9 @@
     box-sizing: border-box;
     transform: scale(1);
     transform-origin: bottom right;
-    transition: all calc(var(--chat-window-transition-duration-ms) * 1ms)
-      cubic-bezier(0.7, 0, 0.3, 1);
+    transition-property: transform, margin-bottom;
+    transition-duration: calc(var(--chat-window-transition-duration-ms) * 1ms);
+    transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
     border-radius: 28px;
     border: 1px solid #ccc;
     max-width: calc(100% - 25px);
@@ -416,6 +417,7 @@
 
   &.chat-window--webchat-uninitialized {
     > .chat-window__body {
+      width: auto;
       #webchat {
         display: none;
       }
@@ -423,6 +425,7 @@
 
     &:not(.chat-window--unauthenticated) > .chat-window__body {
       border: 0;
+      margin-bottom: 0px;
 
       .chat-window__navbar {
         display: none;
@@ -503,7 +506,6 @@
     right: 0px;
     position: fixed;
     box-sizing: border-box;
-    overflow: auto;
     max-height: 100vh;
     overflow: hidden;
 

@@ -30,12 +30,14 @@ $min-height: calc($condensed-webchat-height + 125px);
 
   &.bot-iframe--unauthenticated {
     height: 440px;
+    max-height: unset;
   }
 
+  &.bot-iframe--webchat-uninitialized:not(.bot-iframe--unauthenticated),
   &.bot-iframe--closed {
     width: 64px !important;
     height: 64px !important;
-    min-height: unset;
+    min-height: 64px !important;
   }
 }
 

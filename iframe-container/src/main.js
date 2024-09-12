@@ -25,6 +25,8 @@ import renderMarkup from './utils/renderMarkup';
         parent.classList[value ? 'add' : 'remove']('bot-iframe--condensed');
       } else if (key === 'authenticated') {
         parent.classList[value ? 'remove' : 'add']('bot-iframe--unauthenticated');
+      } else if (key === 'webchatInitialized') {
+        parent.classList[value ? 'remove' : 'add']('bot-iframe--webchat-uninitialized');
       } else if (key === 'isClosed') {
         if (!value) {
           parent.classList['remove']('bot-iframe--closed');

@@ -16,7 +16,7 @@ export const sendBoxChatLimitCrossed = signal(false);
 export const errorMessages = signal<ErrorMessage[]>([]);
 
 export const webchatInitialized = signal(false);
-export const authenticated = signal(false);
+export const authenticated = signal<boolean | undefined>();
 export const isClosed = signal(localStorage.getItem(WEBCHAT_WINDOW_CLOSED_KEY) === '1');
 export const isDark = signal(localStorage.getItem(WEBCHAT_MODE_KEY) === '1');
 export const isCondensed = signal(localStorage.getItem(WEBCHAT_WINDOW_CONDENSED_KEY) === '1');
