@@ -1,14 +1,6 @@
 import clientApplication from './clientApplication.js';
 import { WEBCHAT_LAST_MSG_TIME_KEY } from './constants.tsx';
-import renderWebChat from './renderWebChat.js';
 import { authenticated } from './store.ts';
-
-export function onSignIn() {
-  // TODO
-  // We can utilize effect for this
-  authenticated.value = true;
-  renderWebChat();
-}
 
 export function onSignInClick() {
   let requestObj = {
@@ -19,7 +11,7 @@ export function onSignInClick() {
     .loginPopup(requestObj)
     .then(function (response) {
       clientApplication.setActiveAccount(response.account);
-      onSignIn();
+      authenticated.value = true;
     })
     .catch(function (error) {
       console.log(error);

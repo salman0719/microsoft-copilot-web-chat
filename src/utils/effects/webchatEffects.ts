@@ -1,8 +1,18 @@
-import { effect } from '@preact/signals';
-import { container, sendBoxChatLimitCrossed, sendBoxValue, webchatStore } from '../store';
+import { computed, effect } from '@preact/signals';
+import {
+  authenticated,
+  container,
+  sendBoxChatLimitCrossed,
+  sendBoxValue,
+  webchatInitialized,
+  webchatStore,
+} from '../store';
 import { BOT_NAME, INPUT_CHAR_LIMIT } from '../constants';
 import { ResizePostMessageProps } from '../types';
 import { postMessageToParent } from '../helper';
+// TODO
+// @ts-expect-error: We haven't converted the script to ts yet
+import renderWebChat from '../renderWebChat.js';
 
 effect(() => {
   const store = webchatStore.value;
@@ -29,27 +39,40 @@ effect(() => {
   }
 });
 
-// @ts-expect-error: This will come from vite config's `define` attribute
-if (__IS_EMBED_CHILD__) {
-  effect(() => {
+const computedElement = <Elem extends HTMLElement>(selector: string) =>
+  computed<Elem | void>(() => {
+    const initialized = webchatInitialized.value;
     const root = container.value;
-    if (!root) {
+    if (!root || !initialized) {
+      return;
+    }
+    const node = root.querySelector<Elem>(selector);
+    if (!node) {
       return;
     }
 
-    const conversationContainer = root.querySelector<HTMLDivElement>(
-      '.webchat__basic-transcript__scrollable'
-    );
-    if (!conversationContainer) {
+    return node;
+  });
+
+// @ts-expect-error: This will come from vite config's `define` attribute
+if (__IS_EMBED_CHILD__) {
+  const conversationContainer = computedElement<HTMLDivElement>(
+    '.webchat__basic-transcript__scrollable'
+  );
+
+  effect(() => {
+    const root = container.value;
+    const conversationContainerValue = conversationContainer.value;
+    if (!conversationContainerValue || !root) {
       return;
     }
 
     const sendIframeSize = () => {
       const containerHeight = root.offsetHeight;
-      const conversationHeight = conversationContainer.offsetHeight;
+      const conversationHeight = conversationContainerValue.offsetHeight;
 
       const data: ResizePostMessageProps = {
-        height: containerHeight - conversationHeight + conversationContainer.scrollHeight + 10,
+        height: containerHeight - conversationHeight + conversationContainerValue.scrollHeight + 10,
         type: 'conversationResize',
       };
 
@@ -57,7 +80,7 @@ if (__IS_EMBED_CHILD__) {
     };
 
     const resizeObserver = new ResizeObserver(sendIframeSize);
-    resizeObserver.observe(conversationContainer);
+    resizeObserver.observe(conversationContainerValue);
 
     sendIframeSize();
 
@@ -65,15 +88,15 @@ if (__IS_EMBED_CHILD__) {
   });
 }
 
-effect(() => {
-  const root = container.value;
-  if (!root) {
-    return;
-  }
-  const input = root.querySelector<HTMLInputElement>('.webchat__send-box-text-box__input');
-  if (!input) {
-    return;
-  }
+const inputElem = computedElement<HTMLInputElement>('.webchat__send-box-text-box__input');
 
-  input.placeholder = 'Message ' + BOT_NAME;
+effect(() => {
+  if (!inputElem.value) {
+    return;
+  }
+  inputElem.value.placeholder = 'Message ' + BOT_NAME;
+});
+
+effect(() => {
+  authenticated.value && renderWebChat();
 });

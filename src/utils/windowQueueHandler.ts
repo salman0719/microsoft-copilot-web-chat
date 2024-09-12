@@ -6,6 +6,10 @@ import { addErrorMessage, removeErrorMessage } from './helper.js';
 import renderWebChat from './renderWebChat.js';
 import { directLine, isWebchatActive, webchatInitialized } from './store.js';
 
+// NOTE
+// Keep all these code together, so that if required, we can just skip importing
+// this file to ignore window queueing
+
 // TODO
 // Use constant keys for localStorage
 
@@ -64,8 +68,6 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// TODO
-// Group and send this to other source if it suits better
 effect(() => {
   if (!isWebchatActive.value) {
     batch(() => {

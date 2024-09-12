@@ -1,4 +1,4 @@
-import { isAuthenticated, onSignIn } from './utils/rootScript.js';
+import { isAuthenticated } from './utils/rootScript.js';
 import configureElements from './utils/configureElements.tsx';
 import './utils/effects/visualStateEffects.ts';
 import './utils/effects/webchatEffects.ts';
@@ -11,7 +11,4 @@ document.documentElement.style.setProperty(
 );
 
 configureElements();
-
-isAuthenticated().then(function (authenticated) {
-  authenticated && onSignIn();
-});
+isAuthenticated();
