@@ -1,12 +1,5 @@
 import { FunctionalComponent, JSX } from 'preact';
-import {
-  BOT_NAME,
-  DEFAULT_SEND_BOX_ERROR,
-  ELEMENT_ID,
-  WEBCHAT_MODE_KEY,
-  WEBCHAT_WINDOW_CLOSED_KEY,
-  WEBCHAT_WINDOW_CONDENSED_KEY,
-} from '../../utils/constants.tsx';
+import { BOT_NAME, DEFAULT_SEND_BOX_ERROR, ELEMENT_ID } from '../../utils/constants.tsx';
 import loginBotIconSrc from '../../images/login-bot-icon.png';
 import classNames from 'classnames';
 import {
@@ -16,8 +9,6 @@ import {
   isCondensed,
   isFullscreen,
   authenticated,
-  webchatStore,
-  sendBoxValue,
   container,
   username,
   sendBoxChatLimitCrossed,
@@ -30,41 +21,8 @@ import InputCounter from '../InputCounter/index.tsx';
 import { onSignInClick } from '../../utils/rootScript.js';
 import DisclosureText from '../DisclosureText/index.tsx';
 import ErrorMessages from '../ErrorMessages/index.tsx';
-import { addErrorMessage, removeErrorMessage } from '../../utils/helper.ts';
-
-// TODO
-// Group the following and other effects from other files and take them to
-// a different source
-effect(() => {
-  isDark.value
-    ? localStorage.setItem(WEBCHAT_MODE_KEY, '1')
-    : localStorage.removeItem(WEBCHAT_MODE_KEY);
-});
-
-effect(() => {
-  rootIsClosed.value
-    ? localStorage.setItem(WEBCHAT_WINDOW_CLOSED_KEY, '1')
-    : localStorage.removeItem(WEBCHAT_WINDOW_CLOSED_KEY);
-});
-
-effect(() => {
-  isCondensed.value
-    ? localStorage.setItem(WEBCHAT_WINDOW_CONDENSED_KEY, '1')
-    : localStorage.removeItem(WEBCHAT_WINDOW_CONDENSED_KEY);
-});
-
-const disposeIsClosedEffect = effect(() => {
-  if (rootIsClosed.value) {
-    return () => {
-      isCondensed.value = false;
-      disposeIsClosedEffect();
-    };
-  }
-});
-
-const stopPropagation = (e: Event) => {
-  e.stopPropagation();
-};
+import { addErrorMessage, removeErrorMessage, stopPropagation } from '../../utils/helper.ts';
+import { useEffect } from 'preact/hooks';
 
 const Container: FunctionalComponent = () => {
   const isBodyHidden = useSignal<boolean>(false);
@@ -109,31 +67,6 @@ const Container: FunctionalComponent = () => {
   const uncondense = (isCondensed.value && (() => (isCondensed.value = false))) || void 0;
 
   effect(() => {
-    const store = webchatStore.value;
-    if (!store) {
-      return;
-    }
-
-    // @ts-expect-error: We're not using WebChat's ts library yet
-    return store.subscribe(() => {
-      // @ts-expect-error: We're not using WebChat's ts library yet
-      const newSendBoxValue = store.getState().sendBoxValue;
-      if (newSendBoxValue !== sendBoxValue.value) {
-        sendBoxValue.value = newSendBoxValue;
-      }
-    });
-  });
-
-  effect(() => {
-    !isCondensed.value &&
-      setTimeout(() => {
-        container.value
-          ?.querySelector<HTMLInputElement>('.webchat__send-box-text-box__input')
-          ?.focus();
-      });
-  });
-
-  effect(() => {
     setTimeout(() => {
       isClosed.value = rootIsClosed.value;
     }, 1);
@@ -148,6 +81,11 @@ const Container: FunctionalComponent = () => {
       isBodyHidden.value = false;
     }
   });
+
+  useEffect(() => {
+    container.value = document.querySelector('#' + ELEMENT_ID);
+    return () => (container.value = null);
+  }, []);
 
   return (
     <div id={ELEMENT_ID} className={className}>
@@ -192,6 +130,8 @@ const Container: FunctionalComponent = () => {
           <div className='chat-window__navbar__mode-username'>{username}</div>
         </div>
         <div id='webchat'></div>
+        {/* // TODO */}
+        {/* Need to refactor the old login-screen implementation */}
         <div id='login-screen'>
           <div>
             <img src={loginBotIconSrc} id='login-upper-image' />

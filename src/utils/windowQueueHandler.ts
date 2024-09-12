@@ -6,6 +6,9 @@ import { addErrorMessage, removeErrorMessage } from './helper.js';
 import renderWebChat from './renderWebChat.js';
 import { directLine, isWebchatActive, webchatInitialized } from './store.js';
 
+// TODO
+// Use constant keys for localStorage
+
 function restartWebchat() {
   batch(() => {
     isWebchatActive.value = true;

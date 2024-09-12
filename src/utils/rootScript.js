@@ -4,6 +4,8 @@ import renderWebChat from './renderWebChat.js';
 import { authenticated } from './store.ts';
 
 export function onSignIn() {
+  // TODO
+  // We can utilize effect for this
   authenticated.value = true;
   renderWebChat();
 }

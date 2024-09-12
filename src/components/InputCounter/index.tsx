@@ -10,15 +10,6 @@ import { effect, useComputed } from '@preact/signals';
 import classNames from 'classnames';
 import { createPortal } from 'preact/compat';
 
-effect(() => {
-  const oldValue = sendBoxChatLimitCrossed.value;
-  const newValue = sendBoxValue.value.length > INPUT_CHAR_LIMIT;
-
-  if (oldValue !== newValue) {
-    sendBoxChatLimitCrossed.value = newValue;
-  }
-});
-
 const Root: FunctionalComponent = () => {
   const className = useComputed(() =>
     classNames(

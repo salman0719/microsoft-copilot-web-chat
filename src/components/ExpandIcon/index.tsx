@@ -1,14 +1,5 @@
 import { FunctionalComponent } from 'preact';
 import { FULLSCREEN_SEARCH_QUERY_KEY } from '../../utils/constants';
-import { effect } from '@preact/signals';
-import { isClosed, isCondensed, isFullscreen } from '../../utils/store';
-
-effect(() => {
-  if (isFullscreen.value) {
-    isClosed.value = false;
-    isCondensed.value = false;
-  }
-});
 
 const ExpandIcon: FunctionalComponent = () => {
   const enableFullscreen = () => {
