@@ -8,6 +8,7 @@ $min-height: calc($condensed-webchat-height + 125px);
   width: $regular-webchat-width;
   max-width: calc(100vw - 40px);
   max-height: calc(100vh - 67px);
+  height: calc($min-height + 35px);
   min-height: calc($min-height + 35px);
 
   > iframe.bot-iframe {
