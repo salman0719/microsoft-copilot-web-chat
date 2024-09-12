@@ -1,5 +1,5 @@
 import { batch, effect } from '@preact/signals';
-import { INACTIVE_CONNECTION_ERROR, WINDOW_ID } from './constants.js';
+import { INACTIVE_CONNECTION_ERROR, WEBCHAT_WINDOW_QUEUE_KEY, WINDOW_ID } from './constants.js';
 import { addErrorMessage, removeErrorMessage } from './helper.js';
 // TODO
 // @ts-expect-error: We haven't converted the script to ts yet
@@ -10,8 +10,9 @@ import { directLine, isWebchatActive, webchatInitialized } from './store.js';
 // Keep all these code together, so that if required, we can just skip importing
 // this file to ignore window queueing
 
-// TODO
-// Use constant keys for localStorage
+function getQueue(): string[] {
+  return JSON.parse(localStorage.getItem(WEBCHAT_WINDOW_QUEUE_KEY) || '[]');
+}
 
 function restartWebchat() {
   batch(() => {
@@ -22,48 +23,34 @@ function restartWebchat() {
 }
 
 function addToQueue() {
-  const queue: string[] = JSON.parse(localStorage.getItem('windowQueue') || '[]');
+  const queue = getQueue();
   if (!queue.includes(WINDOW_ID)) {
     queue.unshift(WINDOW_ID);
-    localStorage.setItem('activeWindow', WINDOW_ID);
-    localStorage.setItem('windowQueue', JSON.stringify(queue));
+    localStorage.setItem(WEBCHAT_WINDOW_QUEUE_KEY, JSON.stringify(queue));
   }
 }
 
 function removeFromQueue() {
-  const queue: string[] = JSON.parse(localStorage.getItem('windowQueue') || '[]').filter(
-    (id: string) => id !== WINDOW_ID
-  );
-  localStorage.setItem('windowQueue', JSON.stringify(queue));
+  const queue: string[] = getQueue().filter((id: string) => id !== WINDOW_ID);
+  localStorage.setItem(WEBCHAT_WINDOW_QUEUE_KEY, JSON.stringify(queue));
 }
 
 window.addEventListener('storage', ({ key }) => {
-  if (key === 'activeWindow') {
-    // TODO
-    // We can remove usage of `activeWindow`, `windowQueue[0]` is equal to `activeWindow`
-    if (localStorage.getItem('activeWindow') !== WINDOW_ID) {
-      isWebchatActive.value = false;
-    } else {
+  if (key === WEBCHAT_WINDOW_QUEUE_KEY) {
+    if (getQueue()[0] === WINDOW_ID) {
       !document.hidden && restartWebchat();
+    } else {
+      isWebchatActive.value = false;
     }
   }
 });
 
 window.addEventListener('beforeunload', function () {
   removeFromQueue();
-
-  const queue: string[] = JSON.parse(localStorage.getItem('windowQueue') || '[]');
-  if (queue.length > 0) {
-    localStorage.setItem('activeWindow', queue[0]);
-  }
 });
 
 document.addEventListener('visibilitychange', () => {
-  if (
-    !document.hidden &&
-    !isWebchatActive.peek() &&
-    localStorage.getItem('activeWindow') === WINDOW_ID
-  ) {
+  if (!document.hidden && !isWebchatActive.peek() && getQueue()[0] === WINDOW_ID) {
     restartWebchat();
   }
 });

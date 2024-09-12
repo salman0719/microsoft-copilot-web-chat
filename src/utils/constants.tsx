@@ -7,6 +7,7 @@ export const WEBCHAT_LAST_MSG_TIME_KEY = 'webchat-last-msg-time';
 export const WEBCHAT_WINDOW_CLOSED_KEY = 'webchat-window-closed';
 export const WEBCHAT_WINDOW_CONDENSED_KEY = 'webchat-window-condensed';
 export const WEBCHAT_MODE_KEY = 'webchat-mode';
+export const WEBCHAT_WINDOW_QUEUE_KEY = 'webchat-window-queue';
 export const INPUT_CHAR_LIMIT = 500;
 export const IS_WINDOW_EMBEDDED = window.top !== window.self;
 export const BOT_NAME = 'Scout';
