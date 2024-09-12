@@ -11,8 +11,6 @@ export const INPUT_CHAR_LIMIT = 500;
 export const IS_WINDOW_EMBEDDED = window.top !== window.self;
 export const BOT_NAME = 'Scout';
 export const DISCLOSURE_TEXT = BOT_NAME + ' can make mistakes, verify important information.';
-export const DEFAULT_SEND_BOX_ERROR_MESSAGE =
-  'Maximum limit of ' + INPUT_CHAR_LIMIT + ' characters reached.';
 export const FULLSCREEN_SEARCH_QUERY_KEY = 'fullscreen';
 export const MSAL_CLIENT_ID =
   import.meta.env.VITE_MSAL_CLIENT_ID || 'bf3b31f3-7df6-45d6-8f66-70a15dbeec76';
@@ -25,13 +23,17 @@ export const TARGET_ORIGIN = import.meta.env.DEV
   ? 'http://localhost:' + (import.meta.env.VITE_EMBED_PARENT_PORT || '4000')
   : import.meta.env.VITE_EMBED_PARENT_ORIGIN || '*';
 
+export const DEFAULT_SEND_BOX_ERROR: ErrorMessage = {
+  id: 'SEND_BOX_ERROR',
+  text: 'Maximum limit of ' + INPUT_CHAR_LIMIT + ' characters reached.',
+};
 export const INACTIVE_CONNECTION_ERROR: ErrorMessage = {
   id: 'INACTIVE_CONNECTION_ERROR',
   text: (
     <span>
       This conversation is currently inactive. Connection has been tranferred to another window.{' '}
       <span onClick={() => window.location.reload()} className='chat-window__reload-link'>
-        Refresh frame
+        Reload frame
       </span>{' '}
       to regain control.
     </span>

@@ -293,6 +293,7 @@
 
   .webchat__error-info {
     > svg {
+      flex-shrink: 0;
       padding-right: 12px;
       fill: rgb(197, 15, 31);
     }

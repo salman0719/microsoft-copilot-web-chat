@@ -1,6 +1,7 @@
 import { FunctionalComponent, JSX } from 'preact';
 import {
   BOT_NAME,
+  DEFAULT_SEND_BOX_ERROR,
   ELEMENT_ID,
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
@@ -19,16 +20,17 @@ import {
   sendBoxValue,
   container,
   username,
+  sendBoxChatLimitCrossed,
 } from '../../utils/store.ts';
 import { effect, useComputed, useSignal } from '@preact/signals';
 import ExpandIcon from '../ExpandIcon/index.tsx';
 import InputCounter from '../InputCounter/index.tsx';
-import InputError from '../InputError/index.tsx';
 // TODO
 // @ts-expect-error: We haven't converted the script to ts yet
 import { onSignInClick } from '../../utils/rootScript.js';
 import DisclosureText from '../DisclosureText/index.tsx';
 import ErrorMessages from '../ErrorMessages/index.tsx';
+import { addErrorMessage, removeErrorMessage } from '../../utils/helper.ts';
 
 // TODO
 // Group the following and other effects from other files and take them to
@@ -70,6 +72,25 @@ const Container: FunctionalComponent = () => {
     classNames('chat-window__body', isBodyHidden.value && 'chat-window__body--hidden')
   );
   const isClosed = useSignal<boolean>(rootIsClosed.peek());
+
+  const submitBtn = useComputed<HTMLButtonElement | null | undefined>(() =>
+    container.value?.querySelector('.webchat__send-box__button')
+  );
+
+  effect(() => {
+    const submitBtnValue = submitBtn.value;
+    const hasErrorValue = sendBoxChatLimitCrossed.value;
+
+    if (submitBtnValue) {
+      submitBtnValue.disabled = hasErrorValue;
+    }
+
+    if (hasErrorValue) {
+      addErrorMessage(DEFAULT_SEND_BOX_ERROR);
+    } else {
+      removeErrorMessage(DEFAULT_SEND_BOX_ERROR.id);
+    }
+  });
 
   const className = useComputed(() => {
     const authenticatedValue = authenticated.value;
@@ -193,7 +214,6 @@ const Container: FunctionalComponent = () => {
       </div>
       <div id='webchat-bot' onClick={() => (rootIsClosed.value = !rootIsClosed.value)}></div>
       <InputCounter />
-      <InputError />
       <ErrorMessages />
       <DisclosureText />
     </div>
