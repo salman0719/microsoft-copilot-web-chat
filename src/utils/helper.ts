@@ -1,5 +1,6 @@
 import { BOT_NAME, IS_WINDOW_EMBEDDED, TARGET_ORIGIN } from './constants.ts';
-import { container } from './store.ts';
+import { container, errorMessages } from './store.ts';
+import { ErrorMessage, ResizePostMessageProps, SetDataPostMessageProps } from './types.ts';
 
 export const updateInputPlaceholder = () => {
   const root = container.value;
@@ -14,16 +15,6 @@ export const updateInputPlaceholder = () => {
   input.placeholder = 'Message ' + BOT_NAME;
 };
 
-export interface ResizePostMessageProps {
-  height: number;
-  type: 'conversationResize';
-}
-export interface SetDataPostMessageProps {
-  key: string;
-  oldValue: unknown;
-  value: unknown;
-  type: 'setData';
-}
 type PostMessageProps = ResizePostMessageProps | SetDataPostMessageProps;
 
 export const postMessageToParent = (data: PostMessageProps) => {
@@ -61,4 +52,18 @@ export const observeConversationResize = () => {
   sendIframeSize();
 
   return () => resizeObserver.disconnect();
+};
+
+export const addErrorMessage = (error: ErrorMessage) => {
+  const newErrorMessages = errorMessages.peek().filter(({ id }) => id !== error.id);
+  newErrorMessages.push(error);
+
+  errorMessages.value = newErrorMessages;
+};
+
+export const removeErrorMessage = (id: ErrorMessage['id']) => {
+  const newErrorMessages = errorMessages.peek().filter(({ id: _id }) => id !== _id);
+  if (newErrorMessages.length !== errorMessages.value.length) {
+    errorMessages.value = newErrorMessages;
+  }
 };

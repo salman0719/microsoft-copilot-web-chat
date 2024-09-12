@@ -28,6 +28,7 @@ import InputError from '../InputError/index.tsx';
 // @ts-expect-error: We haven't converted the script to ts yet
 import { onSignInClick } from '../../utils/rootScript.js';
 import DisclosureText from '../DisclosureText/index.tsx';
+import ErrorMessages from '../ErrorMessages/index.tsx';
 
 // TODO
 // Group the following and other effects from other files and take them to
@@ -193,6 +194,7 @@ const Container: FunctionalComponent = () => {
       <div id='webchat-bot' onClick={() => (rootIsClosed.value = !rootIsClosed.value)}></div>
       <InputCounter />
       <InputError />
+      <ErrorMessages />
       <DisclosureText />
     </div>
   );

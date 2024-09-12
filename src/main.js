@@ -1,6 +1,7 @@
 import clientApplication from './utils/clientApplication.js';
 import configureElements from './utils/configureElements.tsx';
 import { isAuthenticated, onSignIn } from './utils/rootScript.js';
+import './utils/windowQueueHandler.ts';
 
 (function () {
   document.documentElement.style.setProperty(

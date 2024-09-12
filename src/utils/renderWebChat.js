@@ -7,6 +7,7 @@ import {
   webchatStore,
   sendBoxChatLimitCrossed,
   username,
+  directLine,
 } from './store.ts';
 import { observeConversationResize, updateInputPlaceholder } from './helper.ts';
 import botAvatarImageSrc from '../images/chat-bot-icon.png';
@@ -40,6 +41,7 @@ async function main() {
       ? sessionStorage.getItem('oldToken')
       : null;
   var isNewSession;
+
   if (isFullscreen.value || oldToken === undefined || oldToken === null) {
     const { token } = await fetchJSON(theURL);
     isNewSession = true;
@@ -57,9 +59,8 @@ async function main() {
     }
   }
   let latestToken = { token: currentToken };
-  let directLine;
   if (latestToken !== undefined && latestToken !== null) {
-    directLine = await window.WebChat.createDirectLine(latestToken);
+    directLine.value = await window.WebChat.createDirectLine(latestToken);
   } else {
     return;
   }
@@ -150,7 +151,7 @@ async function main() {
 
   window.WebChat.renderWebChat(
     {
-      directLine,
+      directLine: directLine.value,
       store,
       styleOptions,
     },

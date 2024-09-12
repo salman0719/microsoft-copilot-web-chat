@@ -1,4 +1,7 @@
+import { ErrorMessage } from './types';
+
 export const ELEMENT_ID = 'chat-window';
+export const WINDOW_ID = Math.random().toString(36).substring(2, 9);
 export const WEBCHAT_WINDOW_CLOSED_KEY = 'webchat-window-closed';
 export const WEBCHAT_WINDOW_CONDENSED_KEY = 'webchat-window-condensed';
 export const WEBCHAT_MODE_KEY = 'webchat-mode';
@@ -19,3 +22,8 @@ export const BOT_TOKEN_ENDPOINT =
 export const TARGET_ORIGIN = import.meta.env.DEV
   ? 'http://localhost:' + (import.meta.env.VITE_EMBED_PARENT_PORT || '4000')
   : import.meta.env.VITE_EMBED_PARENT_ORIGIN || '*';
+
+export const INACTIVE_CONNECTION_ERROR: ErrorMessage = {
+  id: 'INACTIVE_CONNECTION_ERROR',
+  text: 'This conversation is currently inactive. Connection has been tranferred to another window. You can reload this page to regain control here.',
+};

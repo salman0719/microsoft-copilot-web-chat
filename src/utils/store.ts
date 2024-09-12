@@ -6,7 +6,8 @@ import {
   WEBCHAT_WINDOW_CLOSED_KEY,
   WEBCHAT_WINDOW_CONDENSED_KEY,
 } from './constants.ts';
-import { postMessageToParent, SetDataPostMessageProps } from './helper.ts';
+import { postMessageToParent } from './helper.ts';
+import { ErrorMessage, SetDataPostMessageProps } from './types.ts';
 
 export const broadcastEffect = (key: string, value: unknown, oldValue: unknown) => {
   if (!IS_WINDOW_EMBEDDED) {
@@ -28,9 +29,11 @@ export const broadcastEffect = (key: string, value: unknown, oldValue: unknown) 
 };
 
 export const webchatStore = signal<Record<string, unknown> | undefined>();
+export const directLine = signal<Record<string, unknown> | undefined>();
 export const container = signal<HTMLDivElement | null>(null);
 export const sendBoxValue = signal('');
 export const sendBoxChatLimitCrossed = signal(false);
+export const errorMessages = signal<ErrorMessage[]>([]);
 
 export const webchatInitialized = signal(false);
 export const authenticated = signal(false);
@@ -44,6 +47,7 @@ export const isFullscreen = signal(
     : new URLSearchParams(location.search).get(FULLSCREEN_SEARCH_QUERY_KEY) === '1'
 );
 export const username = signal('');
+export const isWebchatActive = signal(true);
 
 const broadcastSignals = {
   webchatInitialized,

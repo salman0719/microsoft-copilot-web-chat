@@ -274,6 +274,7 @@
     font-weight: bold;
   }
 
+  .webchat__error-info,
   .webchat__send-box__error-info {
     align-items: center;
     color: rgb(197, 15, 31);
@@ -281,6 +282,13 @@
     font-size: 75%;
     font-weight: bold;
     margin: 8px 14px;
+  }
+
+  .webchat__error-info {
+    > svg {
+      padding-right: 12px;
+      fill: rgb(197, 15, 31);
+    }
   }
 
   .webchat__send-box__info {
@@ -314,6 +322,7 @@
         border: 0;
         border-radius: 0;
         margin-right: 0px;
+        margin-bottom: 0px;
         overflow: hidden;
       }
 
