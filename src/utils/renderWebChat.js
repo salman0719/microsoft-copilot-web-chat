@@ -25,11 +25,6 @@ async function main() {
   // Add your BOT ID below
   var theURL = BOT_TOKEN_ENDPOINT;
 
-  if (import.meta.env.MODE === 'development' && import.meta.env.VITE_USE_DUMMY_MODE === '1') {
-    theURL =
-      'https://2d1f588f9702ed519606739c183a1d.c9.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_tempTestForCanvasDevelopment/directline/token?api-version=2022-03-01-preview';
-  }
-
   var userId =
     clientApplication.account?.accountIdentifier != null
       ? ('AIDE' + clientApplication.acscount.accountIdentifier).substring(0, 64)

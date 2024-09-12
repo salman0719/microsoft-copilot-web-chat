@@ -13,10 +13,7 @@ var msalConfig = {
 
 const clientApplication = new msal.PublicClientApplication(msalConfig);
 
-if (
-  import.meta.env.MODE === 'development' &&
-  (import.meta.env.VITE_USE_DUMMY_MODE === '1' || import.meta.env.VITE_IGNORE_AUTH === '1')
-) {
+if (import.meta.env.MODE === 'development' && import.meta.env.VITE_IGNORE_AUTH === '1') {
   clientApplication.getActiveAccount = () => ({
     name: 'Jenny Smith',
   });
