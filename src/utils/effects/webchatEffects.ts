@@ -7,9 +7,9 @@ import {
   webchatInitialized,
   webchatStore,
 } from '../store';
-import { BOT_NAME, INPUT_CHAR_LIMIT } from '../constants';
+import { BOT_NAME, DEFAULT_SEND_BOX_ERROR, INPUT_CHAR_LIMIT } from '../constants';
 import { ResizePostMessageProps } from '../types';
-import { postMessageToParent } from '../helper';
+import { addErrorMessage, postMessageToParent, removeErrorMessage } from '../helper';
 // TODO
 // @ts-expect-error: We haven't converted the script to ts yet
 import renderWebChat from '../renderWebChat.js';
@@ -99,4 +99,21 @@ effect(() => {
 
 effect(() => {
   authenticated.value && renderWebChat();
+});
+
+const submitBtnElem = computedElement<HTMLButtonElement>('.webchat__send-box__button');
+
+effect(() => {
+  const submitBtnElemValue = submitBtnElem.value;
+  const hasErrorValue = sendBoxChatLimitCrossed.value;
+
+  if (submitBtnElemValue) {
+    submitBtnElemValue.disabled = hasErrorValue;
+  }
+
+  if (hasErrorValue) {
+    addErrorMessage(DEFAULT_SEND_BOX_ERROR);
+  } else {
+    removeErrorMessage(DEFAULT_SEND_BOX_ERROR.id);
+  }
 });

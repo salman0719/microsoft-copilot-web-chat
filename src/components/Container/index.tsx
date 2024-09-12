@@ -1,5 +1,5 @@
 import { FunctionalComponent, JSX } from 'preact';
-import { BOT_NAME, DEFAULT_SEND_BOX_ERROR, ELEMENT_ID } from '../../utils/constants.tsx';
+import { BOT_NAME, ELEMENT_ID } from '../../utils/constants.tsx';
 import loginBotIconSrc from '../../images/login-bot-icon.png';
 import classNames from 'classnames';
 import {
@@ -11,7 +11,6 @@ import {
   authenticated,
   container,
   username,
-  sendBoxChatLimitCrossed,
 } from '../../utils/store.ts';
 import { effect, useComputed, useSignal } from '@preact/signals';
 import ExpandIcon from '../ExpandIcon/index.tsx';
@@ -21,7 +20,7 @@ import InputCounter from '../InputCounter/index.tsx';
 import { onSignInClick } from '../../utils/rootScript.js';
 import DisclosureText from '../DisclosureText/index.tsx';
 import ErrorMessages from '../ErrorMessages/index.tsx';
-import { addErrorMessage, removeErrorMessage, stopPropagation } from '../../utils/helper.ts';
+import { stopPropagation } from '../../utils/helper.ts';
 import { useEffect } from 'preact/hooks';
 
 const Container: FunctionalComponent = () => {
@@ -30,29 +29,6 @@ const Container: FunctionalComponent = () => {
     classNames('chat-window__body', isBodyHidden.value && 'chat-window__body--hidden')
   );
   const isClosed = useSignal<boolean>(rootIsClosed.peek());
-
-  // TODO
-  // Move it elsewhere
-  const submitBtn = useComputed<HTMLButtonElement | null | undefined>(() =>
-    container.value?.querySelector('.webchat__send-box__button')
-  );
-
-  // TODO
-  // Move it elsewhere
-  effect(() => {
-    const submitBtnValue = submitBtn.value;
-    const hasErrorValue = sendBoxChatLimitCrossed.value;
-
-    if (submitBtnValue) {
-      submitBtnValue.disabled = hasErrorValue;
-    }
-
-    if (hasErrorValue) {
-      addErrorMessage(DEFAULT_SEND_BOX_ERROR);
-    } else {
-      removeErrorMessage(DEFAULT_SEND_BOX_ERROR.id);
-    }
-  });
 
   const className = useComputed(() => {
     const authenticatedValue = authenticated.value;
