@@ -1,6 +1,8 @@
+import { ComponentChild } from 'preact';
+
 export interface ErrorMessage {
   id: string;
-  text: string;
+  text: ComponentChild;
 }
 
 export interface ResizePostMessageProps {

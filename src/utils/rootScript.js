@@ -1,5 +1,5 @@
 import clientApplication from './clientApplication.js';
-import { WEBCHAT_LAST_MSG_TIME_KEY } from './constants.ts';
+import { WEBCHAT_LAST_MSG_TIME_KEY } from './constants.tsx';
 import renderWebChat from './renderWebChat.js';
 import { authenticated } from './store.ts';
 

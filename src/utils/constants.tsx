@@ -27,5 +27,13 @@ export const TARGET_ORIGIN = import.meta.env.DEV
 
 export const INACTIVE_CONNECTION_ERROR: ErrorMessage = {
   id: 'INACTIVE_CONNECTION_ERROR',
-  text: 'This conversation is currently inactive. Connection has been tranferred to another window. You can reload this page to regain control here.',
+  text: (
+    <span>
+      This conversation is currently inactive. Connection has been tranferred to another window.{' '}
+      <span onClick={() => window.location.reload()} className='chat-window__reload-link'>
+        Refresh frame
+      </span>{' '}
+      to regain control.
+    </span>
+  ),
 };

@@ -5,7 +5,7 @@ import {
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
   WEBCHAT_WINDOW_CONDENSED_KEY,
-} from '../../utils/constants.ts';
+} from '../../utils/constants.tsx';
 import loginBotIconSrc from '../../images/login-bot-icon.png';
 import classNames from 'classnames';
 import {

@@ -5,7 +5,7 @@ import {
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
   WEBCHAT_WINDOW_CONDENSED_KEY,
-} from './constants.ts';
+} from './constants.tsx';
 import { postMessageToParent } from './helper.ts';
 import { ErrorMessage, SetDataPostMessageProps } from './types.ts';
 

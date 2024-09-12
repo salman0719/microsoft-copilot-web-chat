@@ -121,6 +121,13 @@
     padding-left: 30px;
   }
 
+  .chat-window__reload-link {
+    font-style: italic;
+    color: #416e96;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   #webchat {
     background: white;
     position: relative;

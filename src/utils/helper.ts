@@ -1,4 +1,4 @@
-import { BOT_NAME, IS_WINDOW_EMBEDDED, TARGET_ORIGIN } from './constants.ts';
+import { BOT_NAME, IS_WINDOW_EMBEDDED, TARGET_ORIGIN } from './constants.tsx';
 import { container, errorMessages } from './store.ts';
 import { ErrorMessage, ResizePostMessageProps, SetDataPostMessageProps } from './types.ts';
 

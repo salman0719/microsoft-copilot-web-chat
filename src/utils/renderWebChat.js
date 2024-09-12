@@ -1,5 +1,5 @@
 import clientApplication from './clientApplication.js';
-import { BOT_NAME, BOT_TOKEN_ENDPOINT, WEBCHAT_TOKEN_KEY } from './constants.ts';
+import { BOT_NAME, BOT_TOKEN_ENDPOINT, WEBCHAT_TOKEN_KEY } from './constants.tsx';
 import {
   webchatInitialized,
   isFullscreen,
