@@ -1,4 +1,5 @@
 import clientApplication from './clientApplication.js';
+import { WEBCHAT_LAST_MSG_TIME_KEY } from './constants.ts';
 import renderWebChat from './renderWebChat.js';
 import { authenticated } from './store.ts';
 
@@ -134,14 +135,14 @@ export function parseJwt(token) {
 }
 
 export function isLastMsg(timestamp) {
-  var oldTimestamp = sessionStorage.getItem('lastMsgTime');
+  var oldTimestamp = localStorage.getItem(WEBCHAT_LAST_MSG_TIME_KEY);
   if (oldTimestamp !== null && new Date(timestamp) < new Date(oldTimestamp)) {
     return false;
   } else return true;
 }
 
 export function updateLastMsgTime(timestamp) {
-  if (isLastMsg(timestamp)) sessionStorage.setItem('lastMsgTime', timestamp);
+  if (isLastMsg(timestamp)) localStorage.setItem(WEBCHAT_LAST_MSG_TIME_KEY, timestamp);
 }
 
 export function fontFamily(fonts) {

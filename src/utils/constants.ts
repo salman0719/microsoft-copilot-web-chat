@@ -2,6 +2,8 @@ import { ErrorMessage } from './types';
 
 export const ELEMENT_ID = 'chat-window';
 export const WINDOW_ID = Math.random().toString(36).substring(2, 9);
+export const WEBCHAT_TOKEN_KEY = 'webchat-token';
+export const WEBCHAT_LAST_MSG_TIME_KEY = 'webchat-last-msg-time';
 export const WEBCHAT_WINDOW_CLOSED_KEY = 'webchat-window-closed';
 export const WEBCHAT_WINDOW_CONDENSED_KEY = 'webchat-window-condensed';
 export const WEBCHAT_MODE_KEY = 'webchat-mode';

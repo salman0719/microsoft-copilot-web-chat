@@ -1,5 +1,5 @@
 import clientApplication from './clientApplication.js';
-import { BOT_NAME, BOT_TOKEN_ENDPOINT } from './constants.ts';
+import { BOT_NAME, BOT_TOKEN_ENDPOINT, WEBCHAT_TOKEN_KEY } from './constants.ts';
 import {
   webchatInitialized,
   isFullscreen,
@@ -32,38 +32,30 @@ async function main() {
 
   var userId =
     clientApplication.account?.accountIdentifier != null
-      ? ('AIDE' + clientApplication.account.accountIdentifier).substring(0, 64)
+      ? ('AIDE' + clientApplication.acscount.accountIdentifier).substring(0, 64)
       : (Math.random().toString() + Date.now().toString()).substring(0, 64);
   let currentToken;
-  let oldToken =
-    sessionStorage.getItem('oldToken') != undefined &&
-    sessionStorage.getItem('oldToken') != 'undefined'
-      ? sessionStorage.getItem('oldToken')
-      : null;
+  const oldToken = localStorage.getItem(WEBCHAT_TOKEN_KEY);
   var isNewSession;
 
-  if (isFullscreen.value || oldToken === undefined || oldToken === null) {
+  if ([undefined, null, 'undefined'].includes(oldToken)) {
     const { token } = await fetchJSON(theURL);
     isNewSession = true;
     currentToken = token;
-    sessionStorage.setItem('oldToken', token);
+    localStorage.setItem(WEBCHAT_TOKEN_KEY, token);
   } else {
     if (isTokenExpired(oldToken)) {
       const { token } = await fetchJSON(theURL);
       isNewSession = true;
       currentToken = token;
-      sessionStorage.setItem('oldToken', token);
+      localStorage.setItem(WEBCHAT_TOKEN_KEY, token);
     } else {
       currentToken = oldToken;
       isNewSession = false;
     }
   }
-  let latestToken = { token: currentToken };
-  if (latestToken !== undefined && latestToken !== null) {
-    directLine.value = await window.WebChat.createDirectLine(latestToken);
-  } else {
-    return;
-  }
+
+  directLine.value = await window.WebChat.createDirectLine({ token: currentToken });
 
   if (isNewSession && !isFullscreen.value) {
     isCondensed.value = true;
