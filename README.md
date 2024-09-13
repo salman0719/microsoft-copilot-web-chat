@@ -57,8 +57,8 @@ To host this demo, you will need to clone the code and run locally.
 This demonstration includes multiple parts:
 
 - A microsoft authentication system (using `msal`)
-- Microsoft Copilot's Web Chat integrated via vanilla JavaScript
-- Web Chat canvas customization through the use of CSS and vanilla JS
+- Microsoft Copilot's Web Chat integrated via Preact
+- Web Chat canvas customization through the use of CSS and Preact
 - An `<iframe />` container to integrate the webchat as an embedded element
 
 ## Content of the .env files
@@ -68,6 +68,8 @@ The .env file hold the environment variable critical to run the service. These a
 To ease the setup of this sample, here is the template of .env files.
 
 ### .env
+
+Some of the environment variables are followed by helpful instructions, go through it for better understanding.
 
 ```
 PORT=3000
