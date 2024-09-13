@@ -9,9 +9,7 @@ import {
 import { BOT_NAME, DEFAULT_SEND_BOX_ERROR, INPUT_CHAR_LIMIT } from '../constants';
 import { ResizePostMessageProps } from '../types';
 import { addErrorMessage, postMessageToParent, removeErrorMessage } from '../helper';
-// TODO
-// @ts-expect-error: We haven't converted the script to ts yet
-import renderWebChat from '../renderWebChat.js';
+import renderWebChat from '../renderWebChat';
 import { computedElement } from '../hooks';
 
 effect(() => {

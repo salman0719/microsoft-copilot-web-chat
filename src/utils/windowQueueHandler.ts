@@ -1,9 +1,7 @@
 import { batch, effect, signal } from '@preact/signals';
 import { INACTIVE_CONNECTION_ERROR, WEBCHAT_WINDOW_QUEUE_KEY, WINDOW_ID } from './constants';
 import { addErrorMessage, removeErrorMessage } from './helper';
-// TODO
-// @ts-expect-error: We haven't converted the script to ts yet
-import renderWebChat from './renderWebChat.js';
+import renderWebChat from './renderWebChat';
 import {
   directLine,
   isWebchatActive,

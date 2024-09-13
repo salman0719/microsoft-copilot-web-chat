@@ -19,12 +19,15 @@ import {
 } from './helper';
 import botAvatarImageSrc from '../images/chat-bot-icon.png';
 
+// @ts-expect-error: Comes directly from Microsoft's webchat botframework script
+const WebChat = window.WebChat;
+
 async function main() {
   const userId = getUserId();
   const oldToken = localStorage.getItem(WEBCHAT_TOKEN_KEY);
   let currentToken, isNewSession;
 
-  if ([undefined, null, 'undefined'].includes(oldToken)) {
+  if (oldToken === undefined || oldToken === null || oldToken === 'undefined') {
     const { token } = await fetchJSON(BOT_TOKEN_ENDPOINT);
     isNewSession = true;
     currentToken = token;
@@ -41,12 +44,13 @@ async function main() {
     }
   }
 
-  directLine.value = await window.WebChat.createDirectLine({ token: currentToken });
+  directLine.value = await WebChat.createDirectLine({ token: currentToken });
 
   if (isNewSession && !isFullscreen.value) {
     isCondensed.value = true;
   }
 
+  // @ts-expect-error: We haven't yet included webchat library's ts version
   const store = WebChat.createStore({}, ({ dispatch }) => (next) => (action) => {
     const { type } = action;
 
@@ -78,6 +82,7 @@ async function main() {
           exchangeTokenAsync(resourceUri).then(function (token) {
             if (token) {
               directLine
+                // @ts-expect-error: We haven't yet included webchat library's ts version
                 .postActivity({
                   type: 'invoke',
                   name: 'signin/tokenExchange',
@@ -93,14 +98,14 @@ async function main() {
                   },
                 })
                 .subscribe(
-                  (id) => {
+                  (id: string) => {
                     if (id === 'retry') {
                       // Bot was not able to handle the invoke, so display the oauthCard
                       return next(action);
                     }
                     // Else: tokenexchange successful and we do not display the oauthCard
                   },
-                  (error) => {
+                  (_error: unknown) => {
                     // An error occurred to display the oauthCard
                     return next(action);
                   }
@@ -130,7 +135,7 @@ async function main() {
     botAvatarInitials: BOT_NAME[0].toUpperCase(),
   };
 
-  window.WebChat.renderWebChat(
+  WebChat.renderWebChat(
     {
       directLine: directLine.value,
       store,
