@@ -4,8 +4,6 @@ const iframeSrc =
     : import.meta.env.VITE_EMBED_CHILD_URL;
 
 export default function renderMarkup() {
-  // TODO
-  // Research sandbox="allow-top-navigation-by-user-activation" and integrate it
   const html = `
 <div id="bot-iframe-wrapper" class="bot-iframe--closed">
   <iframe class="bot-iframe" src="${iframeSrc}"></iframe>

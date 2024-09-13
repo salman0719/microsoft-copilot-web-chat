@@ -434,17 +434,13 @@
   }
 
   &.chat-window--unauthenticated {
-    > .chat-window__body {
-      background-color: #f2f2f2b2;
-    }
-
     .chat-window__navbar > *:not(.chat-window__navbar__collapse-icon),
     #webchat {
       display: none;
     }
 
     #login-screen {
-      display: block flex;
+      display: flex;
     }
 
     &:not(.chat-window--fullscreen) .chat-window__navbar > .chat-window__navbar__collapse-icon {
