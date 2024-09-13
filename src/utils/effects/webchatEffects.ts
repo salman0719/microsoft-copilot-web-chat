@@ -56,6 +56,8 @@ const computedElement = <Elem extends HTMLElement>(selector: string) =>
 
 // @ts-expect-error: This will come from vite config's `define` attribute
 if (__IS_EMBED_CHILD__) {
+  // TODO
+  // We can use `computedElement` elsewhere as well
   const conversationContainer = computedElement<HTMLDivElement>(
     '.webchat__basic-transcript__scrollable'
   );

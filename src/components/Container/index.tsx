@@ -1,6 +1,5 @@
 import { FunctionalComponent, JSX } from 'preact';
 import { BOT_NAME, ELEMENT_ID } from '../../utils/constants.tsx';
-import loginBotIconSrc from '../../images/login-bot-icon.png';
 import classNames from 'classnames';
 import {
   webchatInitialized,
@@ -15,13 +14,11 @@ import {
 import { effect, useComputed, useSignal } from '@preact/signals';
 import ExpandIcon from '../ExpandIcon/index.tsx';
 import InputCounter from '../InputCounter/index.tsx';
-// TODO
-// @ts-expect-error: We haven't converted the script to ts yet
-import { onSignInClick } from '../../utils/rootScript.js';
 import DisclosureText from '../DisclosureText/index.tsx';
 import ErrorMessages from '../ErrorMessages/index.tsx';
 import { stopPropagation } from '../../utils/helper.ts';
 import { useEffect } from 'preact/hooks';
+import LoginUI from '../LoginUI/index.tsx';
 
 const Container: FunctionalComponent = () => {
   const isBodyHidden = useSignal<boolean>(false);
@@ -110,27 +107,7 @@ const Container: FunctionalComponent = () => {
           <div className='chat-window__navbar__mode-username'>{username}</div>
         </div>
         <div id='webchat'></div>
-        {/* // TODO */}
-        {/* Need to refactor the old login-screen implementation */}
-        <div id='login-screen'>
-          <div>
-            <img src={loginBotIconSrc} id='login-upper-image' />
-            <p style='text-align:center;'>
-              <span style='font-size:20px;font-weight: 700;line-height: 32px;'>
-                Chat with {BOT_NAME}
-              </span>
-            </p>
-            <ul style='width: 100%;font-weight: 400; line-height: 24px;'>
-              <li>24/7 educational technology support</li>
-              <li>Easy access to EdTech Hub</li>
-            </ul>
-          </div>
-          <div>
-            <button className='login-button' onClick={onSignInClick}>
-              Start conversation
-            </button>
-          </div>
-        </div>
+        <LoginUI />
       </div>
       <div id='webchat-bot' onClick={() => (rootIsClosed.value = !rootIsClosed.value)}></div>
       <InputCounter />

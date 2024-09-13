@@ -1,4 +1,4 @@
-import clientApplication from './clientApplication.js';
+import { exchangeTokenAsync, getClientUsername, getUserId } from './clientApplication.ts';
 import { BOT_NAME, BOT_TOKEN_ENDPOINT, WEBCHAT_TOKEN_KEY } from './constants.tsx';
 import {
   webchatInitialized,
@@ -9,37 +9,29 @@ import {
   username,
   directLine,
 } from './store.ts';
-import botAvatarImageSrc from '../images/chat-bot-icon.png';
 import {
-  exchangeTokenAsync,
-  fetchJSON,
   fontFamily,
-  getOAuthCardResourceUri,
-  isLastMsg,
-  isTokenExpired,
   updateLastMsgTime,
-} from './rootScript.js';
+  isTokenExpired,
+  fetchJSON,
+  isLastMsg,
+  getOAuthCardResourceUri,
+} from './helper.ts';
+import botAvatarImageSrc from '../images/chat-bot-icon.png';
 
 async function main() {
-  // Add your BOT ID below
-  var theURL = BOT_TOKEN_ENDPOINT;
-
-  var userId =
-    clientApplication.account?.accountIdentifier != null
-      ? ('AIDE' + clientApplication.acscount.accountIdentifier).substring(0, 64)
-      : (Math.random().toString() + Date.now().toString()).substring(0, 64);
-  let currentToken;
+  const userId = getUserId();
   const oldToken = localStorage.getItem(WEBCHAT_TOKEN_KEY);
-  var isNewSession;
+  let currentToken, isNewSession;
 
   if ([undefined, null, 'undefined'].includes(oldToken)) {
-    const { token } = await fetchJSON(theURL);
+    const { token } = await fetchJSON(BOT_TOKEN_ENDPOINT);
     isNewSession = true;
     currentToken = token;
     localStorage.setItem(WEBCHAT_TOKEN_KEY, token);
   } else {
     if (isTokenExpired(oldToken)) {
-      const { token } = await fetchJSON(theURL);
+      const { token } = await fetchJSON(BOT_TOKEN_ENDPOINT);
       isNewSession = true;
       currentToken = token;
       localStorage.setItem(WEBCHAT_TOKEN_KEY, token);
@@ -70,11 +62,12 @@ async function main() {
         });
       }
 
-      username.value = action.meta.username || clientApplication?.getActiveAccount()?.name || '';
+      username.value = action.meta.username || getClientUsername() || '';
     } else if (type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
       const activity = action.payload.activity;
       let resourceUri;
-      if (activity.from && activity.type === 'message') updateLastMsgTime(activity.timestamp);
+      activity.from && activity.type === 'message' && updateLastMsgTime(activity.timestamp);
+
       // Intercept OAuth card to get access token via SSO
       if (
         activity.from &&
@@ -95,7 +88,7 @@ async function main() {
                   },
                   from: {
                     id: userId,
-                    name: clientApplication.getActiveAccount().name,
+                    name: getClientUsername(),
                     role: 'user',
                   },
                 })
@@ -113,7 +106,9 @@ async function main() {
                   }
                 );
               return;
-            } else return next(action);
+            } else {
+              return next(action);
+            }
           });
         }
 

@@ -13,6 +13,9 @@ export const IS_WINDOW_EMBEDDED = window.top !== window.self;
 export const BOT_NAME = 'Scout';
 export const DISCLOSURE_TEXT = BOT_NAME + ' can make mistakes, verify important information.';
 export const FULLSCREEN_SEARCH_QUERY_KEY = 'fullscreen';
+export const MSAL_SCOPES = ['user.read', 'openid', 'profile'];
+export const MSAL_REDIRECT_URI =
+  'https://unswauepstaetsbot.blob.core.windows.net/custom-canvas/RedirectUri.html';
 export const MSAL_CLIENT_ID =
   import.meta.env.VITE_MSAL_CLIENT_ID || 'bf3b31f3-7df6-45d6-8f66-70a15dbeec76';
 export const MSAL_TENANT_ID =
