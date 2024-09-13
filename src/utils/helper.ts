@@ -1,6 +1,6 @@
-import { IS_WINDOW_EMBEDDED, TARGET_ORIGIN, WEBCHAT_LAST_MSG_TIME_KEY } from './constants.tsx';
-import { errorMessages } from './store.ts';
-import { ErrorMessage, ResizePostMessageProps, SetDataPostMessageProps } from './types.ts';
+import { IS_WINDOW_EMBEDDED, TARGET_ORIGIN, WEBCHAT_LAST_MSG_TIME_KEY } from './constants';
+import { errorMessages } from './store';
+import { ErrorMessage, ResizePostMessageProps, SetDataPostMessageProps } from './types';
 
 type PostMessageProps = ResizePostMessageProps | SetDataPostMessageProps;
 

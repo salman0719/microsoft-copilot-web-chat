@@ -1,4 +1,4 @@
-import baseConfig, { getScssAdditionalData } from './vite.config.ts';
+import baseConfig, { getScssAdditionalData } from './vite.config';
 import { ConfigEnv, loadEnv, mergeConfig } from 'vite';
 
 export default function defineConfig(config: ConfigEnv) {

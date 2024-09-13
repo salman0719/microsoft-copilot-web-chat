@@ -1,5 +1,5 @@
 import { FunctionalComponent, JSX } from 'preact';
-import { BOT_NAME, ELEMENT_ID } from '../../utils/constants.tsx';
+import { BOT_NAME, ELEMENT_ID } from '../../utils/constants';
 import classNames from 'classnames';
 import {
   webchatInitialized,
@@ -10,15 +10,15 @@ import {
   authenticated,
   container,
   username,
-} from '../../utils/store.ts';
+} from '../../utils/store';
 import { effect, useComputed, useSignal } from '@preact/signals';
-import ExpandIcon from '../ExpandIcon/index.tsx';
-import InputCounter from '../InputCounter/index.tsx';
-import DisclosureText from '../DisclosureText/index.tsx';
-import ErrorMessages from '../ErrorMessages/index.tsx';
-import { stopPropagation } from '../../utils/helper.ts';
+import ExpandIcon from '../ExpandIcon/index';
+import InputCounter from '../InputCounter/index';
+import DisclosureText from '../DisclosureText/index';
+import ErrorMessages from '../ErrorMessages/index';
+import { stopPropagation } from '../../utils/helper';
 import { useEffect } from 'preact/hooks';
-import LoginUI from '../LoginUI/index.tsx';
+import LoginUI from '../LoginUI/index';
 
 const Container: FunctionalComponent = () => {
   const isBodyHidden = useSignal<boolean>(false);

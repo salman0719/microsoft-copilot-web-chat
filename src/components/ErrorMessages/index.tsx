@@ -1,9 +1,9 @@
 import { FunctionalComponent } from 'preact';
-import { effect, useComputed } from '@preact/signals';
-import { container, errorMessages, webchatInitialized } from '../../utils/store';
+import { errorMessages } from '../../utils/store';
 import { createPortal } from 'preact/compat';
 import { INACTIVE_CONNECTION_ERROR } from '../../utils/constants';
 import InactiveWindowErrorMessage from './InactiveWindow';
+import { useInsertElement } from '../../utils/hooks';
 
 const DEFAULT_ERROR_TEXT = {
   [INACTIVE_CONNECTION_ERROR.id]: InactiveWindowErrorMessage,
@@ -34,28 +34,7 @@ const Root: FunctionalComponent = () => {
 };
 
 const ErrorMessages: FunctionalComponent = () => {
-  const node = useComputed<HTMLDivElement | undefined>(() => {
-    if (!webchatInitialized.value || !container.value) {
-      return;
-    }
-
-    const parent = container.peek()?.querySelector('.webchat__send-box');
-    if (!parent) {
-      return;
-    }
-
-    const div = document.createElement('div');
-    div.style.display = 'contents';
-
-    parent.insertAdjacentElement('beforebegin', div);
-
-    return div;
-  });
-
-  effect(() => {
-    const nodeValue = node.value;
-    return () => nodeValue?.remove();
-  });
+  const node = useInsertElement<HTMLDivElement>('.webchat__send-box', true);
 
   return node.value ? createPortal(<Root />, node.value) : null;
 };

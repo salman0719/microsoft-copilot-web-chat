@@ -1,10 +1,9 @@
-import { computed, effect } from '@preact/signals';
+import { effect } from '@preact/signals';
 import {
   authenticated,
   container,
   sendBoxChatLimitCrossed,
   sendBoxValue,
-  webchatInitialized,
   webchatStore,
 } from '../store';
 import { BOT_NAME, DEFAULT_SEND_BOX_ERROR, INPUT_CHAR_LIMIT } from '../constants';
@@ -13,6 +12,7 @@ import { addErrorMessage, postMessageToParent, removeErrorMessage } from '../hel
 // TODO
 // @ts-expect-error: We haven't converted the script to ts yet
 import renderWebChat from '../renderWebChat.js';
+import { computedElement } from '../hooks';
 
 effect(() => {
   const store = webchatStore.value;
@@ -39,25 +39,8 @@ effect(() => {
   }
 });
 
-const computedElement = <Elem extends HTMLElement>(selector: string) =>
-  computed<Elem | void>(() => {
-    const initialized = webchatInitialized.value;
-    const root = container.value;
-    if (!root || !initialized) {
-      return;
-    }
-    const node = root.querySelector<Elem>(selector);
-    if (!node) {
-      return;
-    }
-
-    return node;
-  });
-
 // @ts-expect-error: This will come from vite config's `define` attribute
 if (__IS_EMBED_CHILD__) {
-  // TODO
-  // We can use `computedElement` elsewhere as well
   const conversationContainer = computedElement<HTMLDivElement>(
     '.webchat__basic-transcript__scrollable'
   );

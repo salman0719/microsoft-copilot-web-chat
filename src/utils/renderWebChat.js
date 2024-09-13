@@ -1,5 +1,5 @@
-import { exchangeTokenAsync, getClientUsername, getUserId } from './clientApplication.ts';
-import { BOT_NAME, BOT_TOKEN_ENDPOINT, WEBCHAT_TOKEN_KEY } from './constants.tsx';
+import { exchangeTokenAsync, getClientUsername, getUserId } from './clientApplication';
+import { BOT_NAME, BOT_TOKEN_ENDPOINT, WEBCHAT_TOKEN_KEY } from './constants';
 import {
   webchatInitialized,
   isFullscreen,
@@ -8,7 +8,7 @@ import {
   sendBoxChatLimitCrossed,
   username,
   directLine,
-} from './store.ts';
+} from './store';
 import {
   fontFamily,
   updateLastMsgTime,
@@ -16,7 +16,7 @@ import {
   fetchJSON,
   isLastMsg,
   getOAuthCardResourceUri,
-} from './helper.ts';
+} from './helper';
 import botAvatarImageSrc from '../images/chat-bot-icon.png';
 
 async function main() {

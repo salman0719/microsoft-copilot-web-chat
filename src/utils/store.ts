@@ -5,8 +5,8 @@ import {
   WEBCHAT_MODE_KEY,
   WEBCHAT_WINDOW_CLOSED_KEY,
   WEBCHAT_WINDOW_CONDENSED_KEY,
-} from './constants.tsx';
-import { ErrorMessage } from './types.ts';
+} from './constants';
+import { ErrorMessage } from './types';
 
 export const webchatStore = signal<Record<string, unknown> | undefined>();
 export const directLine = signal<Record<string, unknown> | undefined>();

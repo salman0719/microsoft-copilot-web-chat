@@ -1,14 +1,10 @@
 import { FunctionalComponent } from 'preact';
-import {
-  container,
-  sendBoxChatLimitCrossed,
-  sendBoxValue,
-  webchatInitialized,
-} from '../../utils/store';
+import { sendBoxChatLimitCrossed, sendBoxValue } from '../../utils/store';
 import { INPUT_CHAR_LIMIT } from '../../utils/constants';
-import { effect, useComputed } from '@preact/signals';
+import { useComputed } from '@preact/signals';
 import classNames from 'classnames';
 import { createPortal } from 'preact/compat';
+import { useInsertElement } from '../../utils/hooks';
 
 const Root: FunctionalComponent = () => {
   const className = useComputed(() =>
@@ -24,27 +20,7 @@ const Root: FunctionalComponent = () => {
 };
 
 const InputCounter: FunctionalComponent = () => {
-  const node = useComputed<HTMLDivElement | undefined>(() => {
-    if (!webchatInitialized.value || !container.value) {
-      return;
-    }
-
-    const parent = container.value.querySelector('.webchat__send-box__main');
-    if (!parent) {
-      return;
-    }
-
-    const div = document.createElement('div');
-    div.style.display = 'contents';
-    parent.insertBefore(div, parent.lastElementChild);
-
-    return div;
-  });
-
-  effect(() => {
-    const nodeValue = node.value;
-    return () => nodeValue?.remove();
-  });
+  const node = useInsertElement<HTMLDivElement>('.webchat__send-box__main > *:last-child', true);
 
   return node.value ? createPortal(<Root />, node.value) : null;
 };
