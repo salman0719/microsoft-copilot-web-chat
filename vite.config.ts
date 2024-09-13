@@ -44,5 +44,15 @@ export default defineConfig(({ mode }) => {
       port: parseInt(env.PREVIEW_PORT || '3100'),
     },
     plugins: [preact()],
+    optimizeDeps: {
+      include: [
+        'preact',
+        'preact/hooks',
+        '@preact/signals',
+        'preact/compat',
+        'preact/debug',
+        'classnames',
+      ],
+    },
   };
 });
