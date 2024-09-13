@@ -4,7 +4,13 @@ import { addErrorMessage, removeErrorMessage } from './helper.js';
 // TODO
 // @ts-expect-error: We haven't converted the script to ts yet
 import renderWebChat from './renderWebChat.js';
-import { directLine, isWebchatActive, webchatInitialized } from './store.js';
+import {
+  directLine,
+  isWebchatActive,
+  sendBoxValue,
+  webchatInitialized,
+  webchatStore,
+} from './store.js';
 
 const isDocumentVisible = signal(!document.hidden);
 
@@ -60,4 +66,17 @@ effect(() => {
       });
     }
   }
+});
+
+effect(() => {
+  const webchatStoreValue = webchatStore.value;
+
+  sendBoxValue.peek() &&
+    // @ts-expect-error: We haven't yet included webchat library's ts version
+    webchatStoreValue?.dispatch({
+      type: 'WEB_CHAT/SET_SEND_BOX',
+      payload: {
+        text: sendBoxValue.peek(),
+      },
+    });
 });
