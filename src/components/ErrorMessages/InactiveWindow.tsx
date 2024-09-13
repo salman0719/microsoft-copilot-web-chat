@@ -1,10 +1,11 @@
 import { FunctionalComponent } from 'preact';
+import { isWebchatActive } from '../../utils/store';
 
 const InactiveWindowErrorMessage: FunctionalComponent = () => {
   return (
     <span>
       Conversation moved to another window.{' '}
-      <span onClick={() => window.location.reload()} className='chat-window__reload-link'>
+      <span onClick={() => (isWebchatActive.value = true)} className='chat-window__reload-link'>
         Reload
       </span>{' '}
       to take control again.
