@@ -19,15 +19,16 @@ To host this demo, you will need to clone the code and run locally.
 1. Create one empty file for environment variables in the root folder `.env`
 
 ## Configure Bot & App
+
 1. Create Copilot Bot/App through the Microsoft Copilot Studio
 2. Enter Channels->Mobile App and collect the token endpoint & populate the following env variable
-      -  `VITE_BOT_TOKEN_ENDPOINT=<your_bot_token_endpoint>`
+   - `VITE_BOT_TOKEN_ENDPOINT=<your_bot_token_endpoint>`
 3. Enter Azure->App registrations->All applications and then select your newly created app (this is associated with your bot).
 4. Enter Quickstart->Single-page application->Javascript and complete configuration
 5. Go to Manage->Authentication inside that app if you want to update the redirect URIs. Point it to your port that your localhost is using. (So set `http://localhost:7000)` if that is where your code is developed/previewed.)
 6. Go to 'Overview' to collect the client & tenant ID information and update the env variables
-      -  `VITE_MSAL_CLIENT_ID=<your_app_client_id>`
-      -  `VITE_MSAL_TENANT_ID=<your_app_tenant_id>`
+   - `VITE_MSAL_CLIENT_ID=<your_app_client_id>`
+   - `VITE_MSAL_TENANT_ID=<your_app_tenant_id>`
 
 ## Prepare and run the code
 
@@ -43,11 +44,11 @@ To host this demo, you will need to clone the code and run locally.
 
 ## Build
 
-1. `npm run build` 
+1. `npm run build`
    1. You will get all the js, css bundled along with the images used.
    2. There will be two `dist` folder, one in the root folder and one in the `iframe-container` folder
    3. The `iframe-container`'s `dist` folder can be integrated into an existing website, use the necessary contents inside it and make sure all the links are pointing to the correct URL
-   4. The root folder's `dist` contents should be deployed to a source (necessary adjustments can be made by taking contents partially from the bundled files, but make sure any links are correct) to be solely used as a webchat component. Ensure that the `<iframe />` inside the `iframe-container` build points to this source. 
+   4. The root folder's `dist` contents should be deployed to a source (necessary adjustments can be made by taking contents partially from the bundled files, but make sure any links are correct) to be solely used as a webchat component. Ensure that the `<iframe />` inside the `iframe-container` build points to this source.
 2. `npm run preview`
    1. See the bundled version in action, browse to http://localhost:5000/
 
@@ -55,24 +56,28 @@ To host this demo, you will need to clone the code and run locally.
 
 This demonstration includes multiple parts:
 
--  A microsoft authentication system (using `msal`)
--  Microsoft Copilot's Web Chat integrated via vanilla JavaScript
--  Web Chat canvas customization through the use of CSS and vanilla JS
--  An `<iframe />` container to integrate the webchat as an embedded element
+- A microsoft authentication system (using `msal`)
+- Microsoft Copilot's Web Chat integrated via Preact
+- Web Chat canvas customization through the use of CSS and Preact
+- An `<iframe />` container to integrate the webchat as an embedded element
 
 ## Content of the .env files
+
 The .env file hold the environment variable critical to run the service. These are usually security-sensitive information and must not be committed to version control.
 
 To ease the setup of this sample, here is the template of .env files.
 
 ### .env
+
+Some of the environment variables are followed by helpful instructions, go through it for better understanding.
+
 ```
 PORT=3000
 PREVIEW_PORT=3100
 VITE_EMBED_PARENT_PORT=4000
 VITE_EMBED_PARENT_PREVIEW_PORT=5000
 VITE_EMBED_CHILD_PORT=7000
-VITE_USE_DUMMY_MODE=0 # Setting `1` ignores the authentication and uses a dummy mode
+VITE_IGNORE_AUTH=0 # Setting `1` disables the authentication flow
 VITE_MSAL_CLIENT_ID=
 VITE_MSAL_TENANT_ID=
 VITE_BOT_TOKEN_ENDPOINT=
@@ -82,5 +87,6 @@ VITE_EMBED_CHILD_URL=http://localhost:7000 # Should include the URL where the ms
 ```
 
 ### Version
+
 - Node: 20.10.0
 - NPM: 10.2.3

@@ -1,52 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <title>A.I.D.E (Beta)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-32x32.png" />
+    <link rel="manifest" href="./favicon/site.webmanifest" />
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script
+      type="text/javascript"
+      src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.js"
+      integrity="sha384-+8A1rifuHuJxJgQn6UCxGgmo6Q2SvIeEAqtPOsXCpi0DpqZLtuDhxxnqjJZw/1ve"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript">
+      if (typeof msal === 'undefined')
+        document.write(
+          unescape(
+            "%3Cscript type='text/javascript' src='https://alcdn.msftauth.net/browser/2.35.0/js/msal-browser.js' integrity='sha384-+8A1rifuHuJxJgQn6UCxGgmo6Q2SvIeEAqtPOsXCpi0DpqZLtuDhxxnqjJZw/1ve' crossorigin='anonymous'%3E%3C/script%3E"
+          )
+        );
+    </script>
+    <script
+      src="https://unpkg.com/@azure/storage-blob@10.3.0/browser/azure-storage.blob.min.js"
+      integrity="sha384-fsfhtLyVQo3L3Bh73qgQoRR328xEeXnRGdoi53kjo1uectCfAHFfavrBBN2Nkbdf"
+      crossorigin="anonymous"
+    ></script>
 
-<head>
-  <title>A.I.D.E (Beta)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-32x32.png">
-  <link rel="manifest" href="./favicon/site.webmanifest">
-  <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
-  <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.js"
-    integrity="sha384-+8A1rifuHuJxJgQn6UCxGgmo6Q2SvIeEAqtPOsXCpi0DpqZLtuDhxxnqjJZw/1ve"
-    crossorigin="anonymous"></script>
-  <script type="text/javascript">
-    if (typeof msal === 'undefined') document.write(unescape("%3Cscript type='text/javascript' src='https://alcdn.msftauth.net/browser/2.35.0/js/msal-browser.js' integrity='sha384-+8A1rifuHuJxJgQn6UCxGgmo6Q2SvIeEAqtPOsXCpi0DpqZLtuDhxxnqjJZw/1ve' crossorigin='anonymous'%3E%3C/script%3E"));
-  </script>
-  <script src="https://unpkg.com/@azure/storage-blob@10.3.0/browser/azure-storage.blob.min.js"
-    integrity="sha384-fsfhtLyVQo3L3Bh73qgQoRR328xEeXnRGdoi53kjo1uectCfAHFfavrBBN2Nkbdf"
-    crossorigin="anonymous"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
 
-  <style>
-    html,
-    body {
-      height: 100%;
-    }
+      body {
+        margin: 0;
+      }
 
-    body {
-      margin: 0;
-    }
+      .main {
+        margin: 18px;
+        border-radius: 4px;
+      }
 
-    .main {
-      margin: 18px;
-      border-radius: 4px;
-    }
+      div[role='form'] {
+        background-color: white;
+      }
+    </style>
 
-    div[role="form"] {
-      background-color: white;
-    }
-  </style>
+    <link rel="stylesheet" href="/src/styles/login.scss" />
+    <link rel="stylesheet" href="/src/styles/webchat.scss" />
+    <link rel="stylesheet" href="/src/styles/webchat-dark.scss" />
+  </head>
 
-  <link rel="stylesheet" href="/src/styles/login.scss">
-  <link rel="stylesheet" href="/src/styles/webchat.scss">
-  <link rel="stylesheet" href="/src/styles/webchat-dark.scss">
-
-</head>
-
-<body>
-  <script type="module" src="/src/main.js"></script>
-</body>
-
+  <body>
+    <script type="module" src="/src/main"></script>
+  </body>
 </html>

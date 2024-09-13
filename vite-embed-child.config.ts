@@ -1,8 +1,8 @@
-import baseConfig, { getScssAdditionalData } from './vite.config.ts';
+import baseConfig, { getScssAdditionalData } from './vite.config';
 import { ConfigEnv, loadEnv, mergeConfig } from 'vite';
 
 export default function defineConfig(config: ConfigEnv) {
-  const env = loadEnv(config.mode, process.cwd(), '')
+  const env = loadEnv(config.mode, process.cwd(), '');
 
   return mergeConfig(baseConfig(config), {
     define: {
@@ -12,11 +12,11 @@ export default function defineConfig(config: ConfigEnv) {
       preprocessorOptions: {
         scss: {
           additionalData: getScssAdditionalData({
-            'enable-fullscreen': 'false',
+            'enable-fullscreen': env.VITE_ENABLE_FULLSCREEN === '1' ? 'true' : 'false',
             'is-embed-child': 'true',
-          })
-        }
-      }
+          }),
+        },
+      },
     },
     server: {
       port: parseInt(env.VITE_EMBED_CHILD_PORT || '7000'),
@@ -24,6 +24,6 @@ export default function defineConfig(config: ConfigEnv) {
     preview: {
       open: false,
       port: parseInt(env.VITE_EMBED_CHILD_PORT || '7000'),
-    }
+    },
   });
 }
