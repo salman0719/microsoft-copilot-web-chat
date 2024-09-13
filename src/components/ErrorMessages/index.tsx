@@ -2,6 +2,12 @@ import { FunctionalComponent } from 'preact';
 import { effect, useComputed } from '@preact/signals';
 import { container, errorMessages, webchatInitialized } from '../../utils/store';
 import { createPortal } from 'preact/compat';
+import { INACTIVE_CONNECTION_ERROR } from '../../utils/constants';
+import InactiveWindowErrorMessage from './InactiveWindow';
+
+const DEFAULT_ERROR_TEXT = {
+  [INACTIVE_CONNECTION_ERROR.id]: InactiveWindowErrorMessage,
+};
 
 const Root: FunctionalComponent = () => {
   return (
@@ -15,7 +21,11 @@ const Root: FunctionalComponent = () => {
                 fill-rule='evenodd'
               />
             </svg>
-            {text}
+            {text ||
+              (() => {
+                const Comp = DEFAULT_ERROR_TEXT[id];
+                return Comp ? <Comp /> : null;
+              })()}
           </div>
         );
       })}

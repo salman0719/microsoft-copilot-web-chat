@@ -6,9 +6,8 @@ import { addErrorMessage, removeErrorMessage } from './helper.js';
 import renderWebChat from './renderWebChat.js';
 import { directLine, isWebchatActive, webchatInitialized } from './store.js';
 
-// NOTE
-// Keep all these code together, so that if required, we can just skip importing
-// this file to ignore window queueing
+// TODO
+// Instead of imperatively calling functions, can we make it totally `effect` based?
 
 function getQueue(): string[] {
   return JSON.parse(localStorage.getItem(WEBCHAT_WINDOW_QUEUE_KEY) || '[]');

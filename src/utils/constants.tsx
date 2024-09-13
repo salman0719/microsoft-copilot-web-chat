@@ -33,13 +33,4 @@ export const DEFAULT_SEND_BOX_ERROR: ErrorMessage = {
 };
 export const INACTIVE_CONNECTION_ERROR: ErrorMessage = {
   id: 'INACTIVE_CONNECTION_ERROR',
-  text: (
-    <span>
-      This conversation is currently inactive. Connection has been tranferred to another window.{' '}
-      <span onClick={() => window.location.reload()} className='chat-window__reload-link'>
-        Reload frame
-      </span>{' '}
-      to regain control.
-    </span>
-  ),
 };
