@@ -68,7 +68,9 @@ if (__IS_EMBED_CHILD__) {
         postMessageToParent(data);
       }
 
-      conversationContainerValue.style.removeProperty('overflow');
+      setTimeout(() => {
+        conversationContainerValue.style.removeProperty('overflow');
+      });
     };
 
     const resizeObserver = new ResizeObserver(sendIframeSize);
