@@ -50,16 +50,27 @@ if (__IS_EMBED_CHILD__) {
       return;
     }
 
+    let previousHeight: number | undefined;
+
     const sendIframeSize = () => {
       const containerHeight = root.offsetHeight;
       const conversationHeight = conversationContainerValue.offsetHeight;
 
-      const data: ResizePostMessageProps = {
-        height: containerHeight - conversationHeight + conversationContainerValue.scrollHeight + 10,
-        type: 'conversationResize',
-      };
+      conversationContainerValue.style.overflow = 'visible';
 
-      postMessageToParent(data);
+      const height = containerHeight - conversationHeight + conversationContainerValue.scrollHeight;
+
+      if (height !== previousHeight) {
+        previousHeight = height;
+
+        const data: ResizePostMessageProps = { height, type: 'conversationResize' };
+
+        postMessageToParent(data);
+      }
+
+      setTimeout(() => {
+        conversationContainerValue.style.removeProperty('overflow');
+      });
     };
 
     const resizeObserver = new ResizeObserver(sendIframeSize);
