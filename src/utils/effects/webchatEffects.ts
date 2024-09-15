@@ -2,12 +2,13 @@ import { effect } from '@preact/signals';
 import {
   authenticated,
   container,
+  isFullscreen,
   sendBoxChatLimitCrossed,
   sendBoxValue,
   webchatStore,
 } from '../store';
-import { BOT_NAME, DEFAULT_SEND_BOX_ERROR, INPUT_CHAR_LIMIT } from '../constants';
-import { ResizePostMessageProps } from '../types';
+import { BOT_NAME, DEFAULT_SEND_BOX_ERROR, INPUT_CHAR_LIMIT, TARGET_ORIGIN } from '../constants';
+import { RequestHeighPostMessageProps, ResizePostMessageProps } from '../types';
 import { addErrorMessage, postMessageToParent, removeErrorMessage } from '../helper';
 import renderWebChat from '../renderWebChat';
 import { computedElement } from '../hooks';
@@ -43,20 +44,40 @@ if (__IS_EMBED_CHILD__) {
     '.webchat__basic-transcript__scrollable'
   );
 
+  let parentHeight = 500;
+  window.addEventListener('message', (e) => {
+    if (![e.origin, '*'].includes(TARGET_ORIGIN)) {
+      return;
+    }
+
+    const { data } = e;
+    const { type } = data;
+
+    if (type === 'parentInnerHeight') {
+      parentHeight = data.value;
+    }
+  });
+
+  postMessageToParent({ type: 'requestHeight' } as RequestHeighPostMessageProps);
+
   effect(() => {
     const root = container.value;
     const conversationContainerValue = conversationContainer.value;
-    if (!conversationContainerValue || !root) {
+    if (isFullscreen.value || !conversationContainerValue || !root) {
       return;
     }
 
     let previousHeight: number | undefined;
+    let cleanUpManipulationTimeoutId = -1;
 
     const sendIframeSize = () => {
       const containerHeight = root.offsetHeight;
       const conversationHeight = conversationContainerValue.offsetHeight;
 
-      conversationContainerValue.style.overflow = 'visible';
+      const manipulateOverflow = containerHeight < parentHeight;
+      if (manipulateOverflow) {
+        conversationContainerValue.style.overflow = 'visible';
+      }
 
       const height = containerHeight - conversationHeight + conversationContainerValue.scrollHeight;
 
@@ -68,17 +89,41 @@ if (__IS_EMBED_CHILD__) {
         postMessageToParent(data);
       }
 
-      setTimeout(() => {
-        conversationContainerValue.style.removeProperty('overflow');
-      });
+      if (manipulateOverflow) {
+        clearTimeout(cleanUpManipulationTimeoutId);
+        cleanUpManipulationTimeoutId = setTimeout(() => {
+          conversationContainerValue.style.removeProperty('overflow');
+        }, 20);
+      }
     };
 
     const resizeObserver = new ResizeObserver(sendIframeSize);
     resizeObserver.observe(conversationContainerValue);
 
-    sendIframeSize();
+    let transcriptSection: Element | undefined | null;
+    const observeTranscriptSectionMutation = () => {
+      if (!transcriptSection) {
+        transcriptSection = conversationContainerValue.querySelector(
+          '.webchat__basic-transcript__transcript'
+        );
+        transcriptSection && mutationObserver.observe(transcriptSection, { childList: true });
+      }
+    };
 
-    return () => resizeObserver.disconnect();
+    const handleMutation = () => {
+      observeTranscriptSectionMutation();
+      sendIframeSize();
+    };
+
+    const mutationObserver = new MutationObserver(handleMutation);
+    mutationObserver.observe(conversationContainerValue, { childList: true });
+
+    handleMutation();
+
+    return () => {
+      resizeObserver.disconnect();
+      mutationObserver.disconnect();
+    };
   });
 }
 

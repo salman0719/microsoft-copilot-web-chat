@@ -81,7 +81,7 @@ VITE_IGNORE_AUTH=0 # Setting `1` disables the authentication flow
 VITE_MSAL_CLIENT_ID=
 VITE_MSAL_TENANT_ID=
 VITE_BOT_TOKEN_ENDPOINT=
-VITE_EMBED_PARENT_ORIGIN=https://localhost:4000 # Should include the origin of the primary parent host, applicable in production mode
+VITE_EMBED_PARENT_URL=https://localhost:4000/test.html # Should atleast include the origin of the primary parent host, so `https://localhost:4000` will suffice as well. Applicable in production mode
 VITE_ENABLE_FULLSCREEN=0 # Setting `1` allows to enable fullscreen, applicable in `npm run dev-solo` and relevant modes
 VITE_EMBED_CHILD_URL=http://localhost:7000 # Should include the URL where the msal auth & webchat component get deployed, applicable in production mode
 ```

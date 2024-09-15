@@ -1,8 +1,16 @@
 import { IS_WINDOW_EMBEDDED, TARGET_ORIGIN, WEBCHAT_LAST_MSG_TIME_KEY } from './constants';
 import { errorMessages } from './store';
-import { ErrorMessage, ResizePostMessageProps, SetDataPostMessageProps } from './types';
+import {
+  ErrorMessage,
+  RequestHeighPostMessageProps,
+  ResizePostMessageProps,
+  SetDataPostMessageProps,
+} from './types';
 
-type PostMessageProps = ResizePostMessageProps | SetDataPostMessageProps;
+type PostMessageProps =
+  | ResizePostMessageProps
+  | SetDataPostMessageProps
+  | RequestHeighPostMessageProps;
 
 export const postMessageToParent = (data: PostMessageProps) => {
   IS_WINDOW_EMBEDDED && window.parent.postMessage(data, TARGET_ORIGIN);

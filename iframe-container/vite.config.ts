@@ -6,6 +6,9 @@ export default function defineConfig(config: ConfigEnv) {
   const env = loadEnv(config.mode, envDir, '');
 
   return mergeConfig(baseConfig(config), {
+    define: {
+      __EMBED_PARENT_MAX_HEIGHT_DIFF__: 67,
+    },
     envDir,
     root: './iframe-container',
     server: {
