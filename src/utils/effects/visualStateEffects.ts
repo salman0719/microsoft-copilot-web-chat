@@ -7,6 +7,17 @@ import {
 } from '../constants';
 
 effect(() => {
+  const containerValue = container.value;
+  if (containerValue) {
+    containerValue.style.setProperty(
+      '--chat-window-transition-duration-ms',
+      // @ts-expect-error: Comes from vite's `define` attribute
+      __CHAT_WINDOW_TRANSITION_DURATION_MS__
+    );
+  }
+});
+
+effect(() => {
   isDark.value
     ? localStorage.setItem(WEBCHAT_MODE_KEY, '1')
     : localStorage.removeItem(WEBCHAT_MODE_KEY);

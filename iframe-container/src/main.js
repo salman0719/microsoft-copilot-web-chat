@@ -1,4 +1,7 @@
+import { IFRAME_SRC } from './utils/constants';
 import renderMarkup from './utils/renderMarkup';
+
+const IFRAME_ORIGIN = new URL(IFRAME_SRC).origin;
 
 (function () {
   renderMarkup();
@@ -6,7 +9,35 @@ import renderMarkup from './utils/renderMarkup';
   const iframe = document.querySelector('#bot-iframe-wrapper>iframe.bot-iframe');
   const parent = iframe.parentNode;
 
+  parent.style.setProperty(
+    '--max-height-diff',
+    // @ts-expect-error: Comes from vite's `define` attribute
+    __EMBED_PARENT_MAX_HEIGHT_DIFF__ + 'px'
+  );
+
   const store = {};
+
+  const sendInnerHeight = () => {
+    iframe.contentWindow.postMessage(
+      {
+        value: window.innerHeight - __EMBED_PARENT_MAX_HEIGHT_DIFF__,
+        type: 'parentInnerHeight',
+      },
+      IFRAME_ORIGIN
+    );
+  };
+
+  window.addEventListener(
+    'resize',
+    (() => {
+      let timeoutId = -1;
+
+      return () => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(sendInnerHeight, 200);
+      };
+    })()
+  );
 
   window.addEventListener('message', (event) => {
     if (event.source !== iframe.contentWindow) {
@@ -49,6 +80,8 @@ import renderMarkup from './utils/renderMarkup';
       }
 
       parent.style.height = height + 'px';
+    } else if (type === 'requestHeight') {
+      sendInnerHeight();
     }
   });
 })();

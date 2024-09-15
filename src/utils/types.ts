@@ -5,6 +5,10 @@ export interface ErrorMessage {
   text?: ComponentChild;
 }
 
+export interface RequestHeighPostMessageProps {
+  type: 'requestHeight';
+}
+
 export interface ResizePostMessageProps {
   height: number;
   type: 'conversationResize';

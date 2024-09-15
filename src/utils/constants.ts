@@ -25,7 +25,9 @@ export const BOT_TOKEN_ENDPOINT =
   'https://829ad9b9104ce6878ce96c9c25af46.ca.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr967_studentBotDev/directline/token?api-version=2022-03-01-preview'; // You can find the token URL via the mobile app channel configuration
 export const TARGET_ORIGIN = import.meta.env.DEV
   ? 'http://localhost:' + (import.meta.env.VITE_EMBED_PARENT_PORT || '4000')
-  : import.meta.env.VITE_EMBED_PARENT_ORIGIN || '*';
+  : import.meta.env.VITE_EMBED_PARENT_URL
+    ? new URL(import.meta.env.VITE_EMBED_PARENT_URL).origin
+    : '*';
 
 export const DEFAULT_SEND_BOX_ERROR: ErrorMessage = {
   id: 'SEND_BOX_ERROR',
