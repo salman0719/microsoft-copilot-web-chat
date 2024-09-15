@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
         'preact/hooks',
         '@preact/signals',
         'preact/compat',
-        'preact_debug',
+        'preact/debug',
         'classnames',
       ],
     },

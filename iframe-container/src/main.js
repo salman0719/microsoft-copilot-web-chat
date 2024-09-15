@@ -30,7 +30,7 @@ const IFRAME_ORIGIN = new URL(IFRAME_SRC).origin;
   window.addEventListener(
     'resize',
     (() => {
-      let timeoutId = -1;
+      let timeoutId;
 
       return () => {
         clearTimeout(timeoutId);
