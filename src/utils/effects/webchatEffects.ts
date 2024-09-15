@@ -68,7 +68,7 @@ if (__IS_EMBED_CHILD__) {
     }
 
     let previousHeight: number | undefined;
-    let cleanUpManipulationTimeoutId = -1;
+    let cleanUpManipulationTimeoutId: ReturnType<typeof setTimeout>;
 
     const sendIframeSize = () => {
       const containerHeight = root.offsetHeight;
