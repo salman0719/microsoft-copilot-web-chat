@@ -30,7 +30,7 @@ $min-height: calc($condensed-webchat-height + 125px);
 
   &.bot-iframe--unauthenticated {
     width: $regular-webchat-width;
-    height: 440px;
+    height: 400px;
     max-height: unset;
   }
 

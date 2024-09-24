@@ -41,6 +41,10 @@ const Container: FunctionalComponent = () => {
     );
   });
 
+  const botClassName = useComputed(() =>
+    authenticated.value === undefined ? 'webchat-bot--loading' : undefined
+  );
+
   const uncondense = (isCondensed.value && (() => (isCondensed.value = false))) || void 0;
 
   effect(() => {
@@ -109,7 +113,17 @@ const Container: FunctionalComponent = () => {
         <div id='webchat'></div>
         <LoginUI />
       </div>
-      <div id='webchat-bot' onClick={() => (rootIsClosed.value = !rootIsClosed.value)}></div>
+      <div
+        id='webchat-bot'
+        className={botClassName}
+        onClick={() => {
+          if (authenticated.value !== undefined) {
+            rootIsClosed.value = !rootIsClosed.value;
+          }
+        }}
+      >
+        <div className='webchat-bot__icon' />
+      </div>
       <InputCounter />
       <ErrorMessages />
       <DisclosureText />

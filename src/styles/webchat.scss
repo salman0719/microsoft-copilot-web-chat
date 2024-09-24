@@ -142,12 +142,43 @@
     height: 64px;
     border-radius: 64px;
     position: relative;
-    background-image: url('/src/images/chat-bot-icon.png');
-    cursor: pointer;
     display: inline-flex;
+    cursor: pointer;
     align-self: end;
     flex: 0 0 64px;
-    background-size: contain;
+
+    > .webchat-bot__icon {
+      width: 100%;
+      height: 100%;
+      background-image: url('/src/images/chat-bot-icon.png');
+      background-size: contain;
+    }
+
+    &.webchat-bot--loading {
+      cursor: wait;
+
+      > .webchat-bot__icon {
+        opacity: 0.1;
+      }
+
+      &::after,
+      &::before {
+        content: '';
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        border: 2px solid #aaa;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        animation: webchat-bot-loader 2s linear infinite;
+      }
+      &::after {
+        animation-delay: 1s;
+      }
+    }
   }
 
   .webchat__send-box {
@@ -447,6 +478,17 @@
       margin-left: auto;
       display: block;
     }
+  }
+}
+
+@keyframes webchat-bot-loader {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
   }
 }
 
