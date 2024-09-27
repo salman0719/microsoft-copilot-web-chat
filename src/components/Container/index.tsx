@@ -85,7 +85,7 @@ const Container: FunctionalComponent = () => {
             }}
             className='chat-window__navbar__mode-button'
           />
-          {import.meta.env.VITE_ENABLE_FULLSCREEN === '1' && <ExpandIcon />}
+          {import.meta.env.VITE_DISABLE_FULLSCREEN !== '1' && <ExpandIcon />}
           <svg
             width='20'
             height='20'

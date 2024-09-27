@@ -12,7 +12,7 @@ export default function defineConfig(config: ConfigEnv) {
       preprocessorOptions: {
         scss: {
           additionalData: getScssAdditionalData({
-            'enable-fullscreen': env.VITE_ENABLE_FULLSCREEN === '1' ? 'true' : 'false',
+            'enable-fullscreen': env.VITE_DISABLE_FULLSCREEN === '1' ? 'false' : 'true',
             'is-embed-child': 'true',
           }),
         },
