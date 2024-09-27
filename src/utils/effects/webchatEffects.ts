@@ -2,6 +2,7 @@ import { effect } from '@preact/signals';
 import {
   authenticated,
   container,
+  isClosed,
   isFullscreen,
   sendBoxChatLimitCrossed,
   sendBoxValue,
@@ -70,11 +71,19 @@ if (__IS_EMBED_CHILD__) {
     let previousHeight: number | undefined;
     let cleanUpManipulationTimeoutId: ReturnType<typeof setTimeout>;
 
-    const sendIframeSize = () => {
+    const sendIframeSize = (entries?: ResizeObserverEntry[]) => {
+      if (isClosed.peek() || (entries && !entries[0].borderBoxSize[0].blockSize)) {
+        return;
+      }
+
       const containerHeight = root.offsetHeight;
       const conversationHeight = conversationContainerValue.offsetHeight;
 
-      const manipulateOverflow = containerHeight < parentHeight;
+      // NOTE: This `offset` is to navigate complexities of synchronizing height calculation
+      // between iframe and its parent
+      const offset = 10;
+
+      const manipulateOverflow = containerHeight < parentHeight - offset;
       if (manipulateOverflow) {
         conversationContainerValue.style.overflow = 'visible';
       }
@@ -93,7 +102,7 @@ if (__IS_EMBED_CHILD__) {
         clearTimeout(cleanUpManipulationTimeoutId);
         cleanUpManipulationTimeoutId = setTimeout(() => {
           conversationContainerValue.style.removeProperty('overflow');
-        }, 20);
+        });
       }
     };
 
@@ -117,8 +126,11 @@ if (__IS_EMBED_CHILD__) {
 
     const mutationObserver = new MutationObserver(handleMutation);
     mutationObserver.observe(conversationContainerValue, { childList: true });
-
-    handleMutation();
+    const innerRootContainer = conversationContainerValue.parentNode?.parentNode;
+    innerRootContainer &&
+      mutationObserver.observe(innerRootContainer, {
+        childList: true,
+      });
 
     return () => {
       resizeObserver.disconnect();
