@@ -8,6 +8,22 @@
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-32x32.png" />
     <link rel="manifest" href="./favicon/site.webmanifest" />
     <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    {{#if isProduction}}
+    <script
+      type="text/javascript"
+      src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"
+      integrity="sha384-PARf28kmic36Ve+O3DnUerRXFtOQ7ZDqRDGpLcbljly5/N39T2OV3kt3QsWOKeAX"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript">
+      if (typeof msal === 'undefined')
+        document.write(
+          unescape(
+            "%3Cscript type='text/javascript' src='https://alcdn.msftauth.net/browser/2.35.0/js/msal-browser.min.js' integrity='sha384-+8A1rifuHuJxJgQn6UCxGgmo6Q2SvIeEAqtPOsXCpi0DpqZLtuDhxxnqjJZw/1ve' crossorigin='anonymous'%3E%3C/script%3E"
+          )
+        );
+    </script>
+    {{else}}
     <script
       type="text/javascript"
       src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.js"
@@ -22,6 +38,8 @@
           )
         );
     </script>
+    {{/if}}
+
     <script
       src="https://unpkg.com/@azure/storage-blob@10.3.0/browser/azure-storage.blob.min.js"
       integrity="sha384-fsfhtLyVQo3L3Bh73qgQoRR328xEeXnRGdoi53kjo1uectCfAHFfavrBBN2Nkbdf"

@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
+import handlebars from 'vite-plugin-handlebars';
 import preact from '@preact/preset-vite';
 
 const defaultScssAdditionalDataObj = {
@@ -43,7 +44,14 @@ export default defineConfig(({ mode }) => {
       open: true,
       port: parseInt(env.PREVIEW_PORT || '3100'),
     },
-    plugins: [preact()],
+    plugins: [
+      preact(),
+      handlebars({
+        context: {
+          isProduction: env.NODE_ENV === 'production',
+        },
+      }),
+    ],
     optimizeDeps: {
       include: [
         'preact',
