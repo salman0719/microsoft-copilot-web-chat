@@ -78,8 +78,10 @@ VITE_EMBED_PARENT_PORT=4000
 VITE_EMBED_PARENT_PREVIEW_PORT=5000
 VITE_EMBED_CHILD_PORT=7000
 VITE_IGNORE_AUTH=0 # Setting `1` disables the authentication flow
+# `VITE_MSAL` prefixed values should come from your Azure portal
 VITE_MSAL_CLIENT_ID=
 VITE_MSAL_TENANT_ID=
+VITE_MSAL_REDIRECT_URI=
 VITE_BOT_TOKEN_ENDPOINT=
 VITE_EMBED_PARENT_URL=https://localhost:4000/test.html # Should atleast include the origin of the primary parent host, so `https://localhost:4000` will suffice as well. Applicable in production mode
 VITE_DISABLE_FULLSCREEN=0 # Setting `1` disables fullscreen
